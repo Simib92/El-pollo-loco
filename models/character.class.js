@@ -2,7 +2,7 @@ class Character extends MovableObject {
 
     height = 280;
     y = 80;
-    speed = 10;
+    speed = 8;
 
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
@@ -40,6 +40,19 @@ class Character extends MovableObject {
         'img/2_character_pepe/5_dead/D-57.png'
     ]
 
+    IMAGES_SLEEP = [
+        'img/2_character_pepe/1_idle/long_idle/I-11.png',
+        'img/2_character_pepe/1_idle/long_idle/I-12.png',
+        'img/2_character_pepe/1_idle/long_idle/I-13.png',
+        'img/2_character_pepe/1_idle/long_idle/I-14.png',
+        'img/2_character_pepe/1_idle/long_idle/I-15.png',
+        'img/2_character_pepe/1_idle/long_idle/I-16.png',
+        'img/2_character_pepe/1_idle/long_idle/I-17.png',
+        'img/2_character_pepe/1_idle/long_idle/I-18.png',
+        'img/2_character_pepe/1_idle/long_idle/I-19.png',
+        'img/2_character_pepe/1_idle/long_idle/I-20.png'
+    ]
+
     world;
 
     constructor() {
@@ -48,6 +61,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_SLEEP);
         this.animate();
         this.applyGravity();
     }
@@ -89,5 +103,9 @@ class Character extends MovableObject {
 
     jump() {
         this.speedY = 30;
+    }
+
+    sleep() {
+        setTimeout(this.playAnimation(this.IMAGES_SLEEP), 5000)
     }
 }

@@ -28,17 +28,23 @@ class World {
     run() {
         setInterval(() => {
         this.checkCollisions();
-        this.checkThrowObjects(); 
+        this.checkThrowObjects();
+        this.checkPepeSleeping();
         }, 100);
+    }
+
+    checkPepeSleeping() {
+        if (!this.keyboard.RIGHT && !this.keyboard.LEFT && !this.keyboard.SPACE && !this.keyboard.D) {
+            this.character.sleep()
+        };
     }
 
     runFasterChecks() {
         setInterval(() => {
             this.checkJumpOnEnemie();
             this.checkColectables();
-            }, 50);
-    }
-    
+            }, 10);
+    }   
  
     checkThrowObjects() {
         if(this.keyboard.D) {
@@ -58,7 +64,7 @@ class World {
                         this.level.enemies.splice(index, 1);
                     }
                     } 
-                    jumb();
+                    this.character.speedY = 30;
             }}
         );
     }

@@ -57,6 +57,8 @@ class MovableObject extends DrawableObject {
         } else {
             this.lastHit = new Date().getTime();
         }
+        console.log(this.energy);
+        
     }
 
     isHurt() {
