@@ -1,0 +1,3 @@
+class Colectables extends DrawableObject {
+    
+}
