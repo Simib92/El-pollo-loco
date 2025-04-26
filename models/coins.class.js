@@ -2,6 +2,7 @@ class Coin extends Colectables {
     height = 120;
     width = 120;
     y = 330;
+    type = 'coin';
     
     IMAGES_COIN = [
         'img/8_coin/coin_1.png',

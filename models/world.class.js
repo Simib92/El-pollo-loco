@@ -111,8 +111,13 @@ class World {
     checkColectables() {
             this.level.colectables.forEach((colectables) => {
                 if (this.character.isColliding(colectables)) {
-                    console.log('colected');
                     this.spliceColectable(colectables);
+                    if (colectables.type === 'bottle') {
+                        console.log('bottle');
+                    }
+                    if (colectables.type === 'coin') {
+                        console.log('coin');
+                    }
             }});
     }
 

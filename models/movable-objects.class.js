@@ -4,6 +4,8 @@ class MovableObject extends DrawableObject {
     speedY = 0;
     acceleration = 2.5;
     energy = 100;
+    bag = 0;
+    colectedBottles = 0;
     lastHit = 0;
 
     applyGravity() {
@@ -68,6 +70,10 @@ class MovableObject extends DrawableObject {
     isDead() {
         return this.energy == 0;
         setTimeout()
+    }
+
+    colectBottles() {
+        this.colectedBottles += 20;
     }
 
 /*
