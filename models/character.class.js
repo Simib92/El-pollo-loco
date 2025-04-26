@@ -106,6 +106,8 @@ class Character extends MovableObject {
     }
 
     sleep() {
-        setTimeout(this.playAnimation(this.IMAGES_SLEEP), 5000)
+        setInterval(() => {
+        this.playAnimation(this.IMAGES_SLEEP);   
+        }, 50);
     }
 }

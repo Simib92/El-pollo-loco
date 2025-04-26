@@ -4,11 +4,16 @@ class World {
     endboss = new Endboss();
     level = level1;
     canvas;
+    sleepTimer;
     ctx;
     keyboard;
     camera_x = 0;
-    statusBar = new StatusBar();
+    statusBarHealt = new StatusbarHealt();
+    statusBarCoin = new StatusbarCoin();
+    statusBarBottle = new StatusbarBottle();
     colectables = new Colectables();
+    colectables_bottle = new Bottle();
+    colectables_coin = new Coin();
     throwableObjects = [];
 
     constructor(canvas, keyboard) {
@@ -35,8 +40,16 @@ class World {
 
     checkPepeSleeping() {
         if (!this.keyboard.RIGHT && !this.keyboard.LEFT && !this.keyboard.SPACE && !this.keyboard.D) {
-            this.character.sleep()
-        };
+            if (!this.sleepTimer) { // Nur wenn noch kein Timer läuft
+                this.sleepTimer = setTimeout(() => {
+                    this.character.sleep();
+                }, 5000);
+            }
+        } else {
+            this.character.loadImage('img/2_character_pepe/2_walk/W-21.png');
+            clearTimeout(this.sleepTimer); // Timer abbrechen
+            this.sleepTimer = null; // Timer zurücksetzen
+        }
     }
 
     runFasterChecks() {
@@ -59,12 +72,10 @@ class World {
             if (this.character.isJumpOnEnemy(enemy)) {
                 enemy.energy -= 100;
                     if (enemy.energy < 1) {
-                        const index = this.level.enemies.indexOf(enemy);
-                        if (index > -1) {
-                        this.level.enemies.splice(index, 1);
-                    }
+                        setTimeout(() => this.spliceEnemy(enemy), 500);
                     } 
                     this.character.speedY = 30;
+                    this.character.isAboveGround();
             }}
         );
     }
@@ -73,7 +84,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
             this.character.hit();
-            this.statusBar.setPercentage(this.character.energy)
+            this.statusBarHealt.setPercentage(this.character.energy);
         }});
     }
 
@@ -82,27 +93,36 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if (bottle.isColliding(enemy)) {
                     enemy.energy -= 100;
-                    if (enemy.energy < 1) {
-                        const index = this.level.enemies.indexOf(enemy);
-                        if (index > -1) {
-                        this.level.enemies.splice(index, 1);
-                    }
-                    } 
+                    setTimeout(() => this.spliceEnemy(enemy), 500);
                 }});
             ;
             }, 50); 
     } 
  
+    spliceEnemy(enemy) {
+        if (enemy.energy < 1) {
+            const index = this.level.enemies.indexOf(enemy);
+            if (index > -1) {
+            this.level.enemies.splice(index, 1);
+        }
+        } 
+    }
+
     checkColectables() {
             this.level.colectables.forEach((colectables) => {
                 if (this.character.isColliding(colectables)) {
                     console.log('colected');
-                    const index = this.level.colectables.indexOf(colectables);
-                        if (index > -1) {
-                        this.level.colectables.splice(index, 1);
-                        } 
+                    this.spliceColectable(colectables);
             }});
     }
+
+    spliceColectable(colectables) {
+        const index = this.level.colectables.indexOf(colectables);
+        if (index > -1) {
+        this.level.colectables.splice(index, 1);
+        } 
+    }
+
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -112,7 +132,9 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
         //space for fixed objects.
-        this.addToMap(this.statusBar);
+        this.addToMap(this.statusBarHealt);
+        this.addToMap(this.statusBarCoin);
+        this.addToMap(this.statusBarBottle);
         this.ctx.translate(this.camera_x, 0);
 
         this.addToMap(this.character);  
