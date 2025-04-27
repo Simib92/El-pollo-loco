@@ -66,6 +66,15 @@ class MovableObject extends DrawableObject {
         timepassed = timepassed / 1000; //differenz in s
         return timepassed < 2;
     }
+
+    isDemage() {
+        this.isHit = true;
+        setTimeout(() => this.returnAttackAgain(), 500)
+    }
+
+    returnAttackAgain() {
+        this.isHit = false;
+    }
  
     isDead() {
         return this.energy == 0;

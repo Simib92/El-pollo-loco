@@ -6,6 +6,8 @@ class Endboss extends MovableObject{
     energy = 2000;
     startAnimation = false;
     endbossAttack = 0;
+    type = 'boss';
+    isHit = false;
 
 
     IMAGES_WALKING = [
@@ -63,6 +65,8 @@ class Endboss extends MovableObject{
 
     animate() {
         setInterval(() => {
+            if (this.energy > 1) {
+            
             if (!this.startAnimation && world.character.x <= 14700) {
                 this.playAnimation(this.IMAGES_ALERT);
             }
@@ -81,8 +85,16 @@ class Endboss extends MovableObject{
                 this.speed = 15;
                 this.moveLeft();
                 setTimeout(() => this.resetAttck(), 2000)
+            }} else {
+                this.playAnimation(this.IMAGES_DEAD);
             }
         }, 200);
+
+        setInterval(() => {
+            if (this.isHit) {
+                this.playAnimation(this.IMAGES_HURT);
+            }
+        }, 200)
     }
 
     resetAttck() {

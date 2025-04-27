@@ -53,6 +53,8 @@ class World {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
             this.checkDemage(bottle);
+            this.character.colectedBottles += 5;
+            this.statusBarBottle.setPercentage(this.character.colectedBottles)
             setTimeout(() => this.spliceThrowableObjects(bottle), 3000);
             this.character.colectedBottles -= 5;
         }
@@ -92,7 +94,11 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if (bottle.isColliding(enemy)) {
                     enemy.energy -= 100;
+                    if (enemy.type === 'boss') {
+                        enemy.isDemage();
+                    } else {
                     setTimeout(() => this.spliceEnemy(enemy), 500);
+                    }
                 }});
             ;
             }, 50); 

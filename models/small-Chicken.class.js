@@ -1,5 +1,6 @@
 class SmallChicken extends MovableObject {
     energy = 100;
+    type = 'normal'
 
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
