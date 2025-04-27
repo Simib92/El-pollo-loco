@@ -22,7 +22,7 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        if (this instanceof Chicken || this instanceof ThrowableObject) {
+        if (this instanceof Chicken || this instanceof SmallChicken || this instanceof ThrowableObject ) {
             ctx.lineWidth = '5';
             ctx.strokeStyle = 'blue';
             ctx.beginPath();
