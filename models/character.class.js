@@ -3,6 +3,8 @@ class Character extends MovableObject {
     height = 280;
     y = 80;
     speed = 8;
+    sleepPepe = false;
+    sleepInterval;
 
     IMAGES_WALKING = [
         'img/2_character_pepe/2_walk/W-21.png',
@@ -82,6 +84,23 @@ class Character extends MovableObject {
                 this.jump();
             }
 
+            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.SPACE || this.world.keyboard.D) {
+                if (this.sleepPepe) {
+                    clearInterval(this.sleepInterval); // Schlaf-Animation stoppen
+                    this.sleepInterval = null;
+                }
+                this.sleepPepe = false;
+            
+                clearTimeout(this.sleepTimeout); // Bereits gestarteten "einschlafen"-Timeout abbrechen
+            
+                // Neuen Sleep-Timeout setzen
+                this.sleepTimeout = setTimeout(() => {
+                    if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.SPACE && !this.world.keyboard.D) {
+                        this.sleepPepe = true;
+                        this.sleep();
+                    }
+                }, 5000);
+            }
         }, 1000 / 60);
 
         
@@ -99,6 +118,7 @@ class Character extends MovableObject {
             }
             }
         }, 50);
+
     }
 
     jump() {
@@ -106,8 +126,9 @@ class Character extends MovableObject {
     }
 
     sleep() {
-        setInterval(() => {
+        if (this.sleepInterval) return;
+        this.sleepInterval = setInterval(() => {
         this.playAnimation(this.IMAGES_SLEEP);   
-        }, 50);
+        }, 1000);
     }
 }

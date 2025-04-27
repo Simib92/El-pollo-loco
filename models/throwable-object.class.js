@@ -16,8 +16,6 @@ IMAGES_SPLASH = [
     'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
 ];
 
-bottleInterval;
-
 constructor(x, y) {
     super().loadImage('img/6_salsa_bottle/salsa_bottle.png');
     this.loadImages(this.IMAGES_ROTATION);
@@ -32,19 +30,10 @@ constructor(x, y) {
 trow() {
     this.speedY = 30;
     this.applyGravity();
-    let bottleInterval = setInterval(() => {
+    setInterval(() => {
         this.animate();
         this.x += 6;
-        if (this.y > 270)
-        this.clearIntervalTrow(bottleInterval);
     }, 40)
-    
-}
-
-clearIntervalTrow(bottleInterval) {
-    clearInterval(bottleInterval);
-    console.log('clear Interval');
-    
 }
 
 animate() {

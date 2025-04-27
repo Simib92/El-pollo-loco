@@ -4,7 +4,7 @@ class World {
     endboss = new Endboss();
     level = level1;
     canvas;
-    sleepTimer;
+    sleepPepe = false;
     ctx;
     keyboard;
     camera_x = 0;
@@ -24,7 +24,7 @@ class World {
         this.setworld();
         this.run();
         this.runFasterChecks();
-    }
+        }
 
     setworld() {
         this.character.world = this;
@@ -34,23 +34,10 @@ class World {
         setInterval(() => {
         this.checkCollisions();
         this.checkThrowObjects();
-        this.checkPepeSleeping();
+        console.log(this.endboss.startAnimation);
         }, 100);
     }
 
-    checkPepeSleeping() {
-        if (!this.keyboard.RIGHT && !this.keyboard.LEFT && !this.keyboard.SPACE && !this.keyboard.D) {
-            if (!this.sleepTimer) { // Nur wenn noch kein Timer läuft
-                this.sleepTimer = setTimeout(() => {
-                    this.character.sleep();
-                }, 5000);
-            }
-        } else {
-            this.character.loadImage('img/2_character_pepe/2_walk/W-21.png');
-            clearTimeout(this.sleepTimer); // Timer abbrechen
-            this.sleepTimer = null; // Timer zurücksetzen
-        }
-    }
 
     runFasterChecks() {
         setInterval(() => {
@@ -61,11 +48,22 @@ class World {
  
     checkThrowObjects() {
         if(this.keyboard.D) {
+            if (this.character.colectedBottles > 0) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
             this.checkDemage(bottle);
+            setTimeout(() => this.spliceThrowableObjects(bottle), 3000);
+            this.character.colectedBottles -= 5;
+        }
         }
     }
+
+    spliceThrowableObjects(bottle) {
+        const index = this.throwableObjects.indexOf(bottle);
+            if (index > -1) {
+            this.throwableObjects.splice(index, 1);
+            console.log(this.throwableObjects);
+    }}
 
     checkJumpOnEnemie() {
         this.level.enemies.forEach((enemy) => {
@@ -113,10 +111,12 @@ class World {
                 if (this.character.isColliding(colectables)) {
                     this.spliceColectable(colectables);
                     if (colectables.type === 'bottle') {
-                        console.log('bottle');
+                        this.character.colectedBottles += 5;
+                        this.statusBarBottle.setPercentage(this.character.colectedBottles)
                     }
                     if (colectables.type === 'coin') {
-                        console.log('coin');
+                        this.character.CoinBag += 5;
+                        this.statusBarCoin.setPercentage(this.character.CoinBag)
                     }
             }});
     }

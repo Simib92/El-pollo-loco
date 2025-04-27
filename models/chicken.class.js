@@ -31,7 +31,6 @@ class Chicken extends MovableObject {
         }, 1000 / 60);
 
         setInterval(() => {
-                
                 if (this.energy > 1) {
                     this.playAnimation(this.IMAGES_WALKING);
                 }
