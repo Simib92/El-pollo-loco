@@ -16,6 +16,8 @@ class World {
     colectables_bottle = new Bottle();
     colectables_coin = new Coin();
     throwableObjects = [];
+    intervalIDs = [];
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -35,17 +37,20 @@ class World {
         setInterval(() => {
         this.checkCollisions();
         this.checkThrowObjects();
-        console.log(this.endboss.startAnimation);
-        }, 100);
+        }, 200);
     }
-
 
     runFasterChecks() {
         setInterval(() => {
             this.checkJumpOnEnemie();
             this.checkColectables();
             }, 10);
-    }   
+    } 
+
+    setStoppableInterval(fn, time) {
+        let id = setInterval(fn, time);
+        intervalIDs.push(id);
+    }
  
     checkThrowObjects() {
         if(this.keyboard.D) {
@@ -53,7 +58,6 @@ class World {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
             this.checkDemage(bottle);
-            this.character.colectedBottles += 5;
             this.statusBarBottle.setPercentage(this.character.colectedBottles)
             setTimeout(() => this.spliceThrowableObjects(bottle), 3000);
             this.character.colectedBottles -= 5;
@@ -65,7 +69,6 @@ class World {
         const index = this.throwableObjects.indexOf(bottle);
             if (index > -1) {
             this.throwableObjects.splice(index, 1);
-            console.log(this.throwableObjects);
     }}
 
     checkJumpOnEnemie() {
@@ -133,6 +136,14 @@ class World {
         if (index > -1) {
         this.level.colectables.splice(index, 1);
         } 
+    }
+
+    levelEndAnimation() {
+        console.log('you win!!');
+    }
+
+    loseGame() {
+        console.log('you lose!!');
     }
 
 

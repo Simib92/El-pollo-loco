@@ -77,7 +77,7 @@ class Endboss extends MovableObject{
                     this.playAnimation(this.IMAGES_WALKING);
                     this.speed = 5;
                     this.moveLeft();
-                    this.endbossAttack += 5;
+                    this.endbossAttack += 1 + Math.random() * 7;
                     console.log(this.endbossAttack);
             }
             if (this.endbossAttack >= 100) {
@@ -87,6 +87,7 @@ class Endboss extends MovableObject{
                 setTimeout(() => this.resetAttck(), 2000)
             }} else {
                 this.playAnimation(this.IMAGES_DEAD);
+                world.levelEndAnimation();
             }
         }, 200);
 

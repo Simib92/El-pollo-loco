@@ -28,9 +28,18 @@
     <script src="js/game.js"></script>
 </head>
 
-<body onload="init()">
-    <h1>El Pollo Loco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
+<body onload="">
+    <div class="canvas-wrapper">
+        <h1>El Pollo Loco</h1>
+        <img class="intro-img" id="intro-img" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="">
+        <canvas class="display_none" id="canvas" width="720" height="480"></canvas>
+    </div>
 
+    <div class="button-discription-wrapper">
+        <button onclick="startGame()" class="buttons">Start Game</button>
+        <Span class="discription"><b>how to play:</b> arrow button for run, space for jump, D for shot if you have some bottles. lets kill the boss now..!!</Span>
+    </div>
+    
+    
 </body>
 </html>

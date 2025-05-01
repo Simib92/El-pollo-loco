@@ -2,6 +2,19 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+function startGame() {
+    document.getElementById('intro-img').classList.add('display_none');
+    document.getElementById('canvas').classList.remove('display_none');
+    initLevel();
+    init();
+}
+
+function stopGame() {
+    document.getElementById('intro-img').classList.add('display_none');
+    document.getElementById('canvas').classList.add('display_none');
+    document.getElementById('intro-img').classList.add('display_none');
+}
+
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);    
