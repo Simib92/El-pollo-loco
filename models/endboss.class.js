@@ -67,24 +67,24 @@ class Endboss extends MovableObject{
         setInterval(() => {
             if (this.energy > 1) {
             
-            if (!this.startAnimation && world.character.x <= 14700) {
-                this.playAnimation(this.IMAGES_ALERT);
-            }
-            if (world.character.x > 14700) {
-                this.startAnimation = true; 
-            }
-            if (this.startAnimation && this.endbossAttack < 100) {
-                    this.playAnimation(this.IMAGES_WALKING);
-                    this.speed = 5;
+                if (!this.startAnimation && world.character.x <= 14700) {
+                    this.playAnimation(this.IMAGES_ALERT);
+                }
+                if (world.character.x > 14700) {
+                    this.startAnimation = true; 
+                }
+                if (this.startAnimation && this.endbossAttack < 100) {
+                        this.playAnimation(this.IMAGES_WALKING);
+                        this.speed = 5;
+                        this.moveLeft();
+                        this.endbossAttack += 1 + Math.random() * 7;
+                }
+                if (this.endbossAttack >= 100) {
+                    this.playAnimation(this.IMAGES_ATTACK);
+                    this.speed = 20;
+                    world.playSoundEffect(world.bossAttack);
                     this.moveLeft();
-                    this.endbossAttack += 1 + Math.random() * 7;
-                    console.log(this.endbossAttack);
-            }
-            if (this.endbossAttack >= 100) {
-                this.playAnimation(this.IMAGES_ATTACK);
-                this.speed = 15;
-                this.moveLeft();
-                setTimeout(() => this.resetAttck(), 2000)
+                    setTimeout(() => this.resetAttck(), 3000)
             }} else {
                 this.playAnimation(this.IMAGES_DEAD);
                 world.levelEndAnimation();

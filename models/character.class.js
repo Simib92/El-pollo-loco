@@ -82,6 +82,7 @@ class Character extends MovableObject {
 
             if(this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
+                this.world.playSoundEffect(this.world.jumpSound);
             }
 
             if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.SPACE || this.world.keyboard.D) {

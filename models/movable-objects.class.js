@@ -103,6 +103,7 @@ isColliding (obj) {
  
     jump() {
         this.speedY = 20;
+        
     }
 }
 

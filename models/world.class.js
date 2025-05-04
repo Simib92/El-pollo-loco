@@ -18,6 +18,14 @@ class World {
     throwableObjects = [];
     intervalIDs = [];
 
+    jumpSound = new Audio('audio/cartoon-jump-6462.mp3');
+    colectCoin = new Audio('audio/collect_coin.mp3');
+    colectBottle = new Audio('audio/collect_bottle.mp3');
+    throwSound = new Audio('audio/throw.mp3');
+    hitSound = new Audio('audio/hit.mp3');
+    demageSound = new Audio('audio/demage.mp3');
+    bossAttack = new Audio('audio/boss-attack.mp3')
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -57,6 +65,7 @@ class World {
             if (this.character.colectedBottles > 0) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
+            this.playSoundEffect(this.throwSound);
             this.checkDemage(bottle);
             this.statusBarBottle.setPercentage(this.character.colectedBottles)
             setTimeout(() => this.spliceThrowableObjects(bottle), 3000);
@@ -89,6 +98,7 @@ class World {
         if (this.character.isColliding(enemy)) {
             this.character.hit();
             this.statusBarHealt.setPercentage(this.character.energy);
+            this.playSoundEffect(this.hitSound)
         }});
     }
 
@@ -97,13 +107,13 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if (bottle.isColliding(enemy)) {
                     enemy.energy -= 100;
+                    this.playSoundEffect(this.demageSound)
                     if (enemy.type === 'boss') {
                         enemy.isDemage();
                     } else {
                     setTimeout(() => this.spliceEnemy(enemy), 500);
                     }
                 }});
-            ;
             }, 50); 
     } 
  
@@ -122,11 +132,13 @@ class World {
                     this.spliceColectable(colectables);
                     if (colectables.type === 'bottle') {
                         this.character.colectedBottles += 5;
-                        this.statusBarBottle.setPercentage(this.character.colectedBottles)
+                        this.statusBarBottle.setPercentage(this.character.colectedBottles);
+                        this.playSoundEffect(this.colectBottle);
                     }
                     if (colectables.type === 'coin') {
                         this.character.CoinBag += 5;
-                        this.statusBarCoin.setPercentage(this.character.CoinBag)
+                        this.statusBarCoin.setPercentage(this.character.CoinBag);
+                        this.playSoundEffect(this.colectCoin);
                     }
             }});
     }
@@ -136,6 +148,11 @@ class World {
         if (index > -1) {
         this.level.colectables.splice(index, 1);
         } 
+    }
+
+    playSoundEffect(sound) {
+        sound.currentTime = 0;
+        sound.play();
     }
 
     levelEndAnimation() {
