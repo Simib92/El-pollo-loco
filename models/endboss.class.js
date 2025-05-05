@@ -3,7 +3,7 @@ class Endboss extends MovableObject{
     height = 400;
     width = 400;
     y = 70;
-    energy = 2000;
+    energy = 100;
     startAnimation = false;
     endbossAttack = 0;
     type = 'boss';

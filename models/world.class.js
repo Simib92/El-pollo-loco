@@ -12,6 +12,7 @@ class World {
     statusBarHealt = new StatusbarHealt();
     statusBarCoin = new StatusbarCoin();
     statusBarBottle = new StatusbarBottle();
+    statusBarBoss = new StatusbarHealtEndboss();
     colectables = new Colectables();
     colectables_bottle = new Bottle();
     colectables_coin = new Coin();
@@ -24,7 +25,8 @@ class World {
     throwSound = new Audio('audio/throw.mp3');
     hitSound = new Audio('audio/hit.mp3');
     demageSound = new Audio('audio/demage.mp3');
-    bossAttack = new Audio('audio/boss-attack.mp3')
+    bossAttack = new Audio('audio/boss-attack.mp3');
+    jumpOnEnemySound = new Audio('audio/jump-on-enemy.mp3');
 
 
     constructor(canvas, keyboard) {
@@ -34,7 +36,6 @@ class World {
         this.draw();
         this.setworld();
         this.run();
-        this.runFasterChecks();
         }
 
     setworld() {
@@ -42,24 +43,18 @@ class World {
     }
 
     run() {
-        setInterval(() => {
-        this.checkCollisions();
-        this.checkThrowObjects();
-        }, 200);
-    }
+        this.setStoppableInterval(() => this.checkJumpOnEnemie(), 10);
+        this.setStoppableInterval(() => this.checkColectables(), 10);
+        this.setStoppableInterval(() => this.checkCollisions(), 200);
+        this.setStoppableInterval(() => this.checkThrowObjects(), 200);
 
-    runFasterChecks() {
-        setInterval(() => {
-            this.checkJumpOnEnemie();
-            this.checkColectables();
-            }, 10);
-    } 
+    }
 
     setStoppableInterval(fn, time) {
         let id = setInterval(fn, time);
-        intervalIDs.push(id);
+        this.intervalIDs.push(id);
     }
- 
+
     checkThrowObjects() {
         if(this.keyboard.D) {
             if (this.character.colectedBottles > 0) {
@@ -86,7 +81,8 @@ class World {
                 enemy.energy -= 100;
                     if (enemy.energy < 1) {
                         setTimeout(() => this.spliceEnemy(enemy), 500);
-                    } 
+                    }
+                    this.playSoundEffect(this.jumpOnEnemySound);
                     this.character.speedY = 30;
                     this.character.isAboveGround();
             }}
@@ -106,11 +102,13 @@ class World {
         setInterval(() => { 
             this.level.enemies.forEach((enemy) => {
                 if (bottle.isColliding(enemy)) {
-                    enemy.energy -= 100;
                     this.playSoundEffect(this.demageSound)
                     if (enemy.type === 'boss') {
+                        enemy.energy -= 20;
+                        this.statusBarBoss.setPercentage(enemy.energy);
                         enemy.isDemage();
                     } else {
+                    enemy.energy -= 100;
                     setTimeout(() => this.spliceEnemy(enemy), 500);
                     }
                 }});
@@ -138,7 +136,10 @@ class World {
                     if (colectables.type === 'coin') {
                         this.character.CoinBag += 5;
                         this.statusBarCoin.setPercentage(this.character.CoinBag);
-                        this.playSoundEffect(this.colectCoin);
+                        this.playSoundEffect(this.colectCoin);7
+                    }
+                    if (!this.checkRemainingBottles()) {
+                        this.setNewBottles();
                     }
             }});
     }
@@ -148,6 +149,16 @@ class World {
         if (index > -1) {
         this.level.colectables.splice(index, 1);
         } 
+    }
+
+    checkRemainingBottles() {
+        return this.level.colectables.some(obj => obj.type === 'bottle');
+    }
+
+    setNewBottles() {
+        this.level.colectables.push(new Bottle());
+        this.level.colectables.push(new Bottle());
+        this.level.colectables.push(new Bottle());
     }
 
     playSoundEffect(sound) {
@@ -175,6 +186,8 @@ class World {
         this.addToMap(this.statusBarHealt);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
+        this.addToMap(this.statusBarBoss);
+
         this.ctx.translate(this.camera_x, 0);
 
         this.addToMap(this.character);  
