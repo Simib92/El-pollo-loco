@@ -13,6 +13,7 @@ class World {
     statusBarCoin = new StatusbarCoin();
     statusBarBottle = new StatusbarBottle();
     statusBarBoss = new StatusbarHealtEndboss();
+    endDisplay = new EndDisplay();
     colectables = new Colectables();
     colectables_bottle = new Bottle();
     colectables_coin = new Coin();
@@ -47,7 +48,6 @@ class World {
         this.setStoppableInterval(() => this.checkColectables(), 10);
         this.setStoppableInterval(() => this.checkCollisions(), 200);
         this.setStoppableInterval(() => this.checkThrowObjects(), 200);
-
     }
 
     setStoppableInterval(fn, time) {
@@ -55,7 +55,11 @@ class World {
         this.intervalIDs.push(id);
     }
 
-    checkThrowObjects() {
+    stopIntervals() {
+        this.intervalIDs.forEach(clearInterval);
+    }
+
+    checkThrowObjects() {        
         if(this.keyboard.D) {
             if (this.character.colectedBottles > 0) {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
@@ -102,6 +106,7 @@ class World {
         setInterval(() => { 
             this.level.enemies.forEach((enemy) => {
                 if (bottle.isColliding(enemy)) {
+                    bottle.splashBottle();
                     this.playSoundEffect(this.demageSound)
                     if (enemy.type === 'boss') {
                         enemy.energy -= 20;
@@ -168,12 +173,15 @@ class World {
 
     levelEndAnimation() {
         console.log('you win!!');
+        this.endDisplay.winAnimation();
+        this.stopIntervals();
     }
 
     loseGame() {
         console.log('you lose!!');
+        this.endDisplay.loseAnimation();
+        this.stopIntervals();
     }
-
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -187,6 +195,7 @@ class World {
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
         this.addToMap(this.statusBarBoss);
+        //this.addToMap(this.endDisplay);
 
         this.ctx.translate(this.camera_x, 0);
 
