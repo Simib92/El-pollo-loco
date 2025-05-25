@@ -8,7 +8,7 @@ class Endboss extends MovableObject{
     endbossAttack = 0;
     type = 'boss';
     isHit = false;
-
+    IntervalID = '';
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -60,13 +60,11 @@ class Endboss extends MovableObject{
         this.loadImages(this.IMAGES_DEAD);
 
         this.x = 15000;
-        this.animate();
+        this.setStoppableInterval(() => this.animate(), 200);
     }
 
-    animate() {
-        setInterval(() => {
+        animate() {
             if (this.energy > 1) {
-            
                 if (!this.startAnimation && world.character.x <= 14700) {
                     this.playAnimation(this.IMAGES_ALERT);
                 }
@@ -88,15 +86,14 @@ class Endboss extends MovableObject{
             }} else {
                 this.playAnimation(this.IMAGES_DEAD);
                 world.levelEndAnimation();
+                this.endbossAttack = 0;
             }
-        }, 200);
-
-        setInterval(() => {
             if (this.isHit) {
                 this.playAnimation(this.IMAGES_HURT);
             }
-        }, 200)
-    }
+        }
+        
+    
 
     resetAttck() {
         this.endbossAttack = 0;

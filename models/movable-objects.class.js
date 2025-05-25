@@ -78,7 +78,6 @@ class MovableObject extends DrawableObject {
  
     isDead() {
         return this.energy == 0;
-        setTimeout()
     }
 
     colectBottles() {
@@ -103,7 +102,6 @@ isColliding (obj) {
  
     jump() {
         this.speedY = 20;
-        
     }
 }
 

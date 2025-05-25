@@ -19,6 +19,9 @@ class World {
     colectables_coin = new Coin();
     throwableObjects = [];
     intervalIDs = [];
+    gameEnd = false;
+    gameIsRun = false;
+    drawIntervalID = [];
 
     jumpSound = new Audio('audio/cartoon-jump-6462.mp3');
     colectCoin = new Audio('audio/collect_coin.mp3');
@@ -37,7 +40,8 @@ class World {
         this.draw();
         this.setworld();
         this.run();
-        }
+        this.gameEnd = false;
+    }
 
     setworld() {
         this.character.world = this;
@@ -48,6 +52,7 @@ class World {
         this.setStoppableInterval(() => this.checkColectables(), 10);
         this.setStoppableInterval(() => this.checkCollisions(), 200);
         this.setStoppableInterval(() => this.checkThrowObjects(), 200);
+        //this.setStoppableInterval(() => this.checkColectablesOutsideLevel(), 200);
     }
 
     setStoppableInterval(fn, time) {
@@ -65,10 +70,10 @@ class World {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
             this.playSoundEffect(this.throwSound);
-            this.checkDemage(bottle);
+            this.setStoppableInterval(() => this.checkDemage(bottle), 50);
             this.statusBarBottle.setPercentage(this.character.colectedBottles)
-            setTimeout(() => this.spliceThrowableObjects(bottle), 3000);
-            this.character.colectedBottles -= 5;
+            setTimeout(() => this.spliceThrowableObjects(bottle), 1500);
+            this.character.colectedBottles -= 20;
         }
         }
     }
@@ -103,9 +108,8 @@ class World {
     }
 
     checkDemage(bottle) {
-        setInterval(() => { 
             this.level.enemies.forEach((enemy) => {
-                if (bottle.isColliding(enemy)) {
+                if (bottle.isColliding(enemy) && !bottle.isBroke) {
                     bottle.splashBottle();
                     this.playSoundEffect(this.demageSound)
                     if (enemy.type === 'boss') {
@@ -116,8 +120,8 @@ class World {
                     enemy.energy -= 100;
                     setTimeout(() => this.spliceEnemy(enemy), 500);
                     }
+                    bottle.isBroke = true;
                 }});
-            }, 50); 
     } 
  
     spliceEnemy(enemy) {
@@ -134,14 +138,14 @@ class World {
                 if (this.character.isColliding(colectables)) {
                     this.spliceColectable(colectables);
                     if (colectables.type === 'bottle') {
-                        this.character.colectedBottles += 5;
+                        this.character.colectedBottles += 20;
                         this.statusBarBottle.setPercentage(this.character.colectedBottles);
                         this.playSoundEffect(this.colectBottle);
                     }
                     if (colectables.type === 'coin') {
                         this.character.CoinBag += 5;
                         this.statusBarCoin.setPercentage(this.character.CoinBag);
-                        this.playSoundEffect(this.colectCoin);7
+                        this.playSoundEffect(this.colectCoin);
                     }
                     if (!this.checkRemainingBottles()) {
                         this.setNewBottles();
@@ -164,6 +168,7 @@ class World {
         this.level.colectables.push(new Bottle());
         this.level.colectables.push(new Bottle());
         this.level.colectables.push(new Bottle());
+        this.level.colectables.push(new Bottle());
     }
 
     playSoundEffect(sound) {
@@ -172,38 +177,49 @@ class World {
     }
 
     levelEndAnimation() {
-        console.log('you win!!');
+        this.gameEnd = true;
         this.endDisplay.winAnimation();
         this.stopIntervals();
+        this.enemies = [];
+        this.colectables = [];
     }
 
     loseGame() {
-        console.log('you lose!!');
+        this.gameEnd = true;
         this.endDisplay.loseAnimation();
         this.stopIntervals();
+        this.enemies = [];
+        this.colectables = [];
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
+        
         this.addObjectToMap(this.level.backgroundObjects);
+        this.addObjectToMap(this.level.clouds);
+        this.addObjectToMap(this.level.enemies);
 
         this.ctx.translate(-this.camera_x, 0);
+        
         //space for fixed objects.
         this.addToMap(this.statusBarHealt);
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
-        this.addToMap(this.statusBarBoss);
-        //this.addToMap(this.endDisplay);
+        if (this.endboss.startAnimation) {
+            this.addToMap(this.statusBarBoss);
+        }
+        if (this.gameEnd) {
+            this.addToMap(this.endDisplay);
+        }
 
         this.ctx.translate(this.camera_x, 0);
 
         this.addToMap(this.character);  
-        this.addObjectToMap(this.level.clouds);
-        this.addObjectToMap(this.level.enemies);
         this.addObjectToMap(this.throwableObjects);
         this.addObjectToMap(this.level.colectables);
+        
         this.ctx.translate(-this.camera_x, 0);
 
         // Draw() wird immer wieder aufgerufen

@@ -10,7 +10,24 @@ class DrawableObject {
     frameY;
     frameWidth;
     frameHeight;
+    drawIntervalID = [];
 
+    setStoppableInterval(fn, time) {
+        let id = setInterval(fn, time);
+        this.drawIntervalID.push(id);
+        console.log(this.drawIntervalID);
+        //return this.IntervalID = id;
+    }
+
+    stopIntervals() {
+        this.drawIntervalID.forEach(clearInterval);
+        console.log('interval ist gelöscht' + this.drawIntervalID);
+        
+    }
+
+    stopAllIntervals() {
+        drawIntervalID.forEach(clearInterval);
+    }
     
     loadImage(path) {
         this.img = new Image();
@@ -24,7 +41,7 @@ class DrawableObject {
     drawFrame(ctx) {
         if (this instanceof Chicken || this instanceof SmallChicken || this instanceof ThrowableObject ) {
             ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
+            ctx.strokeStyle = 'transparent';
             ctx.beginPath();
             ctx.rect(this.x + 15, this.y + 15, this.width - 30, this.height - 30);
             ctx.stroke();
@@ -35,9 +52,9 @@ class DrawableObject {
         }
         if ( this instanceof Endboss) {
             ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
+            ctx.strokeStyle = 'transparent';
             ctx.beginPath();
-            ctx.rect(this.x + 15, this.y + 80, this.width - 30, this.height - 90);
+            ctx.rect(this.x + 50, this.y + 80, this.width - 60, this.height - 90);
             ctx.stroke();
             this.frameX = this.x + 15;
             this.frameY = this.y + 80;
@@ -46,7 +63,7 @@ class DrawableObject {
         }
         if (this instanceof Character) {
             ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
+            ctx.strokeStyle = 'transparent';
             ctx.beginPath();
             ctx.rect(this.x + 20, this.y + 110, this.width - 40, this.height - 120);
             ctx.stroke();
@@ -57,7 +74,7 @@ class DrawableObject {
         }
         if (this instanceof Colectables) {
             ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
+            ctx.strokeStyle = 'transparent';
             ctx.beginPath();
             ctx.rect(this.x + 40, this.y + 40, this.width - 80, this.height - 80);
             ctx.stroke(); 

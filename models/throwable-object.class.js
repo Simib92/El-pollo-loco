@@ -17,6 +17,7 @@ IMAGES_SPLASH = [
 ];
 
 isBroke = false;
+throwInterval;
 
 constructor(x, y) {
     super().loadImage('img/6_salsa_bottle/salsa_bottle.png');
@@ -27,33 +28,52 @@ constructor(x, y) {
     this.height = 100;
     this.width = 60;
     this.trow();
+    this.setStoppableInterval(() => this.animate(), 40)
+    /*this.trow();
+    this.animate();*/
 }
 
 trow() {
     this.speedY = 30;
     this.applyGravity();
-    setInterval(() => {
-        this.animate();
+    /*this.trwoInterval = */this.setStoppableInterval(() => this.bottleFly(), 40)
+}
+
+bottleFly() {
+    this.x += 6;
+}
+
+animate() {
+    if (!this.isBroke) {
+       this.playAnimation(this.IMAGES_ROTATION);           
+    } else {
+        clearInterval(this.throwInterval);
+        this.playAnimation(this.IMAGES_SPLASH);           
+    }
+}
+/*
+trow() {
+    this.speedY = 30;
+    this.applyGravity();
+    this.throwInterval = setInterval(() => {
         this.x += 6;
     }, 40)
 }
 
 animate() {
-    setInterval(() => { if (this.speedY > 0) {
-                    this.playAnimation(this.IMAGES_ROTATION);           
-                    } else {this.playAnimation(this.IMAGES_ROTATION);           
-    }
-    }, 20);
+    setInterval(() => { if (!this.isBroke) {
+                            this.playAnimation(this.IMAGES_ROTATION);           
+                        } else {
+                            clearInterval(this.throwInterval);
+                            this.playAnimation(this.IMAGES_SPLASH);           
+                        }
+    }, 40);
 }
+*/
 
 splashBottle() {
     this.isBroke = true;
     this.speedY = 0;
     this.acceleration = 0;
-    this.x -= 6;
-}
-
-iscrash() {
-    return this.y > 270;
 }
 }
