@@ -2,6 +2,11 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let fullscreenActivation = false;
+let moveLeft = document.getElementById('move-left');
+let moveRight = document.getElementById('move-right');
+let jump = document.getElementById('jump');
+let shoot = document.getElementById('shoot');
+
 
 function restartGame() {
     if (world) {
@@ -115,4 +120,37 @@ window.addEventListener('keyup', (e) => {
     if(e.keyCode == 68) {
         keyboard.D = false;
     }
+});
+
+moveLeft.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = true;
+});
+moveLeft.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = false;
+});
+moveRight.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = true;
+});
+moveRight.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = false;
+});
+jump.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = true;
+});
+jump.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = false;
+});
+shoot.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = true;
+});
+shoot.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keyboard.LEFT = false;
 });

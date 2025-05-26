@@ -31,8 +31,16 @@
   </head>
 
   <body onload="">
+
+    <div class="button-bar">
+      <img id="move-left" class="play-buttons" src="img/playicons/move-left.png" alt="">
+      <img id="move-right" class="play-buttons" src="img/playicons/move-right.png" alt="">
+      <img id="jump" class="play-buttons" src="img/playicons/jump.png" alt="">
+      <img id="shoot" class="play-buttons" src="img/playicons/shoot.png" alt="">
+    </div>
+
     <h1>El Pollo Loco</h1>
-    <button onclick="fullscreen()">fullscreen</button>
+    <button class="fullscreen-button" onclick="fullscreen()">fullscreen</button>
       <img id="intro-img" class="intro-img" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="">
     <div id="fullscreen" class="canvas-wrapper">
       <canvas class="display_none" id="canvas" width="720" height="480">
