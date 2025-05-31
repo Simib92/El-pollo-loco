@@ -182,6 +182,7 @@ class World {
         this.stopIntervals();
         this.enemies = [];
         this.colectables = [];
+        setTimeout(() => stopGame(), 3000);
     }
 
     loseGame() {
@@ -190,6 +191,7 @@ class World {
         this.stopIntervals();
         this.enemies = [];
         this.colectables = [];
+        setTimeout(() => stopGame(), 3000);
     }
 
     draw() {
