@@ -66,9 +66,8 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_SLEEP);
         //this.animate();
         this.applyGravity();
-        this.setStoppableInterval(() => this.animate(), 1000 / 60);
-        this.setStoppableInterval(() => this.animateImges(), 50);
-
+        setStoppableInterval(() => this.animate(), 1000 / 60);
+        setStoppableInterval(() => this.animateImges(), 50);
     }
 
     animate() {

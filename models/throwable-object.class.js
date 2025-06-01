@@ -28,7 +28,7 @@ constructor(x, y) {
     this.height = 100;
     this.width = 60;
     this.trow();
-    this.setStoppableInterval(() => this.animate(), 40)
+    setStoppableInterval(() => this.animate(), 40)
     /*this.trow();
     this.animate();*/
 }
@@ -36,7 +36,7 @@ constructor(x, y) {
 trow() {
     this.speedY = 30;
     this.applyGravity();
-    /*this.trwoInterval = */this.setStoppableInterval(() => this.bottleFly(), 40)
+    /*this.trwoInterval = */setStoppableInterval(() => this.bottleFly(), 40)
 }
 
 bottleFly() {

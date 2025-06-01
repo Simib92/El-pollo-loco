@@ -7,17 +7,9 @@ let moveRight = document.getElementById('move-right');
 let jump = document.getElementById('jump');
 let shoot = document.getElementById('shoot');
 let soundOn = true;
+let intervalIDs = [];
 
 function restartGame() {
-    
-    let canvas = document.getElementById('canvas');
-    let ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      if (world && world.gameEnd) {
-        world.gameEnd = false;
-        world = null;
-    }
     //character = new Character();
     //character.energy = 100;
     initLevel();
@@ -36,7 +28,27 @@ function stopGame() {
     document.getElementById('intro-img').classList.remove('display_none');
     document.getElementById('canvas').classList.add('display_none');
     document.getElementById('start-button').classList.remove('display_none');
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (world && world.gameEnd) {
+        world.gameEnd = false;
+        world = null;
+    }
 }
+
+function setStoppableInterval(fn, time) {
+        let id = setInterval(fn, time);
+        intervalIDs.push(id);
+    }
+
+
+
+function stopIntervals() {
+        intervalIDs.forEach(clearInterval);
+        intervalIDs = [];
+    }
 
 /*
 function init() {

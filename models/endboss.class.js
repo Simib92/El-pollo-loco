@@ -60,7 +60,7 @@ class Endboss extends MovableObject{
         this.loadImages(this.IMAGES_DEAD);
 
         this.x = 15000;
-        this.setStoppableInterval(() => this.animate(), 200);
+        setStoppableInterval(() => this.animate(), 200);
     }
 
         animate() {
@@ -87,7 +87,7 @@ class Endboss extends MovableObject{
                 this.playAnimation(this.IMAGES_DEAD);
                 world.levelEndAnimation();
                 this.endbossAttack = 0;
-                setTimeout(() => this.stopIntervals(), 2000)
+                //setTimeout(() => this.stopIntervals(), 2000)
             }
             if (this.isHit) {
                 this.playAnimation(this.IMAGES_HURT);

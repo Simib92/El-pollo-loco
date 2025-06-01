@@ -12,7 +12,7 @@ class Bottle extends Colectables {
             this.loadImages(this.IMAGES_BOTTLE);
             this.x = 200 + Math.random() * 15000;
             //this.animate();
-            this.setStoppableInterval(() => this.animate(), 500);
+            setStoppableInterval(() => this.animate(), 500);
         }
         
         animate() {

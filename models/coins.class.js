@@ -15,7 +15,7 @@ class Coin extends Colectables {
             this.x = 200 + Math.random() * 15000;
             this.y = 330 + Math.random() * -300;
             //this.animate();
-            this.setStoppableInterval(() => this.animate(), 500);
+            setStoppableInterval(() => this.animate(), 500);
             }
         
          animate() {

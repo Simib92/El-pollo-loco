@@ -49,21 +49,21 @@ class World {
     }
 
     run() {
-        this.setStoppableInterval(() => this.checkJumpOnEnemie(), 10);
-        this.setStoppableInterval(() => this.checkColectables(), 10);
-        this.setStoppableInterval(() => this.checkCollisions(), 200);
-        this.setStoppableInterval(() => this.checkThrowObjects(), 200);
+        setStoppableInterval(() => this.checkJumpOnEnemie(), 10);
+        setStoppableInterval(() => this.checkColectables(), 10);
+        setStoppableInterval(() => this.checkCollisions(), 200);
+        setStoppableInterval(() => this.checkThrowObjects(), 200);
         //this.setStoppableInterval(() => this.checkColectablesOutsideLevel(), 200);
     }
 
-    setStoppableInterval(fn, time) {
+    /*setStoppableInterval(fn, time) {
         let id = setInterval(fn, time);
         this.intervalIDs.push(id);
     }
 
     stopIntervals() {
         this.intervalIDs.forEach(clearInterval);
-    }
+    }*/
 
     checkThrowObjects() {        
         if(this.keyboard.D) {
@@ -71,7 +71,7 @@ class World {
             let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(bottle);
             this.playSoundEffect(this.throwSound);
-            this.setStoppableInterval(() => this.checkDemage(bottle), 50);
+            setStoppableInterval(() => this.checkDemage(bottle), 50);
             this.statusBarBottle.setPercentage(this.character.colectedBottles)
             setTimeout(() => this.spliceThrowableObjects(bottle), 1500);
             this.character.colectedBottles -= 20;
@@ -183,24 +183,24 @@ class World {
     levelEndAnimation() {
         this.gameEnd = true;
         this.endDisplay.winAnimation();
-        this.stopIntervals();
-        this.level.enemies.forEach(enemy => {enemy.stopIntervals()});
-        this.level.colectables.forEach(colectable => {colectable.stopIntervals()});
+        stopIntervals();
+        //this.level.enemies.forEach(enemy => {enemy.stopIntervals()});
+        //this.level.colectables.forEach(colectable => {colectable.stopIntervals()});
         this.level.enemies = [];
         this.level.colectables = [];
-        this.character.stopIntervals();
+        //this.character.stopIntervals();
         setTimeout(() => stopGame(), 3000);
     }
 
     loseGame() {
         this.gameEnd = true;
         this.endDisplay.loseAnimation();
-        this.stopIntervals();
-        this.level.enemies.forEach(enemy => {enemy.stopIntervals()});
-        this.level.colectables.forEach(colectable => {colectable.stopIntervals()});
+        stopIntervals();
+        //this.level.enemies.forEach(enemy => {enemy.stopIntervals()});
+        //this.level.colectables.forEach(colectable => {colectable.stopIntervals()});
         this.level.enemies = [];
         this.level.colectables = [];
-        this.character.stopIntervals();
+        //this.character.stopIntervals();
         setTimeout(() => stopGame(), 3000);
     }
 
