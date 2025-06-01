@@ -6,7 +6,7 @@ let moveLeft = document.getElementById('move-left');
 let moveRight = document.getElementById('move-right');
 let jump = document.getElementById('jump');
 let shoot = document.getElementById('shoot');
-
+let soundOn = true;
 
 function restartGame() {
     
@@ -14,10 +14,12 @@ function restartGame() {
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (world) {
-        world.stopIntervals();
+      if (world && world.gameEnd) {
+        world.gameEnd = false;
         world = null;
     }
+    //character = new Character();
+    //character.energy = 100;
     initLevel();
     startGame();
 }
@@ -26,7 +28,7 @@ function startGame() {
     document.getElementById('intro-img').classList.add('display_none');
     document.getElementById('canvas').classList.remove('display_none');
     document.getElementById('start-button').classList.add('display_none');
-    canvas = document.getElementById('canvas')
+    canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);    
 }
 
@@ -41,6 +43,19 @@ function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);    
 }*/
+
+function soundOfforOn() {
+    let button = document.getElementById('mute');
+    if (soundOn) {
+        button.innerHTML = /*html*/`
+        <img src="img/playicons/mute.png" alt="">`;
+    soundOn = false;
+    } else {
+        button.innerHTML = /*html*/`
+        <img src="img/playicons/sound.png" alt="">`;
+    soundOn = true;
+    }
+}
 
 function fullscreen() {
     let fullscreen = document.getElementById('fullscreen');

@@ -12,21 +12,20 @@ class DrawableObject {
     frameHeight;
     drawIntervalID = [];
 
-    setStoppableInterval(fn, time) {
-        let id = setInterval(fn, time);
+     setStoppableInterval(fn, time) {
+        const id = setInterval(fn, time);
         this.drawIntervalID.push(id);
-        console.log(this.drawIntervalID);
-        //return this.IntervalID = id;
+        console.log('Neuer Intervall:', id);
     }
 
     stopIntervals() {
         this.drawIntervalID.forEach(clearInterval);
-        console.log('interval ist gelöscht' + this.drawIntervalID);
-        
+        console.log('Intervalle gestoppt:', this.drawIntervalID);
+        this.drawIntervalID = [];
     }
 
     stopAllIntervals() {
-        drawIntervalID.forEach(clearInterval);
+        this.stopIntervals();
     }
     
     loadImage(path) {

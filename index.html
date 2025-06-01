@@ -43,13 +43,16 @@
 
     <div id="fullscreen" class="canvas-wrapper">
       <img id="intro-img" class="intro-img" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="">
-      
-      <button id="start-button" onclick="restartGame()" class="start-button">Start</button>
+      <div onclick="soundOfforOn()" id="mute" class="mute-button">
+        <img  src="img/playicons/sound.png" alt="">
+      </div>
+
+      <img id="start-button" onclick="restartGame()" class="start-button" src="img/playicons/play.png" alt="">
       
       <canvas class="display_none" id="canvas" width="720" height="480">
       </canvas>
 
-      <button class="fullscreen-button" onclick="fullscreen()">full</button>
+      <img class="fullscreen-button" onclick="fullscreen()" src="img/playicons/fullscreen.png" alt="">
     </div>
 
 

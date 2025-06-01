@@ -36,38 +36,41 @@ canvas {
     justify-content: space-between;
 }
 
-.start-button {
+.start-button, .fullscreen-button, .mute-button {
     position: absolute;
+    z-index: 1;
+    cursor: pointer;
+    border: none;
+}
+
+.start-button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1;
-    font-size: 24px;
     background-color: rgba(0,0,0,0.1);
-    border: none;
     border-radius: 32px;
-    height: 64px;
-    width: 200px;
-    cursor: pointer;
+    height: 128px;
+    width: 128px;
 }
 
 .fullscreen-button {
-    position: absolute;
     bottom: 0;
     right: 0;
-    z-index: 1;
     font-size: 24px;
-    background-color: rgba(0,0,0,0.1);
-    border: none;
     height: 48px;
     width: 48px;
-    cursor: pointer;
 }
 
-.start-button:hover, .fullscreen-button:hover {
+.mute-button {
+    top: 0;
+    right: 0;
+    font-size: 24px;
+    height: 48px;
+    width: 48px;
+}
+
+.fullscreen-button:hover, .start-button:hover, .mute-button:hover {
     background-color: rgba(0,0,0,0.2);
-    border: solid 1px white;
-    color:white;
 }
 
 .discription {
