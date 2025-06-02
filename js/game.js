@@ -156,35 +156,35 @@ window.addEventListener('keyup', (e) => {
     }
 });
 
-moveLeft.addEventListener('touchstart', (e) => {
+document.getElementById('move-left').addEventListener('touchstart', (e) => {
     e.preventDefault();
     keyboard.LEFT = true;
 });
-moveLeft.addEventListener('touchend', (e) => {
+document.getElementById('move-left').addEventListener('touchend', (e) => {
     e.preventDefault();
     keyboard.LEFT = false;
 });
-moveRight.addEventListener('touchstart', (e) => {
+document.getElementById('move-right').addEventListener('touchstart', (e) => {
     e.preventDefault();
     keyboard.RIGHT = true;
 });
-moveRight.addEventListener('touchend', (e) => {
+document.getElementById('move-right').addEventListener('touchend', (e) => {
     e.preventDefault();
     keyboard.RIGHT = false;
 });
-jump.addEventListener('touchstart', (e) => {
+document.getElementById('jump').addEventListener('touchstart', (e) => {
     e.preventDefault();
     keyboard.SPACE = true;
 });
-jump.addEventListener('touchend', (e) => {
+document.getElementById('jump').addEventListener('touchend', (e) => {
     e.preventDefault();
     keyboard.SPACE = false;
 });
-shoot.addEventListener('touchstart', (e) => {
+document.getElementById('shoot').addEventListener('touchstart', (e) => {
     e.preventDefault();
     keyboard.D = true;
 });
-shoot.addEventListener('touchend', (e) => {
+document.getElementById('shoot').addEventListener('touchend', (e) => {
     e.preventDefault();
     keyboard.D = false;
 });

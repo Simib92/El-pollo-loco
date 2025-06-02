@@ -1,7 +1,5 @@
 class World {
     character = new Character();
-    //chicken = new Chicken();
-    //smallChicken = new SmallChicken();
     endboss = new Endboss();
     level = level1;
     canvas;
@@ -14,9 +12,6 @@ class World {
     statusBarBottle = new StatusbarBottle();
     statusBarBoss = new StatusbarHealtEndboss();
     endDisplay = new EndDisplay();
-    //colectables = new Colectables();
-    //colectables_bottle = new Bottle();
-    //colectables_coin = new Coin();
     throwableObjects = [];
     intervalIDs = [];
     gameEnd = false;
@@ -41,7 +36,7 @@ class World {
         this.setworld();
         this.run();
         this.gameEnd = false;
-        this.character.energy = 100;
+        //this.character.energy = 100;
     }
 
     setworld() {
@@ -53,17 +48,7 @@ class World {
         setStoppableInterval(() => this.checkColectables(), 10);
         setStoppableInterval(() => this.checkCollisions(), 200);
         setStoppableInterval(() => this.checkThrowObjects(), 200);
-        //this.setStoppableInterval(() => this.checkColectablesOutsideLevel(), 200);
     }
-
-    /*setStoppableInterval(fn, time) {
-        let id = setInterval(fn, time);
-        this.intervalIDs.push(id);
-    }
-
-    stopIntervals() {
-        this.intervalIDs.forEach(clearInterval);
-    }*/
 
     checkThrowObjects() {        
         if(this.keyboard.D) {
@@ -177,18 +162,14 @@ class World {
             sound.currentTime = 0;
             sound.play();  
         }
-        
     }
 
     levelEndAnimation() {
         this.gameEnd = true;
         this.endDisplay.winAnimation();
         stopIntervals();
-        //this.level.enemies.forEach(enemy => {enemy.stopIntervals()});
-        //this.level.colectables.forEach(colectable => {colectable.stopIntervals()});
         this.level.enemies = [];
         this.level.colectables = [];
-        //this.character.stopIntervals();
         setTimeout(() => stopGame(), 3000);
     }
 
@@ -196,11 +177,8 @@ class World {
         this.gameEnd = true;
         this.endDisplay.loseAnimation();
         stopIntervals();
-        //this.level.enemies.forEach(enemy => {enemy.stopIntervals()});
-        //this.level.colectables.forEach(colectable => {colectable.stopIntervals()});
         this.level.enemies = [];
         this.level.colectables = [];
-        //this.character.stopIntervals();
         setTimeout(() => stopGame(), 3000);
     }
 

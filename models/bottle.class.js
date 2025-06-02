@@ -13,9 +13,19 @@ class Bottle extends Colectables {
             this.x = 200 + Math.random() * 15000;
             //this.animate();
             setStoppableInterval(() => this.animate(), 500);
+            setStoppableInterval(() => this.checkIfBottleIsInMap(), 500);
         }
         
         animate() {
                 this.playAnimation(this.IMAGES_BOTTLE);
+        }
+
+        checkIfBottleIsInMap() {
+            if (this.x > world.level_end_x) {
+                this.spliceColectable(this);
+                console.log('bottle entfernt');
+                checkRemainingBottles();
+            }
+            
         }
 }
