@@ -86,23 +86,28 @@ class Character extends MovableObject {
                 this.world.playSoundEffect(this.world.jumpSound);
             }
 
-            if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.SPACE || this.world.keyboard.D) {
-                if (this.sleepPepe) {
-                    clearInterval(this.sleepInterval); // Schlaf-Animation stoppen
+            if (this.isCharacterNotMove()) {
+                this.characterGetSleep();
+            }
+        };
+
+        isCharacterNotMove() {
+            return this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.SPACE || this.world.keyboard.D
+        }
+
+        characterGetSleep() {
+            if (this.sleepPepe) {
+                    clearInterval(this.sleepInterval);
                     this.sleepInterval = null;
                 }
                 this.sleepPepe = false;
-            
-                clearTimeout(this.sleepTimeout); // Bereits gestarteten "einschlafen"-Timeout abbrechen
-            
-                // Neuen Sleep-Timeout setzen
+                clearTimeout(this.sleepTimeout);
                 this.sleepTimeout = setTimeout(() => {
                     if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.SPACE && !this.world.keyboard.D) {
                         this.sleepPepe = true;
                         this.sleep();
                     }
                 }, 5000);
-            }
         };
 
         
@@ -121,16 +126,16 @@ class Character extends MovableObject {
             }
             }
        
-    }
+    };
 
     jump() {
         this.speedY = 30;
-    }
+    };
 
     sleep() {
         if (this.sleepInterval) return;
         this.sleepInterval = setInterval(() => {
         this.playAnimation(this.IMAGES_SLEEP);   
         }, 1000);
-    }
+    };
 }

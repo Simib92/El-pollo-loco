@@ -1,24 +1,21 @@
 class Coin extends Colectables {
-    height = 120;
-    width = 120;
-    y = 330;
-    type = 'coin';
-    
-    IMAGES_COIN = [
-        'img/8_coin/coin_1.png',
-        'img/8_coin/coin_2.png'
-    ]
+  height = 120;
+  width = 120;
+  y = 330;
+  type = "coin";
 
-    constructor() {
-            super().loadImage('img/8_coin/coin_1.png');
-            this.loadImages(this.IMAGES_COIN);
-            this.x = 200 + Math.random() * 15000;
-            this.y = 330 + Math.random() * -300;
-            //this.animate();
-            setStoppableInterval(() => this.animate(), 500);
-            }
-        
-         animate() {
-                this.playAnimation(this.IMAGES_COIN);
-        }
+  IMAGES_COIN = ["img/8_coin/coin_1.png", "img/8_coin/coin_2.png"];
+
+  constructor() {
+    super().loadImage("img/8_coin/coin_1.png");
+    this.loadImages(this.IMAGES_COIN);
+    this.x = 200 + Math.random() * 15000;
+    this.y = 330 + Math.random() * -300;
+    //this.animate();
+    setStoppableInterval(() => this.animate(), 500);
+  }
+
+  animate() {
+    this.playAnimation(this.IMAGES_COIN);
+  }
 }

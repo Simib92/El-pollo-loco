@@ -85,9 +85,9 @@ class Endboss extends MovableObject{
                     setTimeout(() => this.resetAttck(), 3000)
             }} else {
                 this.playAnimation(this.IMAGES_DEAD);
-                world.levelEndAnimation();
                 this.endbossAttack = 0;
-                //setTimeout(() => this.stopIntervals(), 2000)
+                //world.levelEndAnimation();
+                setTimeout(() => world.levelEndAnimation(), 1000)
             }
             if (this.isHit) {
                 this.playAnimation(this.IMAGES_HURT);

@@ -17,9 +17,6 @@ body {
 canvas {
     background-color: black;
     display: block;
-    width: 100%;
-    max-width: 720px;
-    height: auto;
 }
 
 .canvas-wrapper {
@@ -123,8 +120,7 @@ canvas {
 
     .canvas-wrapper {
         position: relative;
-        width: 100vw;
-        height: auto;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -144,7 +140,7 @@ canvas {
         justify-content: space-around;
     }
 
-    h1, .discription-wrapper, .fullscreen-button  {
+    .fullscreen-button  {
         display: none;
     }
 }
@@ -157,7 +153,7 @@ canvas {
 }
 
 @media only screen and (max-height: 480px) {
-    canvas {
+    .canvas-wrapper, canvas {
         height: 100vh;
     }
 }
