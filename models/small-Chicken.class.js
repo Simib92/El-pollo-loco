@@ -21,7 +21,6 @@ class SmallChicken extends MovableObject {
         this.width = width;
         this.x = 400 + Math.random() * 16000;
         this.speed = 0.15 + Math.random() * 0.5;
-        //this.animate();
         setStoppableInterval(() => this.animateWalk(), 1000 / 60);
         setStoppableInterval(() => this.animateImg(), 200);
     }
@@ -38,24 +37,7 @@ class SmallChicken extends MovableObject {
         }
         else {
             this.playAnimation(this.IMAGES_DEAD);
-            //setTimeout(() => this.stopIntervals(), 2000)
         }
     }
 
-    /*animate() {
-        setInterval(() => {
-            if (this.energy > 1) {
-                this.moveLeft();
-            }
-        }, 1000 / 60);
-
-        setInterval(() => {
-                if (this.energy > 1) {
-                    this.playAnimation(this.IMAGES_WALKING);
-                }
-                else {
-                    this.playAnimation(this.IMAGES_DEAD);
-                }
-        }, 200);
-    }*/
 }

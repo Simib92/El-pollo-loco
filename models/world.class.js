@@ -44,7 +44,7 @@ class World {
   run() {
     setStoppableInterval(() => this.checkJumpOnEnemie(), 10);
     setStoppableInterval(() => this.checkColectables(), 10);
-    setStoppableInterval(() => this.checkCollisions(), 200);
+    setStoppableInterval(() => this.checkCollisions(), 20);
     setStoppableInterval(() => this.checkThrowObjects(), 200);
   }
 

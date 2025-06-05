@@ -29,14 +29,14 @@ constructor(x, y) {
     this.width = 60;
     this.trow();
     setStoppableInterval(() => this.animate(), 40)
-    /*this.trow();
-    this.animate();*/
 }
 
 trow() {
     this.speedY = 30;
-    this.applyGravity();
-    /*this.trwoInterval = */setStoppableInterval(() => this.bottleFly(), 40)
+    setStoppableInterval(() => this.applyGravity(),1000 / 25)
+    this.throwInterval = setInterval(() => {
+        this.bottleFly();
+    }, 40)
 }
 
 bottleFly() {

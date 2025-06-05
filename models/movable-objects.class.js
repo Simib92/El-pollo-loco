@@ -9,12 +9,10 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
 
     applyGravity() {
-        setInterval(() => {
-            if(this.isAboveGround() || this.speedY > 0) {
+        if(this.isAboveGround() || this.speedY > 0) {
             this.y -= this.speedY;
             this.speedY -= this.acceleration;
             }
-        }, 1000 / 25)
     }
 
     isAboveGround() {
@@ -32,6 +30,7 @@ class MovableObject extends DrawableObject {
             this.y < mo.y + mo.height
     }
 */
+
     isColliding(mo) {
         return this.frameX + this.frameWidth > mo.frameX &&
             this.frameY + this.frameHeight > mo.frameY &&
@@ -43,20 +42,18 @@ class MovableObject extends DrawableObject {
         const horizontallyAligned =
             this.x + this.width > enemy.x &&
             this.x < enemy.x + enemy.width;
-    
         const verticalFromAbove =
             this.y + this.height <= enemy.y + 15 && // kleine Toleranzzone
             this.y + this.height >= enemy.y;
-    
-    
         return horizontallyAligned && verticalFromAbove;
     }
 
     hit() {
-        this.energy -= 5;
+        if (!this.isHurt()) {
+          this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0;
-        } else {
+        }
             this.lastHit = new Date().getTime();
         }        
     }
