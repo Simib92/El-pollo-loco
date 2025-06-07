@@ -1,4 +1,10 @@
+@font-face {
+ font-family: 'FAMILY_NAME';
+ src: url('fonts/Lobster-Regular.ttf') format('truetype');
+}
+
 body {
+    font-family: 'FAMILY_NAME' !important;
     height: 100vh;
     display: flex;
     flex-direction: column;

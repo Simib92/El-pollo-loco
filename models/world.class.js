@@ -18,6 +18,7 @@ class World {
   gameIsRun = false;
   drawIntervalID = [];
 
+  backGroundMexico = new Audio("audio/soft-mexican-guitar-343137.mp3")
   jumpSound = new Audio("audio/cartoon-jump-6462.mp3");
   colectCoin = new Audio("audio/collect_coin.mp3");
   colectBottle = new Audio("audio/collect_bottle.mp3");
@@ -35,6 +36,7 @@ class World {
     this.setworld();
     this.run();
     this.gameEnd = false;
+
   }
 
   setworld() {
@@ -45,7 +47,14 @@ class World {
     setStoppableInterval(() => this.checkJumpOnEnemie(), 10);
     setStoppableInterval(() => this.checkColectables(), 10);
     setStoppableInterval(() => this.checkCollisions(), 20);
-    setStoppableInterval(() => this.checkThrowObjects(), 200);
+    this.backgroundMusic(this.backGroundMexico);
+  }
+
+  backgroundMusic(sound) {
+    if (soundOn) {
+      sound.currentTime = 0;
+      sound.play();
+    }
   }
 
   checkThrowObjects() {
@@ -188,6 +197,8 @@ class World {
   }
 
   setNewBottles() {
+    this.level.colectables.push(new Bottle());
+    this.level.colectables.push(new Bottle());
     this.level.colectables.push(new Bottle());
     this.level.colectables.push(new Bottle());
     this.level.colectables.push(new Bottle());

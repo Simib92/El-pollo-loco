@@ -10,8 +10,6 @@ let soundOn = true;
 let intervalIDs = [];
 
 function restartGame() {
-    //character = new Character();
-    //character.energy = 100;
     initLevel();
     startGame();
 }
@@ -31,7 +29,6 @@ function stopGame() {
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       if (world && world.gameEnd) {
         world.gameEnd = false;
         world = null;
@@ -49,12 +46,6 @@ function stopIntervals() {
         intervalIDs.forEach(clearInterval);
         intervalIDs = [];
     }
-
-/*
-function init() {
-    canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);    
-}*/
 
 function soundOfforOn() {
     let button = document.getElementById('mute');
