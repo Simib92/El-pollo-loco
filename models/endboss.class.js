@@ -85,14 +85,14 @@ class Endboss extends MovableObject {
 
   endbossAttackYou() {
     this.playAnimation(this.IMAGES_WALKING);
-    this.speed = 7;
+    this.speed = 15;
     this.moveLeft();
     this.endbossAttack += 4 + Math.random() * 7;
   }
 
   endbossSpecialAttack() {
     this.playAnimation(this.IMAGES_ATTACK);
-    this.speed = 20;
+    this.speed = 20 + Math.random() * 12;
     world.playSoundEffect(world.bossAttack);
     this.moveLeft();
     setTimeout(() => this.resetAttck(), 3000);

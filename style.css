@@ -34,7 +34,7 @@ canvas {
 }
 
 .discription-wrapper {
-  width: 720px;
+  max-width: 720px;
   display: flex;
   margin-top: 32px;
   align-items: center;
@@ -96,12 +96,21 @@ canvas {
   object-fit: cover;
 }
 
+.sound-img {
+    width: 48px;
+    height: 48px
+}
+
 .win_img {
   position: absolute;
   display: block;
   margin: auto;
   width: 720px;
   height: auto;
+}
+
+.info-button {
+  display: none;
 }
 
 .display_none {
@@ -125,6 +134,23 @@ canvas {
   border: solid 1px rgba(0, 0, 0, 0.5);
 }
 
+.rotate-display {
+    display: none;
+}
+
+@media (max-height: 700px) and (max-width: 500px) {
+    .rotate-display {
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
 @media only screen and (max-width: 720px) {
   .canvas-wrapper {
     position: relative;
@@ -132,6 +158,12 @@ canvas {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .discription-wrapper {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 16px;
   }
 
   canvas,
@@ -154,14 +186,13 @@ canvas {
   }
 }
 
-@media only screen and (max-height: 560px) {
-  h1,
-  .discription-wrapper,
-  .fullscreen-button {
+@media only screen and (max-height: 830px) {
+  .discription-wrapper {
     display: none;
   }
 
   .info-button {
+    display: block;
     position: absolute;
     top: 0;
     right: 48px;
@@ -175,11 +206,31 @@ canvas {
   .info-box-mobil {
     position: absolute;
     z-index: 1;
-    top: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 80vh;
     height: auto;
     background-color: rgba(0, 0, 0, 0.6);
     padding: 20px;
+  }
+  
+  .button-bar {
+    position: absolute;
+    bottom: 0;
+    width: 720px;
+    max-width: 100vw;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+}
+
+@media only screen and (max-height: 560px) {
+  h1,
+  .fullscreen-button {
+    display: none;
   }
 
 }

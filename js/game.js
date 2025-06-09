@@ -55,11 +55,11 @@ function soundOfforOn() {
     let button = document.getElementById('mute');
     if (soundOn) {
         button.innerHTML = /*html*/`
-        <img src="img/playicons/mute.png" alt="">`;
+        <img class="sound-img" src="img/playicons/mute.png" alt="">`;
     soundOn = false;
     } else {
         button.innerHTML = /*html*/`
-        <img src="img/playicons/sound.png" alt="">`;
+        <img class="sound-img" src="img/playicons/sound.png" alt="">`;
     soundOn = true;
     }
     if (world) {
