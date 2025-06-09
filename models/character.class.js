@@ -120,6 +120,7 @@ class Character extends MovableObject {
     if (this.sleepPepe) {
       clearInterval(this.sleepInterval);
       this.sleepInterval = null;
+      this.world.sleepSound.pause();
     }
     this.sleepPepe = false;
     clearTimeout(this.sleepTimeout);
@@ -132,6 +133,7 @@ class Character extends MovableObject {
       ) {
         this.sleepPepe = true;
         this.sleep();
+        this.world.playSoundEffect(this.world.sleepSound)
       }
     }, 5000);
   }

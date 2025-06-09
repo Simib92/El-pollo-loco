@@ -28,6 +28,7 @@ class World {
   demageSound = new Audio("audio/demage.mp3");
   bossAttack = new Audio("audio/boss-attack.mp3");
   jumpOnEnemySound = new Audio("audio/jump-on-enemy.mp3");
+  sleepSound = new Audio('audio/sleep.mp3');
   backgroundsound = this.backGroundMexico;
 
   constructor(canvas, keyboard) {
