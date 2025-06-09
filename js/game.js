@@ -40,12 +40,16 @@ function setStoppableInterval(fn, time) {
         intervalIDs.push(id);
     }
 
-
-
 function stopIntervals() {
         intervalIDs.forEach(clearInterval);
         intervalIDs = [];
     }
+
+function openInfo() {
+    let infoBox = document.getElementById('discription-box')
+    infoBox.classList.toggle('discription-wrapper');
+    infoBox.classList.toggle('info-box-mobil');
+}
 
 function soundOfforOn() {
     let button = document.getElementById('mute');

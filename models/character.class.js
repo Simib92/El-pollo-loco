@@ -69,20 +69,15 @@ class Character extends MovableObject {
   }
 
   animate() {
-    if (this.canMoveRight()) {
+    if (this.canMoveRight()) 
       this.characterMoveRight();
-    }
-    if (this.canMoveLeft()) {
+    if (this.canMoveLeft()) 
       this.characterMoveLeft();
-    }
     this.world.camera_x = +100 - this.x;
-
-    if (this.characterCanJump()) {
+    if (this.characterCanJump()) 
         this.characterJump();
-    }
-    if (this.isCharacterNotMove()) {
+    if (this.isCharacterNotMove()) 
       this.characterGetSleep();
-    }
   }
 
   canMoveRight() {

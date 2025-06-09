@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El Pollo Loco</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="img/6_salsa_bottle/salsa_bottle.png">
     <script src="models/drawable-objects.class.js"></script>
     <script src="models/end-display.class.js"></script>
     <script src="models/movable-objects.class.js"></script>
@@ -29,12 +30,8 @@
     <script src="levels/level1.js"></script>
   </head>
 
-  <body onload="">
-
-    
-
+  <body>
     <h1>El Pollo Loco</h1>
-
     <div id="fullscreen" class="canvas-wrapper">
       <img id="intro-img" class="intro-img" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="">
       <div onclick="soundOfforOn()" id="mute" class="mute-button">
@@ -45,25 +42,26 @@
       
       <canvas class="display_none" id="canvas" width="720" height="480">
       </canvas>
-
+      <img onclick="openInfo()" class="info-button" id="info" src="img/playicons/info.png" alt="">
       <img class="fullscreen-button" onclick="fullscreen()" src="img/playicons/fullscreen.png" alt="">
       <div class="button-bar">
-      <img id="move-left" class="play-buttons" src="img/playicons/move-left.png" alt="">
-      <img id="move-right" class="play-buttons" src="img/playicons/move-right.png" alt="">
-      <img id="shoot" class="play-buttons" src="img/playicons/shoot.png" alt="">
-      <img id="jump" class="play-buttons" src="img/playicons/jump.png" alt="">
-    </div>
+        <img id="move-left" class="play-buttons" src="img/playicons/move-left.png" alt="">
+        <img id="move-right" class="play-buttons" src="img/playicons/move-right.png" alt="">
+        <img id="shoot" class="play-buttons" src="img/playicons/shoot.png" alt="">
+        <img id="jump" class="play-buttons" src="img/playicons/jump.png" alt="">
+      </div>
     </div>
 
 
-    <div class="discription-wrapper">
-      <span class="discription"
-        ><b>how to play:</b> > = run right / < = left / space = jump / D = shot if
-        you collected bottles. <br>
+    <div id="discription-box" class="discription-wrapper">
+      <span class="discription">
+        <b>how to play:</b><br>
+         > = run right <br> < = left <br> space = jump <br> D = shot if
+        you collected bottles. <br><br>
         jumb on enemies to kill them or shot with bottles.
         Boss killing with multiple bottles.
-        lets kill the boss now..!!</span
-      >
+        lets kill the boss now..!!
+        </span>
     </div>
   </body>
       <script src="js/game.js"></script>

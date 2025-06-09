@@ -40,7 +40,7 @@ trow() {
 }
 
 bottleFly() {
-    this.x += 6;
+    this.x += 10;
 }
 
 animate() {
