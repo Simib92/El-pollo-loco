@@ -18,7 +18,8 @@ class World {
   gameIsRun = false;
   drawIntervalID = [];
 
-  backGroundMexico = new Audio("audio/soft-mexican-guitar-343137.mp3")
+  backGroundMexico = new Audio("audio/soft-mexican-guitar-343137.mp3");
+  EndbossMusic = new Audio("audio/endboss.mp3");
   jumpSound = new Audio("audio/cartoon-jump-6462.mp3");
   colectCoin = new Audio("audio/collect_coin.mp3");
   colectBottle = new Audio("audio/collect_bottle.mp3");
@@ -27,6 +28,7 @@ class World {
   demageSound = new Audio("audio/demage.mp3");
   bossAttack = new Audio("audio/boss-attack.mp3");
   jumpOnEnemySound = new Audio("audio/jump-on-enemy.mp3");
+  backgroundsound = this.backGroundMexico;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -36,7 +38,6 @@ class World {
     this.setworld();
     this.run();
     this.gameEnd = false;
-
   }
 
   setworld() {
@@ -47,14 +48,27 @@ class World {
     setStoppableInterval(() => this.checkJumpOnEnemie(), 10);
     setStoppableInterval(() => this.checkColectables(), 10);
     setStoppableInterval(() => this.checkCollisions(), 20);
-    this.backgroundMusic(this.backGroundMexico);
+    setStoppableInterval(() => this.checkThrowObjects(), 200);
+    this.playBackgroundSound();
   }
 
-  backgroundMusic(sound) {
+  backgroundMusic() {
     if (soundOn) {
-      sound.currentTime = 0;
-      sound.play();
+      if (this.endboss.startAnimation) {
+        this.stopBackgroundMusic();
+        this.backgroundsound = this.EndbossMusic;
+      }
+      this.playBackgroundSound();
     }
+  }
+
+  stopBackgroundMusic() {
+    this.backgroundsound.pause();
+  }
+
+  playBackgroundSound() {
+    this.backgroundsound.currentTime = 0;
+    this.backgroundsound.play();
   }
 
   checkThrowObjects() {
@@ -214,6 +228,7 @@ class World {
 
   endAll() {
     stopIntervals();
+    this.stopBackgroundMusic();
     this.level.enemies = [];
     this.level.colectables = [];
     setTimeout(() => stopGame(), 3000);
@@ -280,7 +295,6 @@ class World {
     }
     mo.draw(this.ctx);
     mo.drawFrame(this.ctx);
-
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }

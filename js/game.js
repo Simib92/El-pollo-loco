@@ -1,5 +1,5 @@
 let canvas;
-let world;
+let world = null;
 let keyboard = new Keyboard();
 let fullscreenActivation = false;
 let moveLeft = document.getElementById('move-left');
@@ -57,6 +57,10 @@ function soundOfforOn() {
         button.innerHTML = /*html*/`
         <img src="img/playicons/sound.png" alt="">`;
     soundOn = true;
+    }
+    if (world) {
+        world.stopBackgroundMusic();
+        world.backgroundMusic();
     }
 }
 

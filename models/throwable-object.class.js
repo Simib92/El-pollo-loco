@@ -51,25 +51,6 @@ animate() {
         this.playAnimation(this.IMAGES_SPLASH);           
     }
 }
-/*
-trow() {
-    this.speedY = 30;
-    this.applyGravity();
-    this.throwInterval = setInterval(() => {
-        this.x += 6;
-    }, 40)
-}
-
-animate() {
-    setInterval(() => { if (!this.isBroke) {
-                            this.playAnimation(this.IMAGES_ROTATION);           
-                        } else {
-                            clearInterval(this.throwInterval);
-                            this.playAnimation(this.IMAGES_SPLASH);           
-                        }
-    }, 40);
-}
-*/
 
 splashBottle() {
     this.isBroke = true;
