@@ -106,7 +106,7 @@ class World {
 
   checkJumpOnEnemie() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isJumpOnEnemy(enemy)) {
+      if (this.character.isJumpOnEnemy(enemy) && this.character.isFalling) {
         enemy.energy -= 100;
         if (enemy.energy < 1) {
           setTimeout(() => this.spliceEnemy(enemy), 500);

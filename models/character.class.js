@@ -4,6 +4,7 @@ class Character extends MovableObject {
   speed = 8;
   sleepPepe = false;
   sleepInterval;
+  isFalling = false;
 
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -66,6 +67,7 @@ class Character extends MovableObject {
     setStoppableInterval(() => this.applyGravity(), 1000 / 25);
     setStoppableInterval(() => this.animate(), 1000 / 60);
     setStoppableInterval(() => this.animateImges(), 50);
+    setStoppableInterval(() => this.checkIsFalling(), 1000 / 60);
   }
 
   animate() {
@@ -150,6 +152,15 @@ class Character extends MovableObject {
       if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
         this.playAnimation(this.IMAGES_WALKING);
       }
+    }
+  }
+
+  checkIsFalling() {
+    if (this.y < 30) {
+      this.isFalling = true;
+    }
+    if (this.y > 160) {
+      this.isFalling = false;
     }
   }
 
