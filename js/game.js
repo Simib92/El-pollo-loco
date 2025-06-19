@@ -51,6 +51,13 @@ function openInfo() {
     infoBox.classList.toggle('info-box-mobil');
 }
 
+function activateTouchButtons() {
+    let button = document.getElementById('activate-touch-button');
+    let board = document.getElementById('tablet-buttons');
+    board.classList.toggle('display_none');
+    board.classList.toggle('button-bar-tablet');
+}
+
 function soundOfforOn() {
     let button = document.getElementById('mute');
     if (soundOn) {

@@ -7,7 +7,6 @@ class Endboss extends MovableObject {
   endbossAttack = 0;
   type = "boss";
   isHit = false;
-  IntervalID = "";
 
   IMAGES_WALKING = [
     "img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -57,7 +56,6 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
-
     this.x = 15000;
     setStoppableInterval(() => this.animate(), 200);
   }
@@ -72,10 +70,11 @@ class Endboss extends MovableObject {
         this.endbossAttackYou();
       if (this.endbossAttack >= 100) 
         this.endbossSpecialAttack();
+      if (this.isHit) {
+        this.playAnimation(this.IMAGES_HURT);
+        this.setNewChicken();}
     } else 
       this.endbossIsDead();
-    if (this.isHit) 
-      this.playAnimation(this.IMAGES_HURT);
   }
 
   endbossStartRun() {
@@ -106,5 +105,10 @@ class Endboss extends MovableObject {
 
   resetAttck() {
     this.endbossAttack = 0;
+  }
+
+  setNewChicken() {
+    let chicken = new Chicken(120, 120, 330, this.x - 75);
+    world.level.enemies.push(chicken);
   }
 }

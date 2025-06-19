@@ -1,6 +1,6 @@
 class Character extends MovableObject {
   height = 280;
-  y = 80;
+  y = 170;
   speed = 8;
   sleepPepe = false;
   sleepInterval;
@@ -42,6 +42,19 @@ class Character extends MovableObject {
     "img/2_character_pepe/5_dead/D-57.png",
   ];
 
+  IMAGES_STANDING = [
+    "img/2_character_pepe/1_idle/idle/I-1.png",
+    "img/2_character_pepe/1_idle/idle/I-2.png",
+    "img/2_character_pepe/1_idle/idle/I-3.png",
+    "img/2_character_pepe/1_idle/idle/I-4.png",
+    "img/2_character_pepe/1_idle/idle/I-5.png",
+    "img/2_character_pepe/1_idle/idle/I-6.png",
+    "img/2_character_pepe/1_idle/idle/I-7.png",
+    "img/2_character_pepe/1_idle/idle/I-8.png",
+    "img/2_character_pepe/1_idle/idle/I-9.png",
+    "img/2_character_pepe/1_idle/idle/I-10.png",
+  ]
+
   IMAGES_SLEEP = [
     "img/2_character_pepe/1_idle/long_idle/I-11.png",
     "img/2_character_pepe/1_idle/long_idle/I-12.png",
@@ -63,6 +76,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_JUMPING);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
+    this.loadImages(this.IMAGES_STANDING);
     this.loadImages(this.IMAGES_SLEEP);
     setStoppableInterval(() => this.applyGravity(), 1000 / 25);
     setStoppableInterval(() => this.animate(), 1000 / 60);
@@ -78,7 +92,8 @@ class Character extends MovableObject {
     this.world.camera_x = +100 - this.x;
     if (this.characterCanJump()) 
         this.characterJump();
-    if (this.isCharacterNotMove()) 
+    if (this.isCharacterNotMove());
+      //this.characterStandartPosition();
       this.characterGetSleep();
   }
 
@@ -118,6 +133,10 @@ class Character extends MovableObject {
     );
   }
 
+  characterStandartPosition() {
+    this.playAnimation(this.IMAGES_JUMPING)
+  }
+
   characterGetSleep() {
     if (this.sleepPepe) {
       clearInterval(this.sleepInterval);
@@ -137,7 +156,7 @@ class Character extends MovableObject {
         this.sleep();
         this.world.playSoundEffect(this.world.sleepSound)
       }
-    }, 5000);
+    }, 10000);
   }
 
   animateImges() {
@@ -158,9 +177,13 @@ class Character extends MovableObject {
   checkIsFalling() {
     if (this.y < 30) {
       this.isFalling = true;
+      console.log(this.isFalling);
+      
     }
-    if (this.y > 160) {
+    if (this.y >= 160) {
       this.isFalling = false;
+            console.log(this.isFalling);
+
     }
   }
 

@@ -34,12 +34,18 @@ constructor(x, y) {
 trow() {
     this.speedY = 30;
     setStoppableInterval(() => this.applyGravity(),1000 / 25)
-    this.throwInterval = setInterval(() => {
-        this.bottleFly();
-    }, 40)
+    if (world.keyboard.LEFT) {
+    this.throwInterval = setInterval(() => this.bottleFlyleft(), 40)
+        } else {
+    this.throwInterval = setInterval(() => this.bottleFlyRight(), 40)
+        }
 }
 
-bottleFly() {
+bottleFlyleft() {
+    this.x -= 10;
+}
+
+bottleFlyRight() {
     this.x += 10;
 }
 

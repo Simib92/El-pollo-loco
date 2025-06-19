@@ -6,6 +6,7 @@
 body {
   font-family: "FAMILY_NAME" !important;
   height: 100vh;
+  text-shadow: 3px 3px rgba(0, 0, 0, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -119,6 +120,19 @@ canvas {
 
 .button-bar {
   display: none;
+}
+
+.button-for-touchbar {
+  margin-top: 16px;
+}
+
+.button-bar-tablet {
+  margin-top: 32px;
+  width: 720px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .play-buttons {

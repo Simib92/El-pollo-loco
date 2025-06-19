@@ -43,19 +43,19 @@ class DrawableObject {
       this instanceof SmallChicken ||
       this instanceof ThrowableObject
     ) {
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "transparent";
+      ctx.lineWidth = "1";
+      ctx.strokeStyle = "blue";
       ctx.beginPath();
-      ctx.rect(this.x + 15, this.y + 15, this.width - 30, this.height - 30);
+      ctx.rect(this.x + 10, this.y + 10, this.width - 20, this.height - 30);
       ctx.stroke();
-      this.frameX = this.x + 15;
-      this.frameY = this.y + 15;
-      this.frameWidth = this.width - 30;
+      this.frameX = this.x + 10;
+      this.frameY = this.y + 10;
+      this.frameWidth = this.width - 20;
       this.frameHeight = this.height - 30;
     }
     if (this instanceof Endboss) {
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "transparent";
+      ctx.lineWidth = "1";
+      ctx.strokeStyle = "blue";
       ctx.beginPath();
       ctx.rect(this.x + 50, this.y + 80, this.width - 60, this.height - 90);
       ctx.stroke();
@@ -65,10 +65,10 @@ class DrawableObject {
       this.frameHeight = this.height - 90;
     }
     if (this instanceof Character) {
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "transparent";
+      ctx.lineWidth = "1";
+      ctx.strokeStyle = "blue";
       ctx.beginPath();
-      ctx.rect(this.x + 20, this.y + 110, this.width - 40, this.height - 120);
+      ctx.rect(this.x + 20, this.y + 110, this.width - 50, this.height - 120);
       ctx.stroke();
       this.frameX = this.x + 20;
       this.frameY = this.y + 110;
@@ -76,8 +76,8 @@ class DrawableObject {
       this.frameHeight = this.height - 120;
     }
     if (this instanceof Colectables) {
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "transparent";
+      ctx.lineWidth = "1";
+      ctx.strokeStyle = "blue";
       ctx.beginPath();
       ctx.rect(this.x + 40, this.y + 40, this.width - 80, this.height - 80);
       ctx.stroke();

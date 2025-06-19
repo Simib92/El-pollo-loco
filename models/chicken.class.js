@@ -1,7 +1,7 @@
 class Chicken extends MovableObject {
   energy = 100;
   type = "normal";
-  IntervalID = "";
+
 
   IMAGES_WALKING = [
     "img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
@@ -11,16 +11,15 @@ class Chicken extends MovableObject {
 
   IMAGES_DEAD = ["img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
 
-  constructor(height, width, y) {
+  constructor(height, width, y, x) {
     super().loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEAD);
     this.y = y;
     this.height = height;
     this.width = width;
-    this.x = 400 + Math.random() * 16000;
+    this.x = x
     this.speed = 0.15 + Math.random() * 0.5;
-    //this.animate();
     setStoppableInterval(() => this.animateWalk(), 1000 / 60);
     setStoppableInterval(() => this.animateImg(), 200);
   }
@@ -36,7 +35,6 @@ class Chicken extends MovableObject {
       this.playAnimation(this.IMAGES_WALKING);
     } else {
       this.playAnimation(this.IMAGES_DEAD);
-      //setTimeout(() => this.stopIntervals(), 2000)
     }
   }
 }

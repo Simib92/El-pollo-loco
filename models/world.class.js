@@ -46,11 +46,11 @@ class World {
   }
 
   run() {
-    setStoppableInterval(() => this.checkJumpOnEnemie(), 10);
+    setStoppableInterval(() => this.checkJumpOnEnemie(), 5);
     setStoppableInterval(() => this.checkColectables(), 10);
     setStoppableInterval(() => this.checkCollisions(), 20);
     setStoppableInterval(() => this.checkThrowObjects(), 200);
-    this.playBackgroundSound();
+    this.backgroundMusic();
   }
 
   backgroundMusic() {
@@ -69,6 +69,7 @@ class World {
 
   playBackgroundSound() {
     this.backgroundsound.currentTime = 0;
+    this.backgroundsound.volume = 0.4;
     this.backgroundsound.play();
   }
 
@@ -91,7 +92,7 @@ class World {
   drawThrowBottle(bottle) {
     this.throwableObjects.push(bottle);
     this.playSoundEffect(this.throwSound);
-    setStoppableInterval(() => this.checkDemage(bottle), 50);
+    setStoppableInterval(() => this.checkDemage(bottle), 10);
     this.statusBarBottle.setPercentage(this.character.colectedBottles);
     setTimeout(() => this.spliceThrowableObjects(bottle), 1500);
     this.character.colectedBottles -= 20;
@@ -152,7 +153,7 @@ class World {
   }
 
   hitTheBoss(enemy) {
-    enemy.energy -= 20;
+    enemy.energy -= 10;
     this.statusBarBoss.setPercentage(enemy.energy);
     enemy.isDemage();
   }
@@ -220,9 +221,14 @@ class World {
     this.level.colectables.push(new Bottle());
   }
 
+  setNewChicken() {
+    this.level.enemies.push(new Chicken())
+  }
+
   playSoundEffect(sound) {
-    if (soundOn) {
+    if (soundOn && this.gameEnd) {
       sound.currentTime = 0;
+      sound.volume = 0.15;
       sound.play();
     }
   }

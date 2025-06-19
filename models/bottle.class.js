@@ -1,6 +1,9 @@
 class Bottle extends Colectables {
     
     type = 'bottle';
+    width = 70;
+    height = 110;
+    y = 330;
 
     IMAGES_BOTTLE = [
         'img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
@@ -11,7 +14,6 @@ class Bottle extends Colectables {
             super().loadImage('img/6_salsa_bottle/1_salsa_bottle_on_ground.png');
             this.loadImages(this.IMAGES_BOTTLE);
             this.x = 200 + Math.random() * 15000;
-            //this.animate();
             setStoppableInterval(() => this.animate(), 500);
             setStoppableInterval(() => this.checkIfBottleIsInMap(), 500);
         }
