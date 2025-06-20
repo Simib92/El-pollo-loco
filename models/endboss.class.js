@@ -108,7 +108,7 @@ class Endboss extends MovableObject {
   }
 
   setNewChicken() {
-    let chicken = new Chicken(120, 120, 330, this.x - 75);
+    let chicken = new Chicken(120, 120, 330, this.x - 80, true);
     world.level.enemies.push(chicken);
   }
 }

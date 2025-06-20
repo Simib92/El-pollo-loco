@@ -2,6 +2,7 @@ class World {
   character = new Character();
   endboss = new Endboss();
   level = level1;
+  enemies 
   canvas;
   sleepPepe = false;
   ctx;
@@ -153,7 +154,7 @@ class World {
   }
 
   hitTheBoss(enemy) {
-    enemy.energy -= 10;
+    enemy.energy -= 15;
     this.statusBarBoss.setPercentage(enemy.energy);
     enemy.isDemage();
   }
@@ -219,10 +220,6 @@ class World {
     this.level.colectables.push(new Bottle());
     this.level.colectables.push(new Bottle());
     this.level.colectables.push(new Bottle());
-  }
-
-  setNewChicken() {
-    this.level.enemies.push(new Chicken())
   }
 
   playSoundEffect(sound) {

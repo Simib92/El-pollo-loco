@@ -80,6 +80,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_SLEEP);
     setStoppableInterval(() => this.applyGravity(), 1000 / 25);
     setStoppableInterval(() => this.animate(), 1000 / 60);
+    setStoppableInterval(() => this.animateSlow(), 100);
     setStoppableInterval(() => this.animateImges(), 50);
     setStoppableInterval(() => this.checkIsFalling(), 1000 / 60);
   }
@@ -90,10 +91,13 @@ class Character extends MovableObject {
     if (this.canMoveLeft()) 
       this.characterMoveLeft();
     this.world.camera_x = +100 - this.x;
+  }
+
+  animateSlow() {
     if (this.characterCanJump()) 
         this.characterJump();
     if (this.isCharacterNotMove());
-      //this.characterStandartPosition();
+      this.characterStandartPosition();
       this.characterGetSleep();
   }
 
@@ -134,7 +138,7 @@ class Character extends MovableObject {
   }
 
   characterStandartPosition() {
-    this.playAnimation(this.IMAGES_JUMPING)
+    this.playAnimation(this.IMAGES_STANDING)
   }
 
   characterGetSleep() {
@@ -175,16 +179,10 @@ class Character extends MovableObject {
   }
 
   checkIsFalling() {
-    if (this.y < 30) {
-      this.isFalling = true;
-      console.log(this.isFalling);
-      
-    }
-    if (this.y >= 160) {
+    if (this.y < 30) 
+      this.isFalling = true;      
+    if (this.y >= 160) 
       this.isFalling = false;
-            console.log(this.isFalling);
-
-    }
   }
 
   jump() {
