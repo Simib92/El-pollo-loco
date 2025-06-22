@@ -25,7 +25,8 @@ class Chicken extends MovableObject {
     setStoppableInterval(() => this.animateImg(), 200);
     if (this.falling) {
       this.y = -10;
-      this.speed = 0.20 + Math.random() * 0.7;
+      this.x = x - Math.random() * 60;
+      this.speed = 0.22 + Math.random() * 10;
     setStoppableInterval(() => this.chickenFalling(), 1000 / 60);
     }}
 

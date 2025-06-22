@@ -17,7 +17,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  overflow: hidden;
+  overflow: unset;
 }
 
 canvas {
@@ -98,8 +98,8 @@ canvas {
 }
 
 .sound-img {
-    width: 48px;
-    height: 48px
+  width: 48px;
+  height: 48px;
 }
 
 .win_img {
@@ -124,10 +124,23 @@ canvas {
 
 .button-for-touchbar {
   margin-top: 16px;
+  font-size: 16px;
+  background-color: rgba(210, 105, 30, 0.6);
+  cursor: pointer;
+  height: 32px;
+  color: white;
+  border: solid 1px white;
+  border-radius: 8px;
+}
+
+.button-for-touchbar:hover {
+  border: solid 2px white;
+  background-color: transparent;
 }
 
 .button-bar-tablet {
-  margin-top: 32px;
+  margin-top: 16px;
+  margin-bottom: 16px;
   width: 720px;
   height: 80px;
   display: flex;
@@ -154,11 +167,42 @@ canvas {
 }
 
 .rotate-display {
-    display: none;
+  display: none;
+}
+
+.gap_16 {
+    display: flex;
+    gap: 16px;
+  }
+
+@media (max-height: 915px) and (max-width: 412px) {
+  .rotate-display {
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+@media (max-height: 895px) and (max-width: 411px) {
+  .rotate-display {
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+  }
 }
 
 @media (max-height: 700px) and (max-width: 500px) {
-    .rotate-display {
+  .rotate-display {
     z-index: 999;
     display: flex;
     align-items: center;
@@ -173,7 +217,8 @@ canvas {
 @media only screen and (max-width: 720px) {
   .canvas-wrapper {
     position: relative;
-    width: 100%;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -187,7 +232,8 @@ canvas {
 
   canvas,
   .intro-img {
-    width: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
   }
 
   .button-bar {
@@ -197,11 +243,13 @@ canvas {
     height: 80px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    left: 16px;
+    right: 16px;
   }
 
-  .fullscreen-button {
-    display: none;
+  .gap_16 {
+    gap: 16px;
   }
 }
 
@@ -233,7 +281,9 @@ canvas {
     background-color: rgba(0, 0, 0, 0.6);
     padding: 20px;
   }
-  
+}
+
+@media only screen and (max-height: 660px) {
   .button-bar {
     position: absolute;
     bottom: 0;
@@ -242,7 +292,17 @@ canvas {
     height: 80px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    left: 16px;
+    right: 16px;  
+  }
+
+  .button-for-touchbar {
+    display: none;
+  }
+
+  .button-bar-tablet {
+    display: none;
   }
 }
 
@@ -252,11 +312,30 @@ canvas {
     display: none;
   }
 
+  body {
+    justify-content: center;
+  }
+
+  .button-for-touchbar {
+    margin-top: 16px;
+  }
+
+  .button-bar-tablet {
+    display: none;
+  }
 }
 
 @media only screen and (max-height: 480px) {
   .canvas-wrapper,
   canvas {
     height: 100vh;
+  }
+
+  .button-for-touchbar {
+    display: none;
+  }
+
+  .button-bar-tablet {
+    display: none;
   }
 }

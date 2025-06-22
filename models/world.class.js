@@ -2,7 +2,7 @@ class World {
   character = new Character();
   endboss = new Endboss();
   level = level1;
-  enemies 
+  enemies;
   canvas;
   sleepPepe = false;
   ctx;
@@ -18,6 +18,7 @@ class World {
   gameEnd = false;
   gameIsRun = false;
   drawIntervalID = [];
+  throwTimeOut = true;
 
   backGroundMexico = new Audio("audio/soft-mexican-guitar-343137.mp3");
   EndbossMusic = new Audio("audio/endboss.mp3");
@@ -29,7 +30,7 @@ class World {
   demageSound = new Audio("audio/demage.mp3");
   bossAttack = new Audio("audio/boss-attack.mp3");
   jumpOnEnemySound = new Audio("audio/jump-on-enemy.mp3");
-  sleepSound = new Audio('audio/sleep.mp3');
+  sleepSound = new Audio("audio/sleep.mp3");
   backgroundsound = this.backGroundMexico;
 
   constructor(canvas, keyboard) {
@@ -47,20 +48,28 @@ class World {
   }
 
   run() {
-    setStoppableInterval(() => this.checkJumpOnEnemie(), 5);
-    setStoppableInterval(() => this.checkColectables(), 10);
-    setStoppableInterval(() => this.checkCollisions(), 20);
-    setStoppableInterval(() => this.checkThrowObjects(), 200);
+    setStoppableInterval(() => this.checkJumpOnEnemie(), 1000 / 60);
+    setStoppableInterval(() => this.checkColectables(), 1000 / 60);
+    setStoppableInterval(() => this.checkCollisions(), 1000 / 60);
+    setStoppableInterval(() => this.checkThrowObjects(), 1000 / 60);
     this.backgroundMusic();
   }
 
-  backgroundMusic() {
+  async backgroundMusic() {
     if (soundOn) {
       if (this.endboss.startAnimation) {
-        this.stopBackgroundMusic();
-        this.backgroundsound = this.EndbossMusic;
+        this.setEndbossMusic();
       }
-      this.playBackgroundSound();
+       await this.playBackgroundSound();
+    }
+  }
+
+  async setEndbossMusic() {
+    try {
+      this.stopBackgroundMusic();
+      this.backgroundsound = this.EndbossMusic;
+    } catch (error) {
+      console.log('this dont work');
     }
   }
 
@@ -68,26 +77,32 @@ class World {
     this.backgroundsound.pause();
   }
 
-  playBackgroundSound() {
+  async playBackgroundSound() {
     this.backgroundsound.currentTime = 0;
-    this.backgroundsound.volume = 0.4;
+    this.backgroundsound.volume = 0.2;
     this.backgroundsound.play();
   }
 
   checkThrowObjects() {
     if (this.keyboard.D) {
-      if (this.characterHoldsomeBottles()) {
+      if (this.characterHoldsomeBottles() && this.throwTimeOut) {
         let bottle = new ThrowableObject(
           this.character.x + 100,
           this.character.y + 100
         );
         this.drawThrowBottle(bottle);
+        this.throwTimeOut = false;
+        setTimeout(() => this.timeOutThrow(), 800)
       }
     }
   }
 
   characterHoldsomeBottles() {
     return this.character.colectedBottles > 0;
+  }
+
+  timeOutThrow() {
+    this.throwTimeOut = true;
   }
 
   drawThrowBottle(bottle) {
@@ -126,7 +141,7 @@ class World {
 
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
+      if (this.character.isColliding(enemy) && !this.character.isFalling) {
         this.character.hit();
         this.statusBarHealt.setPercentage(this.character.energy);
         this.playSoundEffect(this.hitSound);
@@ -139,7 +154,7 @@ class World {
       if (this.isBottleHitEnemy(bottle, enemy)) {
         bottle.splashBottle();
         this.playSoundEffect(this.demageSound);
-        if (enemy.type === "boss") {
+        if (this.isTheEndboss(enemy)) {
           this.hitTheBoss(enemy);
         } else {
           this.killEnemy(enemy);
@@ -147,6 +162,10 @@ class World {
         bottle.isBroke = true;
       }
     });
+  }
+
+  isTheEndboss(enemy) {
+    return enemy.type === "boss";
   }
 
   isBottleHitEnemy(bottle, enemy) {
@@ -223,9 +242,9 @@ class World {
   }
 
   playSoundEffect(sound) {
-    if (soundOn && this.gameEnd) {
+    if (soundOn && !this.gameEnd) {
       sound.currentTime = 0;
-      sound.volume = 0.15;
+      sound.volume = 0.12;
       sound.play();
     }
   }
@@ -251,68 +270,62 @@ class World {
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.ctx.translate(this.camera_x, 0);
+  this.ctx.translate(this.camera_x, 0);
 
-    this.addObjectToMap(this.level.backgroundObjects);
-    this.addObjectToMap(this.level.clouds);
-    this.addObjectToMap(this.level.enemies);
+  this.addObjectToMap(this.level.backgroundObjects);
+  this.addObjectToMap(this.level.clouds);
+  this.addObjectToMap(this.level.enemies);
 
-    this.ctx.translate(-this.camera_x, 0);
+  this.ctx.translate(-this.camera_x, 0);
 
-    //space for fixed objects.
-    this.addToMap(this.statusBarHealt);
-    this.addToMap(this.statusBarCoin);
-    this.addToMap(this.statusBarBottle);
-    if (this.endboss.startAnimation) {
-      this.addToMap(this.statusBarBoss);
-    }
-    if (this.gameEnd) {
-      this.addToMap(this.endDisplay);
-    }
-
-    this.ctx.translate(this.camera_x, 0);
-
-    this.addToMap(this.character);
-    this.addObjectToMap(this.throwableObjects);
-    this.addObjectToMap(this.level.colectables);
-
-    this.ctx.translate(-this.camera_x, 0);
-
-    // Draw() wird immer wieder aufgerufen
-    let self = this;
-    requestAnimationFrame(function () {
-      self.draw();
-    });
+  //space for fixed objects.
+  this.addToMap(this.statusBarHealt);
+  this.addToMap(this.statusBarCoin);
+  this.addToMap(this.statusBarBottle);
+  if (this.endboss.startAnimation) {
+    this.addToMap(this.statusBarBoss);
+  }
+  if (this.gameEnd) {
+    this.addToMap(this.endDisplay);
   }
 
-  addObjectToMap(object) {
-    object.forEach((o) => {
-      this.addToMap(o);
-    });
-  }
+  this.ctx.translate(this.camera_x, 0);
 
-  addToMap(mo) {
-    if (mo.otherDirection) {
-      this.flipImage(mo);
-    }
-    mo.draw(this.ctx);
-    mo.drawFrame(this.ctx);
-    if (mo.otherDirection) {
-      this.flipImageBack(mo);
-    }
-  }
+  this.addToMap(this.character);
+  this.addObjectToMap(this.throwableObjects);
+  this.addObjectToMap(this.level.colectables);
 
-  flipImage(mo) {
-    this.ctx.save();
-    this.ctx.translate(mo.width, 0);
-    this.ctx.scale(-1, 1);
-    mo.x = mo.x * -1;
-  }
+  this.ctx.translate(-this.camera_x, 0);
 
-  flipImageBack(mo) {
-    mo.x = mo.x * -1;
-    this.ctx.restore();
+  // Draw() wird immer wieder aufgerufen
+  let self = this;
+  requestAnimationFrame(function () {
+    self.draw();
+  });
+}
+
+addObjectToMap(objects) {
+  objects.forEach(o => this.addToMap(o));
+}
+
+addToMap(mo) {
+  if (mo.otherDirection) {
+    mo.draw(this.ctx, true);
+  } else {
+    mo.draw(this.ctx, false);
   }
+  mo.drawFrame(this.ctx);
+}
+
+flipImage(mo) {
+  this.ctx.save();
+  this.ctx.translate(mo.x + mo.width, mo.y);
+  this.ctx.scale(-1, 1);
+}
+
+flipImageBack() {
+  this.ctx.restore();
+}
 }
