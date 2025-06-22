@@ -62,9 +62,9 @@ class Endboss extends MovableObject {
 
   animate() {
     if (this.energy > 1) {
-      if (!this.startAnimation && world.character.x <= 14700) 
+      if (!this.startAnimation && world.character.x <= 14500) 
         this.playAnimation(this.IMAGES_ALERT);
-      if (world.character.x > 14700) 
+      if (world.character.x > 14500) 
         this.endbossStartRun();
       if (this.startAnimation && this.endbossAttack < 100) 
         this.endbossAttackYou();

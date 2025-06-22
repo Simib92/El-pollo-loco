@@ -18,6 +18,8 @@ function startGame() {
     document.getElementById('intro-img').classList.add('display_none');
     document.getElementById('canvas').classList.remove('display_none');
     document.getElementById('start-button').classList.add('display_none');
+    document.getElementById('mobil-button-bar').classList.remove('display_none');
+    document.getElementById('mobil-button-bar').classList.add('button-bar');
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);    
 }
@@ -26,6 +28,8 @@ function stopGame() {
     document.getElementById('intro-img').classList.remove('display_none');
     document.getElementById('canvas').classList.add('display_none');
     document.getElementById('start-button').classList.remove('display_none');
+    document.getElementById('mobil-button-bar').classList.remove('button-bar');
+    document.getElementById('mobil-button-bar').classList.add('display_none');
     let canvas = document.getElementById('canvas');
     let ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);

@@ -52,6 +52,7 @@ class World {
     setStoppableInterval(() => this.checkColectables(), 1000 / 60);
     setStoppableInterval(() => this.checkCollisions(), 1000 / 60);
     setStoppableInterval(() => this.checkThrowObjects(), 1000 / 60);
+    setStoppableInterval(() => this.CheckIfBottleIsOutsideMap(), 1000 / 60)
     this.backgroundMusic();
   }
 
@@ -111,7 +112,7 @@ class World {
     setStoppableInterval(() => this.checkDemage(bottle), 10);
     this.statusBarBottle.setPercentage(this.character.colectedBottles);
     setTimeout(() => this.spliceThrowableObjects(bottle), 1500);
-    this.character.colectedBottles -= 20;
+    this.character.colectedBottles -= 10;
   }
 
   spliceThrowableObjects(bottle) {
@@ -210,7 +211,7 @@ class World {
   }
 
   collectThisBottle() {
-    this.character.colectedBottles += 20;
+    this.character.colectedBottles += 10;
     this.statusBarBottle.setPercentage(this.character.colectedBottles);
     this.playSoundEffect(this.colectBottle);
   }
@@ -226,6 +227,17 @@ class World {
     if (index > -1) {
       this.level.colectables.splice(index, 1);
     }
+  }
+
+  CheckIfBottleIsOutsideMap() {
+    this.level.colectables.forEach((obj) => {
+      if (obj.type === "bottle") {
+        if (obj.x >= this.endboss.x) {
+          this.spliceColectable(obj);
+          this.level.colectables.push(new Bottle());
+        }
+      }
+    })
   }
 
   checkRemainingBottles() {

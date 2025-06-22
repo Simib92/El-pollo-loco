@@ -150,12 +150,7 @@ class Character extends MovableObject {
     this.sleepPepe = false;
     clearTimeout(this.sleepTimeout);
     this.sleepTimeout = setTimeout(() => {
-      if (
-        !this.world.keyboard.RIGHT &&
-        !this.world.keyboard.LEFT &&
-        !this.world.keyboard.SPACE &&
-        !this.world.keyboard.D
-      ) {
+      if (!this.isCharacterNotMove()) {
         this.sleepPepe = true;
         this.sleep();
         this.world.playSoundEffect(this.world.sleepSound)
