@@ -11,7 +11,6 @@ class Coin extends Colectables {
     this.loadImages(this.IMAGES_COIN);
     this.x = 200 + Math.random() * 15000;
     this.y = 330 + Math.random() * -300;
-    //this.animate();
     setStoppableInterval(() => this.animate(), 500);
   }
 

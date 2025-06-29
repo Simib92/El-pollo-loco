@@ -3,8 +3,9 @@ class Character extends MovableObject {
   y = 170;
   speed = 8;
   sleepPepe = false;
-  sleepInterval;
+  sleepInterval = 0;
   isFalling = false;
+  sleepSoundIsPlaying = false;
 
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -84,8 +85,7 @@ class Character extends MovableObject {
     setStoppableInterval(() => this.animateImges(), 50);
     setStoppableInterval(() => this.checkIsFalling(), 1000 / 60);
     setStoppableInterval(() => this.returnToLevelEndX(), 1000 / 60);
-    //setStoppableInterval(() => this.startSleapTimer(), 1000 / 60);
-    //setStoppableInterval(() => this.sleepLittlePepe(), 1000);
+    setStoppableInterval(() => this.charactersleepIntervall(), 50);
     setStoppableInterval(() => this.jumpAnimation(), 200);
   }
 
@@ -99,6 +99,9 @@ class Character extends MovableObject {
     if (this.characterCanJump()) this.characterJump();
     if (this.isCharacterNotMove() && !this.sleepPepe);
     this.characterStandartPosition();
+    if (this.sleepPepe) {
+      this.characterGetSleep();
+    }
   }
 
   canMoveRight() {
@@ -150,57 +153,46 @@ class Character extends MovableObject {
   }
 
   characterStandartPosition() {
-    if (!this.sleepPepe) {
-          this.playAnimation(this.IMAGES_STANDING);
+    if (!this.sleepPepe) this.playAnimation(this.IMAGES_STANDING);
+  }
+
+  charactersleepIntervall() {
+    if (!this.isCharacterNotMove()) this.sleepInterval += 1;
+    else this.resetSleepTimer();
+    if (this.sleepInterval >= 250) this.sleepPepe = true;
+  }
+
+  resetSleepTimer() {
+    this.sleepInterval = 0;
+    this.sleepPepe = false;
+    if (this.sleepSoundIsPlaying) {
+      this.world.sleepSound.pause();
+      this.sleepSoundIsPlaying = false;
     }
   }
 
   characterGetSleep() {
-    if (this.sleepPepe) {
-      clearInterval(this.sleepInterval);
-      this.sleepInterval = null;
-      this.world.sleepSound.pause();
-    }
-    this.sleepPepe = false;
-    clearTimeout(this.sleepTimeout);
-    this.sleepTimeout = setTimeout(() => {
-      if (!this.isCharacterNotMove()) {
-        this.sleepPepe = true;
-        this.sleep();
+    if (!this.world.gameEnd && this.sleepPepe) {
+      this.playAnimation(this.IMAGES_SLEEP);
+      if (!this.sleepSoundIsPlaying) {
         this.world.playSoundEffect(this.world.sleepSound);
+        this.sleepSoundIsPlaying = true;
       }
-    }, 10000);
-  }
-
-  startSleapTimer() {
-    if (!this.isCharacterNotMove()) {
-      this.sleepTimeout = setTimeout(() => {
-        this.sleepPepe = true;
-        console.log(this.sleepPepe);
-      }, 5000);
-    }
-    if (this.sleepPepe) {
-    } else {
-      this.sleepPepe = false;
-      console.log(this.sleepPepe);
-      
     }
   }
 
-  animateImges() { 
+  animateImges() {
     if (!this.isAboveGround()) {
-    if (this.isDead()) {
-      this.playAnimation(this.IMAGES_DEAD);
-      this.world.loseGame();
-    } else if (this.isHurt()) {
-      this.playAnimation(this.IMAGES_HURT);
-    } /*else if (this.isAboveGround()) {
-      this.playAnimation(this.IMAGES_JUMPING);
-    }*/ else {
-      if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-        this.playAnimation(this.IMAGES_WALKING);
+      if (this.isDead()) {
+        this.playAnimation(this.IMAGES_DEAD);
+        this.world.loseGame();
+      } else if (this.isHurt()) {
+        this.playAnimation(this.IMAGES_HURT);
+      } else {
+        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)
+          this.playAnimation(this.IMAGES_WALKING);
       }
-    }}
+    }
   }
 
   checkIsFalling() {
@@ -211,21 +203,4 @@ class Character extends MovableObject {
   jump() {
     this.speedY = 30;
   }
-
-  sleep() {
-    if (this.sleepInterval) return;
-    this.sleepInterval = setInterval(() => {
-      this.playAnimation(this.IMAGES_SLEEP);
-    }, 1000);
-  }
-
-  sleepLittlePepe() {
-  if (this.sleepInterval) return;
-  if (this.sleepPepe) {
-    this.sleepInterval = setInterval(() => {
-    this.world.playSoundEffect(this.world.sleepSound);
-    this.playAnimation(this.IMAGES_SLEEP);
-    }, 1000)
-  }
-}
 }

@@ -33,7 +33,7 @@ function stopGame() {
   let canvas = document.getElementById("canvas");
   let ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (world && world.gameEnd) {
+  if (world) {
     world.gameEnd = false;
     world = null;
   }
@@ -56,7 +56,6 @@ function openInfo() {
 }
 
 function activateTouchButtons() {
-  let button = document.getElementById("activate-touch-button");
   let board = document.getElementById("tablet-buttons");
   board.classList.toggle("display_none");
   board.classList.toggle("button-bar-tablet");
@@ -68,6 +67,10 @@ function toggleSound() {
     soundIsOff(button);
   } else {
     soundIsOn(button);
+  }
+  if (world) {
+    world.stopBackgroundMusic();
+    world.backgroundMusic();
   }
 }
 

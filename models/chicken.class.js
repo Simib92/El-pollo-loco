@@ -19,7 +19,7 @@ class Chicken extends MovableObject {
     this.height = height;
     this.width = width;
     this.falling = falling;
-    this.x = x
+    this.x = x;
     this.speed = 0.15 + Math.random() * 0.5;
     setStoppableInterval(() => this.animateWalk(), 1000 / 60);
     setStoppableInterval(() => this.animateImg(), 200);
@@ -27,26 +27,22 @@ class Chicken extends MovableObject {
       this.y = -10;
       this.x = x - Math.random() * 60;
       this.speed = 0.22 + Math.random() * 10;
-    setStoppableInterval(() => this.chickenFalling(), 1000 / 60);
-    }}
+      setStoppableInterval(() => this.chickenFalling(), 1000 / 60);
+    }
+  }
 
   animateWalk() {
-    if (this.energy > 1) {
-      this.moveLeft();
-    }
+    if (this.energy > 1) this.moveLeft();
   }
 
   animateImg() {
-    if (this.energy > 1) {
-      this.playAnimation(this.IMAGES_WALKING);
-    } else {
-      this.playAnimation(this.IMAGES_DEAD);
-    }
+    if (this.energy > 1) this.playAnimation(this.IMAGES_WALKING);
+    else this.playAnimation(this.IMAGES_DEAD);
   }
 
   chickenFalling() {
-    if(this.isChickenOnTheGround() || this.speedY > 0)
-    this.y -= this.speedY * 0.75;
+    if (this.isChickenOnTheGround() || this.speedY > 0)
+      this.y -= this.speedY * 0.75;
     this.speedY -= this.acceleration;
     this.x -= 2;
   }

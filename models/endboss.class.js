@@ -62,19 +62,17 @@ class Endboss extends MovableObject {
 
   animate() {
     if (this.energy > 1) {
-      if (!this.startAnimation && world.character.x <= 14500) 
+      if (!this.startAnimation && world.character.x <= 14500)
         this.playAnimation(this.IMAGES_ALERT);
-      if (world.character.x > 14500) 
-        this.endbossStartRun();
-      if (this.startAnimation && this.endbossAttack < 100) 
+      if (world.character.x > 14500) this.endbossStartRun();
+      if (this.startAnimation && this.endbossAttack < 100)
         this.endbossAttackYou();
-      if (this.endbossAttack >= 100) 
-        this.endbossSpecialAttack();
+      if (this.endbossAttack >= 100) this.endbossSpecialAttack();
       if (this.isHit) {
         this.playAnimation(this.IMAGES_HURT);
-        this.setNewChicken();}
-    } else 
-      this.endbossIsDead();
+        this.setNewChicken();
+      }
+    } else this.endbossIsDead();
   }
 
   endbossStartRun() {

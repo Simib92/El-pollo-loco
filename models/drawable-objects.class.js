@@ -20,7 +20,6 @@ class DrawableObject {
 
   stopIntervals() {
     this.drawIntervalID.forEach(clearInterval);
-    console.log("Intervalle gestoppt:", this.drawIntervalID);
     this.drawIntervalID = [];
   }
 
@@ -33,13 +32,8 @@ class DrawableObject {
     this.img.src = path;
   }
 
-  /*draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }*/
-
   draw(ctx, flipped = false) {
     ctx.save();
-
     if (flipped) {
       ctx.translate(this.x + this.width, this.y);
       ctx.scale(-1, 1);

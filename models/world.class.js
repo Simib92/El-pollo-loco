@@ -19,6 +19,7 @@ class World {
   gameIsRun = false;
   drawIntervalID = [];
   throwTimeOut = true;
+  sound;
 
   backGroundMexico = new Audio("audio/soft-mexican-guitar-343137.mp3");
   EndbossMusic = new Audio("audio/endboss.mp3");
@@ -52,7 +53,7 @@ class World {
     setStoppableInterval(() => this.checkColectables(), 1000 / 60);
     setStoppableInterval(() => this.checkCollisions(), 1000 / 60);
     setStoppableInterval(() => this.checkThrowObjects(), 1000 / 60);
-    setStoppableInterval(() => this.CheckIfBottleIsOutsideMap(), 1000 / 60)
+    setStoppableInterval(() => this.CheckIfBottleIsOutsideMap(), 1000 / 60);
     this.backgroundMusic();
   }
 
@@ -61,7 +62,7 @@ class World {
       if (this.endboss.startAnimation) {
         this.setEndbossMusic();
       }
-       await this.playBackgroundSound();
+      await this.playBackgroundSound();
     }
   }
 
@@ -70,7 +71,7 @@ class World {
       this.stopBackgroundMusic();
       this.backgroundsound = this.EndbossMusic;
     } catch (error) {
-      console.log('this dont work');
+      console.log("this dont work");
     }
   }
 
@@ -93,7 +94,7 @@ class World {
         );
         this.drawThrowBottle(bottle);
         this.throwTimeOut = false;
-        setTimeout(() => this.timeOutThrow(), 800)
+        setTimeout(() => this.timeOutThrow(), 800);
       }
     }
   }
@@ -117,9 +118,7 @@ class World {
 
   spliceThrowableObjects(bottle) {
     const index = this.throwableObjects.indexOf(bottle);
-    if (index > -1) {
-      this.throwableObjects.splice(index, 1);
-    }
+    if (index > -1) this.throwableObjects.splice(index, 1);
   }
 
   checkJumpOnEnemie() {
@@ -154,12 +153,8 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (this.isBottleHitEnemy(bottle, enemy)) {
         bottle.splashBottle();
-        this.playSoundEffect(this.demageSound);
-        if (this.isTheEndboss(enemy)) {
-          this.hitTheBoss(enemy);
-        } else {
-          this.killEnemy(enemy);
-        }
+        if (this.isTheEndboss(enemy)) this.hitTheBoss(enemy);
+        else this.killEnemy(enemy);
         bottle.isBroke = true;
       }
     });
@@ -174,6 +169,7 @@ class World {
   }
 
   hitTheBoss(enemy) {
+    this.playSoundEffect(this.demageSound);
     enemy.energy -= 15;
     this.statusBarBoss.setPercentage(enemy.energy);
     enemy.isDemage();
@@ -187,9 +183,7 @@ class World {
   spliceEnemy(enemy) {
     if (enemy.energy < 1) {
       const index = this.level.enemies.indexOf(enemy);
-      if (index > -1) {
-        this.level.enemies.splice(index, 1);
-      }
+      if (index > -1) this.level.enemies.splice(index, 1);
     }
   }
 
@@ -197,15 +191,9 @@ class World {
     this.level.colectables.forEach((colectables) => {
       if (this.character.isColliding(colectables)) {
         this.spliceColectable(colectables);
-        if (colectables.type === "bottle") {
-          this.collectThisBottle();
-        }
-        if (colectables.type === "coin") {
-          this.collectThisCoin();
-        }
-        if (!this.checkRemainingBottles()) {
-          this.setNewBottles();
-        }
+        if (colectables.type === "bottle") this.collectThisBottle();
+        if (colectables.type === "coin") this.collectThisCoin();
+        if (!this.checkRemainingBottles()) this.setNewBottles();
       }
     });
   }
@@ -237,7 +225,7 @@ class World {
           this.level.colectables.push(new Bottle());
         }
       }
-    })
+    });
   }
 
   checkRemainingBottles() {
@@ -254,7 +242,7 @@ class World {
   }
 
   playSoundEffect(sound) {
-    if (soundOn && !this.gameEnd) {
+    if (soundOn) {
       sound.currentTime = 0;
       sound.volume = 0.12;
       sound.play();
@@ -282,60 +270,60 @@ class World {
   }
 
   draw() {
-  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-  this.ctx.translate(this.camera_x, 0);
+    this.ctx.translate(this.camera_x, 0);
 
-  this.addObjectToMap(this.level.backgroundObjects);
-  this.addObjectToMap(this.level.clouds);
-  this.addObjectToMap(this.level.enemies);
+    this.addObjectToMap(this.level.backgroundObjects);
+    this.addObjectToMap(this.level.clouds);
+    this.addObjectToMap(this.level.enemies);
 
-  this.ctx.translate(-this.camera_x, 0);
+    this.ctx.translate(-this.camera_x, 0);
 
-  this.addToMap(this.statusBarHealt);
-  this.addToMap(this.statusBarCoin);
-  this.addToMap(this.statusBarBottle);
-  if (this.endboss.startAnimation) {
-    this.addToMap(this.statusBarBoss);
+    this.addToMap(this.statusBarHealt);
+    this.addToMap(this.statusBarCoin);
+    this.addToMap(this.statusBarBottle);
+    if (this.endboss.startAnimation) {
+      this.addToMap(this.statusBarBoss);
+    }
+    if (this.gameEnd) {
+      this.addToMap(this.endDisplay);
+    }
+
+    this.ctx.translate(this.camera_x, 0);
+
+    this.addToMap(this.character);
+    this.addObjectToMap(this.throwableObjects);
+    this.addObjectToMap(this.level.colectables);
+
+    this.ctx.translate(-this.camera_x, 0);
+
+    let self = this;
+    requestAnimationFrame(function () {
+      self.draw();
+    });
   }
-  if (this.gameEnd) {
-    this.addToMap(this.endDisplay);
+
+  addObjectToMap(objects) {
+    objects.forEach((o) => this.addToMap(o));
   }
 
-  this.ctx.translate(this.camera_x, 0);
-
-  this.addToMap(this.character);
-  this.addObjectToMap(this.throwableObjects);
-  this.addObjectToMap(this.level.colectables);
-
-  this.ctx.translate(-this.camera_x, 0);
-
-  let self = this;
-  requestAnimationFrame(function () {
-    self.draw();
-  });
-}
-
-addObjectToMap(objects) {
-  objects.forEach(o => this.addToMap(o));
-}
-
-addToMap(mo) {
-  if (mo.otherDirection) {
-    mo.draw(this.ctx, true);
-  } else {
-    mo.draw(this.ctx, false);
+  addToMap(mo) {
+    if (mo.otherDirection) {
+      mo.draw(this.ctx, true);
+    } else {
+      mo.draw(this.ctx, false);
+    }
+    mo.drawFrame(this.ctx);
   }
-  mo.drawFrame(this.ctx);
-}
 
-flipImage(mo) {
-  this.ctx.save();
-  this.ctx.translate(mo.x + mo.width, mo.y);
-  this.ctx.scale(-1, 1);
-}
+  flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.x + mo.width, mo.y);
+    this.ctx.scale(-1, 1);
+  }
 
-flipImageBack() {
-  this.ctx.restore();
-}
+  flipImageBack() {
+    this.ctx.restore();
+  }
 }

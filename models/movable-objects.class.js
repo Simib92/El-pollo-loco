@@ -23,14 +23,14 @@ class MovableObject extends DrawableObject {
     }
   }
 
-    isColliding(obj) {
-  return (
-    this.frameX + this.frameWidth >= obj.frameX &&
-    this.frameX <= obj.frameX + obj.frameWidth &&
-    this.frameY + this.frameHeight >= obj.frameY &&
-    this.frameY <= obj.frameY + obj.frameHeight 
-  );
-}
+  isColliding(obj) {
+    return (
+      this.frameX + this.frameWidth >= obj.frameX &&
+      this.frameX <= obj.frameX + obj.frameWidth &&
+      this.frameY + this.frameHeight >= obj.frameY &&
+      this.frameY <= obj.frameY + obj.frameHeight
+    );
+  }
 
   isJumpOnEnemy(enemy) {
     const STOMP_TOLERANCE = 20;
