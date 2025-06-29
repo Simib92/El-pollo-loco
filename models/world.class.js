@@ -217,7 +217,7 @@ class World {
   }
 
   collectThisCoin() {
-    this.character.CoinBag += 5;
+    this.character.CoinBag += 4;
     this.statusBarCoin.setPercentage(this.character.CoinBag);
     this.playSoundEffect(this.colectCoin);
   }
@@ -292,7 +292,6 @@ class World {
 
   this.ctx.translate(-this.camera_x, 0);
 
-  //space for fixed objects.
   this.addToMap(this.statusBarHealt);
   this.addToMap(this.statusBarCoin);
   this.addToMap(this.statusBarBottle);
@@ -311,7 +310,6 @@ class World {
 
   this.ctx.translate(-this.camera_x, 0);
 
-  // Draw() wird immer wieder aufgerufen
   let self = this;
   requestAnimationFrame(function () {
     self.draw();

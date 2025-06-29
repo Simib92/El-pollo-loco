@@ -16,8 +16,8 @@ class Character extends MovableObject {
   ];
 
   IMAGES_JUMPING = [
-    "img/2_character_pepe/3_jump/J-31.png",
-    "img/2_character_pepe/3_jump/J-32.png",
+    //"img/2_character_pepe/3_jump/J-31.png",
+    //"img/2_character_pepe/3_jump/J-32.png",
     "img/2_character_pepe/3_jump/J-33.png",
     "img/2_character_pepe/3_jump/J-34.png",
     "img/2_character_pepe/3_jump/J-35.png",
@@ -53,7 +53,7 @@ class Character extends MovableObject {
     "img/2_character_pepe/1_idle/idle/I-8.png",
     "img/2_character_pepe/1_idle/idle/I-9.png",
     "img/2_character_pepe/1_idle/idle/I-10.png",
-  ]
+  ];
 
   IMAGES_SLEEP = [
     "img/2_character_pepe/1_idle/long_idle/I-11.png",
@@ -83,26 +83,32 @@ class Character extends MovableObject {
     setStoppableInterval(() => this.animateSlow(), 100);
     setStoppableInterval(() => this.animateImges(), 50);
     setStoppableInterval(() => this.checkIsFalling(), 1000 / 60);
+    setStoppableInterval(() => this.returnToLevelEndX(), 1000 / 60);
+    //setStoppableInterval(() => this.startSleapTimer(), 1000 / 60);
+    //setStoppableInterval(() => this.sleepLittlePepe(), 1000);
+    setStoppableInterval(() => this.jumpAnimation(), 200);
   }
 
   animate() {
-    if (this.canMoveRight()) 
-      this.characterMoveRight();
-    if (this.canMoveLeft()) 
-      this.characterMoveLeft();
+    if (this.canMoveRight()) this.characterMoveRight();
+    if (this.canMoveLeft()) this.characterMoveLeft();
     this.world.camera_x = +100 - this.x;
   }
 
   animateSlow() {
-    if (this.characterCanJump()) 
-        this.characterJump();
-    if (this.isCharacterNotMove());
-      this.characterStandartPosition();
-      this.characterGetSleep();
+    if (this.characterCanJump()) this.characterJump();
+    if (this.isCharacterNotMove() && !this.sleepPepe);
+    this.characterStandartPosition();
   }
 
   canMoveRight() {
-    return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x
+    return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
+  }
+
+  returnToLevelEndX() {
+    if (this.x > this.world.level.level_end_x) {
+      this.x = this.world.level.level_end_x;
+    }
   }
 
   characterMoveRight() {
@@ -111,7 +117,7 @@ class Character extends MovableObject {
   }
 
   canMoveLeft() {
-    return this.world.keyboard.LEFT && this.x > 0
+    return this.world.keyboard.LEFT && this.x > 0;
   }
 
   characterMoveLeft() {
@@ -128,6 +134,12 @@ class Character extends MovableObject {
     this.world.playSoundEffect(this.world.jumpSound);
   }
 
+  jumpAnimation() {
+    if (this.isAboveGround()) {
+      this.playAnimation(this.IMAGES_JUMPING);
+    }
+  }
+
   isCharacterNotMove() {
     return (
       this.world.keyboard.RIGHT ||
@@ -138,7 +150,9 @@ class Character extends MovableObject {
   }
 
   characterStandartPosition() {
-    this.playAnimation(this.IMAGES_STANDING)
+    if (!this.sleepPepe) {
+          this.playAnimation(this.IMAGES_STANDING);
+    }
   }
 
   characterGetSleep() {
@@ -153,31 +167,45 @@ class Character extends MovableObject {
       if (!this.isCharacterNotMove()) {
         this.sleepPepe = true;
         this.sleep();
-        this.world.playSoundEffect(this.world.sleepSound)
+        this.world.playSoundEffect(this.world.sleepSound);
       }
     }, 10000);
   }
 
-  animateImges() {
+  startSleapTimer() {
+    if (!this.isCharacterNotMove()) {
+      this.sleepTimeout = setTimeout(() => {
+        this.sleepPepe = true;
+        console.log(this.sleepPepe);
+      }, 5000);
+    }
+    if (this.sleepPepe) {
+    } else {
+      this.sleepPepe = false;
+      console.log(this.sleepPepe);
+      
+    }
+  }
+
+  animateImges() { 
+    if (!this.isAboveGround()) {
     if (this.isDead()) {
       this.playAnimation(this.IMAGES_DEAD);
       this.world.loseGame();
     } else if (this.isHurt()) {
       this.playAnimation(this.IMAGES_HURT);
-    } else if (this.isAboveGround()) {
+    } /*else if (this.isAboveGround()) {
       this.playAnimation(this.IMAGES_JUMPING);
-    } else {
+    }*/ else {
       if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
         this.playAnimation(this.IMAGES_WALKING);
       }
-    }
+    }}
   }
 
   checkIsFalling() {
-    if (this.y < 30) 
-      this.isFalling = true;      
-    if (this.y >= 160) 
-      this.isFalling = false;
+    if (this.y < 30) this.isFalling = true;
+    if (this.y >= 160) this.isFalling = false;
   }
 
   jump() {
@@ -190,4 +218,14 @@ class Character extends MovableObject {
       this.playAnimation(this.IMAGES_SLEEP);
     }, 1000);
   }
+
+  sleepLittlePepe() {
+  if (this.sleepInterval) return;
+  if (this.sleepPepe) {
+    this.sleepInterval = setInterval(() => {
+    this.world.playSoundEffect(this.world.sleepSound);
+    this.playAnimation(this.IMAGES_SLEEP);
+    }, 1000)
+  }
+}
 }
