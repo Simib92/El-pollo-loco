@@ -46,71 +46,49 @@ class DrawableObject {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Chicken || this instanceof ThrowableObject) {
-      ctx.lineWidth = "10";
-      ctx.strokeStyle = "transparent";
-      ctx.beginPath();
-      ctx.rect(this.x + 10, this.y + 5, this.width - 20, this.height - 20);
-      ctx.stroke();
-      this.frameX = this.x + 10;
-      this.frameY = this.y + 5;
-      this.frameWidth = this.width - 20;
-      this.frameHeight = this.height - 20;
-    }
-    if (this instanceof SmallChicken) {
-      ctx.lineWidth = "10";
-      ctx.strokeStyle = "transparent";
-      ctx.beginPath();
-      ctx.rect(this.x + 5, this.y - 5, this.width - 10, this.height);
-      ctx.stroke();
-      this.frameX = this.x + 5;
-      this.frameY = this.y - 5;
-      this.frameWidth = this.width - 10;
-      this.frameHeight = this.height;
-    }
-    if (this instanceof Endboss) {
-      ctx.lineWidth = "10";
-      ctx.strokeStyle = "transparent";
-      ctx.beginPath();
-      ctx.rect(this.x + 50, this.y + 80, this.width - 60, this.height - 90);
-      ctx.stroke();
-      this.frameX = this.x + 15;
-      this.frameY = this.y + 80;
-      this.frameWidth = this.width - 30;
-      this.frameHeight = this.height - 90;
-    }
-    if (this instanceof Character) {
-      ctx.lineWidth = "10";
-      ctx.strokeStyle = "transparent";
-      ctx.beginPath();
-      ctx.rect(this.x + 20, this.y + 110, this.width - 50, this.height - 120);
-      ctx.stroke();
-      this.frameX = this.x + 20;
-      this.frameY = this.y + 110;
-      this.frameWidth = this.width - 40;
-      this.frameHeight = this.height - 120;
-    }
-    if (this instanceof Coin) {
-      ctx.lineWidth = "10";
-      ctx.strokeStyle = "transparent";
-      ctx.beginPath();
-      ctx.rect(this.x + 40, this.y + 40, this.width - 80, this.height - 80);
-      ctx.stroke();
-      this.frameX = this.x + 40;
-      this.frameY = this.y + 40;
-      this.frameWidth = this.width - 80;
-      this.frameHeight = this.height - 80;
-    }
-    if (this instanceof Bottle) {
-      ctx.lineWidth = "10";
-      ctx.strokeStyle = "transparent";
-      ctx.beginPath();
-      ctx.rect(this.x + 20, this.y + 20, this.width - 40, this.height - 40);
-      ctx.stroke();
-      this.frameX = this.x + 20;
-      this.frameY = this.y + 20;
-      this.frameWidth = this.width - 40;
-      this.frameHeight = this.height - 40;
+    const types = [
+      {
+        classRef: [Chicken, ThrowableObject],
+        offset: { x: 10, y: 5, w: 20, h: 20 },
+      },
+      { classRef: [SmallChicken], 
+        offset: { x: 5, y: -5, w: 10, h: 0 } },
+      {
+        classRef: [Endboss],
+        offset: { x: 50, y: 80, w: 60, h: 90 },
+        frameFix: { x: 15, w: 30 },
+      },
+      {
+        classRef: [Character],
+        offset: { x: 20, y: 110, w: 50, h: 120 },
+        frameFix: { w: 40 },
+      },
+      { classRef: [Coin], offset: { x: 40, y: 40, w: 80, h: 80 } },
+      { classRef: [Bottle], offset: { x: 20, y: 20, w: 40, h: 40 } },
+    ];
+
+    for (const type of types) {
+      if (type.classRef.some((cls) => this instanceof cls)) {
+        const o = type.offset;
+        const fix = type.frameFix || {};
+
+        const frameX = this.x + (fix.x ?? o.x);
+        const frameY = this.y + o.y;
+        const frameWidth = this.width - (fix.w ?? o.w);
+        const frameHeight = this.height - o.h;
+
+        ctx.lineWidth = "10";
+        ctx.strokeStyle = "transparent";
+        ctx.beginPath();
+        ctx.rect(frameX, frameY, frameWidth, frameHeight);
+        ctx.stroke();
+
+        this.frameX = frameX;
+        this.frameY = frameY;
+        this.frameWidth = frameWidth;
+        this.frameHeight = frameHeight;
+        break;
+      }
     }
   }
 
