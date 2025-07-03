@@ -1,5 +1,6 @@
 let level1;
 
+//delete level and set new level with all (background, enemies and collectables)
 function initLevel() {
 level1 = null;
 level1 = new Level(

@@ -9,11 +9,13 @@ let shoot = document.getElementById("shoot");
 let soundOn = true;
 let intervalIDs = [];
 
+//Restarts the game by initializing the level and starting the game
 function restartGame() {
   initLevel();
   startGame();
 }
 
+//Starts the game, hides the intro image and start button
 function startGame() {
   document.getElementById("intro-img").classList.add("display_none");
   document.getElementById("canvas").classList.remove("display_none");
@@ -24,6 +26,9 @@ function startGame() {
   world = new World(canvas, keyboard);
 }
 
+//Stops the game, shows the intro image and start button,
+//hides the game canvas, and clears the canvas context.
+//Resets the game world instance.
 function stopGame() {
   document.getElementById("intro-img").classList.remove("display_none");
   document.getElementById("canvas").classList.add("display_none");
@@ -39,28 +44,33 @@ function stopGame() {
   }
 }
 
+//Executes a function repeatedly at given intervals and stores the interval ID
 function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
   intervalIDs.push(id);
 }
 
+//Stops all intervals that were previously started
 function stopIntervals() {
   intervalIDs.forEach(clearInterval);
   intervalIDs = [];
 }
 
+//Toggles the visibility of the info box
 function openInfo() {
   let infoBox = document.getElementById("discription-box");
   infoBox.classList.toggle("discription-wrapper");
   infoBox.classList.toggle("info-box-mobil");
 }
 
+//Toggles the visibility of the touch control buttons
 function activateTouchButtons() {
   let board = document.getElementById("tablet-buttons");
   board.classList.toggle("display_none");
   board.classList.toggle("button-bar-tablet");
 }
 
+//Toggles sound on/off and updates the sound button accordingly
 function toggleSound() {
   let button = document.getElementById("mute");
   if (soundOn) {
@@ -74,6 +84,7 @@ function toggleSound() {
   }
 }
 
+//Loads sound state from localStorage and updates the sound button
 function soundOfforOn() {
   let button = document.getElementById("mute");
   let currentsoundOnString = soundFromLocalStorage();
@@ -86,6 +97,7 @@ function soundOfforOn() {
   }
 }
 
+//Sets the sound button to "sound on" state and saves it
 function soundIsOn(button) {
   button.innerHTML = /*html*/ `
         <img class="sound-img" src="img/playicons/sound.png" alt="">`;
@@ -93,6 +105,7 @@ function soundIsOn(button) {
   soundToLocalStorage(soundOn);
 }
 
+//Sets the sound button to "sound off" state and saves it
 function soundIsOff(button) {
   button.innerHTML = /*html*/ `
         <img class="sound-img" src="img/playicons/mute.png" alt="">`;
@@ -100,16 +113,19 @@ function soundIsOff(button) {
   soundToLocalStorage(soundOn);
 }
 
+//Saves the sound state to localStorage
 function soundToLocalStorage(soundOn) {
   localStorage.setItem("soundOn", JSON.stringify(soundOn));
 }
 
+//Retrieves the sound state from localStorage
 function soundFromLocalStorage() {
   let currentsoundOnString = localStorage.getItem("soundOn");
   if (currentsoundOnString === null) return null;
   return JSON.parse(currentsoundOnString);
 }
 
+//Toggles fullscreen mode on or off
 function fullscreen() {
   let fullscreen = document.getElementById("fullscreen");
   if (!fullscreenActivation) {
@@ -119,6 +135,7 @@ function fullscreen() {
   }
 }
 
+//Enters fullscreen mode for the given element
 function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen();
@@ -134,6 +151,7 @@ function enterFullscreen(element) {
   fullscreenActivation = true;
 }
 
+//Exits fullscreen mode
 function exitFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();
@@ -149,6 +167,7 @@ function exitFullscreen() {
   fullscreenActivation = false;
 }
 
+//Keydown event listener: sets keyboard flags on key press
 window.addEventListener("keydown", (e) => {
   if (e.keyCode == 39) {
     keyboard.RIGHT = true;
@@ -175,6 +194,7 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+//Keyup event listener: resets keyboard flags on key release
 window.addEventListener("keyup", (e) => {
   if (e.keyCode == 39) {
     keyboard.RIGHT = false;
@@ -201,35 +221,51 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
-document.getElementById("move-left").addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  keyboard.LEFT = true;
-});
-document.getElementById("move-left").addEventListener("touchend", (e) => {
-  e.preventDefault();
-  keyboard.LEFT = false;
-});
-document.getElementById("move-right").addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  keyboard.RIGHT = true;
-});
-document.getElementById("move-right").addEventListener("touchend", (e) => {
-  e.preventDefault();
-  keyboard.RIGHT = false;
-});
-document.getElementById("jump").addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  keyboard.SPACE = true;
-});
-document.getElementById("jump").addEventListener("touchend", (e) => {
-  e.preventDefault();
-  keyboard.SPACE = false;
-});
-document.getElementById("shoot").addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  keyboard.D = true;
-});
-document.getElementById("shoot").addEventListener("touchend", (e) => {
-  e.preventDefault();
-  keyboard.D = false;
-});
+//Touch events for mobile controls
+const moveLeftBtn = document.getElementById("move-left");
+if (moveLeftBtn) {
+  moveLeftBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    keyboard.LEFT = true;
+  });
+  moveLeftBtn.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    keyboard.LEFT = false;
+  });
+}
+
+const moveRightBtn = document.getElementById("move-right");
+if (moveRightBtn) {
+  moveRightBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    keyboard.RIGHT = true;
+  });
+  moveRightBtn.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    keyboard.RIGHT = false;
+  });
+}
+
+const jumpBtn = document.getElementById("jump");
+if (jumpBtn) {
+  jumpBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    keyboard.SPACE = true;
+  });
+  jumpBtn.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    keyboard.SPACE = false;
+  });
+}
+
+const shootBtn = document.getElementById("shoot");
+if (shootBtn) {
+  shootBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    keyboard.D = true;
+  });
+  shootBtn.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    keyboard.D = false;
+  });
+}

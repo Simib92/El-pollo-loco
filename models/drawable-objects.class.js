@@ -1,3 +1,5 @@
+//Base class for all drawable objects in the game. Handles image loading, drawing, animation, and bounding frame detection
+
 class DrawableObject {
   height = 160;
   width = 120;
@@ -12,26 +14,31 @@ class DrawableObject {
   frameHeight;
   drawIntervalID = [];
 
+  //Starts a new interval and stores its ID so it can be stopped later
   setStoppableInterval(fn, time) {
     const id = setInterval(fn, time);
     this.drawIntervalID.push(id);
     console.log("Neuer Intervall:", id);
   }
 
+  //Clears all currently stored intervals
   stopIntervals() {
     this.drawIntervalID.forEach(clearInterval);
     this.drawIntervalID = [];
   }
 
+  //Clears all drawing-related intervals
   stopAllIntervals() {
     this.stopIntervals();
   }
 
+  //Loads a single image from the given path
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
 
+  //Draws the object on the canvas context
   draw(ctx, flipped = false) {
     ctx.save();
     if (flipped) {
@@ -45,6 +52,8 @@ class DrawableObject {
     ctx.restore();
   }
 
+  //Draws a transparent rectangle around the object for debugging hit frames.
+  //Also updates internal frameX/frameY/frameWidth/frameHeight properties
   drawFrame(ctx) {
     const types = [
       {
@@ -92,6 +101,7 @@ class DrawableObject {
     }
   }
 
+  //Preloads multiple images into the image cache
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();
@@ -100,6 +110,7 @@ class DrawableObject {
     });
   }
 
+  //Plays an animation by cycling through the given image paths
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];

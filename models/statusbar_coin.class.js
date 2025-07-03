@@ -1,4 +1,8 @@
+//Represents the coin collection status bar
+
 class StatusbarCoin extends StatusBar {
+
+  //Array of image paths representing different coin collection levels (0% to 100%) in blue style
   IMAGES = [
     "img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png",
     "img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png",
@@ -10,6 +14,7 @@ class StatusbarCoin extends StatusBar {
 
   percentage = 0;
 
+  //Initializes position, size, loads images, and sets the initial percentage to 0
   constructor() {
     super();
     this.loadImages(this.IMAGES);
