@@ -20,8 +20,8 @@ function startGame() {
   document.getElementById("intro-img").classList.add("display_none");
   document.getElementById("canvas").classList.remove("display_none");
   document.getElementById("start-button").classList.add("display_none");
-  //document.getElementById("mobil-button-bar").classList.remove("display_none");
-  //document.getElementById("mobil-button-bar").classList.add("button-bar");
+  document.getElementById("button-bar").classList.remove("display_none");
+  document.getElementById("button-bar").classList.add("button-bar");
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
 }
@@ -33,8 +33,8 @@ function stopGame() {
   document.getElementById("intro-img").classList.remove("display_none");
   document.getElementById("canvas").classList.add("display_none");
   document.getElementById("start-button").classList.remove("display_none");
-  //document.getElementById("mobil-button-bar").classList.remove("button-bar");
-  //document.getElementById("mobil-button-bar").classList.add("display_none");
+  document.getElementById("button-bar").classList.remove("button-bar");
+  document.getElementById("button-bar").classList.add("display_none");
   let canvas = document.getElementById("canvas");
   let ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -168,7 +168,7 @@ function exitFullscreen() {
 }
 
 //Keydown event listener: sets keyboard flags on key press
-window.addEventListener("keydown", (e) => {
+window.addEventListener('keydown', (e) => {
   if (e.keyCode == 39) {
     keyboard.RIGHT = true;
   }
@@ -195,7 +195,7 @@ window.addEventListener("keydown", (e) => {
 });
 
 //Keyup event listener: resets keyboard flags on key release
-window.addEventListener("keyup", (e) => {
+window.addEventListener('keyup', (e) => {
   if (e.keyCode == 39) {
     keyboard.RIGHT = false;
   }
@@ -221,51 +221,37 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
-//Touch events for mobile controls
-const moveLeftBtn = document.getElementById("move-left");
-if (moveLeftBtn) {
-  moveLeftBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    keyboard.LEFT = true;
-  });
-  moveLeftBtn.addEventListener("touchend", (e) => {
-    e.preventDefault();
-    keyboard.LEFT = false;
-  });
-}
+//const moveLeftBtn = document.getElementById('move-left');
+document.getElementById("move-left").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  keyboard.LEFT = true;
+});
+document.getElementById("move-left").addEventListener("touchend", (e) => {
+  e.preventDefault();
+  keyboard.LEFT = false;
+});
+document.getElementById("move-right").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  keyboard.RIGHT = true;
+});
+document.getElementById("move-right").addEventListener("touchend", (e) => {
+  e.preventDefault();
+  keyboard.RIGHT = false;
+});
+document.getElementById("jump").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  keyboard.SPACE = true;
+});
+document.getElementById("jump").addEventListener("touchend", (e) => {
+  e.preventDefault();
+  keyboard.SPACE = false;
+});
+document.getElementById("shoot").addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  keyboard.D = true;
+});
+document.getElementById("shoot").addEventListener("touchend", (e) => {
+  e.preventDefault();
+  keyboard.D = false;
+});
 
-const moveRightBtn = document.getElementById("move-right");
-if (moveRightBtn) {
-  moveRightBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    keyboard.RIGHT = true;
-  });
-  moveRightBtn.addEventListener("touchend", (e) => {
-    e.preventDefault();
-    keyboard.RIGHT = false;
-  });
-}
-
-const jumpBtn = document.getElementById("jump");
-if (jumpBtn) {
-  jumpBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    keyboard.SPACE = true;
-  });
-  jumpBtn.addEventListener("touchend", (e) => {
-    e.preventDefault();
-    keyboard.SPACE = false;
-  });
-}
-
-const shootBtn = document.getElementById("shoot");
-if (shootBtn) {
-  shootBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    keyboard.D = true;
-  });
-  shootBtn.addEventListener("touchend", (e) => {
-    e.preventDefault();
-    keyboard.D = false;
-  });
-}

@@ -213,6 +213,7 @@ class Character extends MovableObject {
         this.world.loseGame();
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
+        this.resetSleepTimer();
       } else {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)
           this.playAnimation(this.IMAGES_WALKING);
