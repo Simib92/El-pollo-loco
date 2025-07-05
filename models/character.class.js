@@ -23,12 +23,12 @@ class Character extends MovableObject {
   IMAGES_JUMPING = [
     //"img/2_character_pepe/3_jump/J-31.png",
     //"img/2_character_pepe/3_jump/J-32.png",
-    "img/2_character_pepe/3_jump/J-33.png",
+    //"img/2_character_pepe/3_jump/J-33.png",
     "img/2_character_pepe/3_jump/J-34.png",
     "img/2_character_pepe/3_jump/J-35.png",
     "img/2_character_pepe/3_jump/J-36.png",
-    "img/2_character_pepe/3_jump/J-37.png",
-    "img/2_character_pepe/3_jump/J-38.png",
+    //"img/2_character_pepe/3_jump/J-37.png",
+    //"img/2_character_pepe/3_jump/J-38.png",
   ];
 
   //Animation frames for hurt state
@@ -95,13 +95,13 @@ class Character extends MovableObject {
     setStoppableInterval(() => this.checkIsFalling(), 1000 / 60);
     setStoppableInterval(() => this.returnToLevelEndX(), 1000 / 60);
     setStoppableInterval(() => this.charactersleepIntervall(), 50);
-    setStoppableInterval(() => this.jumpAnimation(), 200);
+    setStoppableInterval(() => this.jumpAnimation(), 300);
   }
 
   //Updates camera and checks for left/right movement
   animate() {
     if (this.canMoveRight()) this.characterMoveRight();
-    if (this.canMoveLeft()) this.characterMoveLeft();
+    if (this.canMoveLeft()) this.characterMoveLeft(); 
     this.world.camera_x = +100 - this.x;
   }
 
@@ -174,7 +174,7 @@ class Character extends MovableObject {
 
   //Plays standing animation if not asleep
   characterStandartPosition() {
-    if (!this.sleepPepe) this.playAnimation(this.IMAGES_STANDING);
+    if (!this.sleepPepe && !this.isAboveGround()) this.playAnimation(this.IMAGES_STANDING);
   }
 
   //Manages sleep logic based on inactivity
