@@ -2,7 +2,7 @@
 
 class Character extends MovableObject {
   height = 280;
-  y = 170;
+  y = 160;
   speed = 8;
   sleepPepe = false;
   sleepInterval = 0;
@@ -21,14 +21,14 @@ class Character extends MovableObject {
 
   //Animation frames for jumping
   IMAGES_JUMPING = [
-    //"img/2_character_pepe/3_jump/J-31.png",
-    //"img/2_character_pepe/3_jump/J-32.png",
-    //"img/2_character_pepe/3_jump/J-33.png",
+    "img/2_character_pepe/3_jump/J-31.png",
+    "img/2_character_pepe/3_jump/J-32.png",
+    "img/2_character_pepe/3_jump/J-33.png",
     "img/2_character_pepe/3_jump/J-34.png",
     "img/2_character_pepe/3_jump/J-35.png",
     "img/2_character_pepe/3_jump/J-36.png",
-    //"img/2_character_pepe/3_jump/J-37.png",
-    //"img/2_character_pepe/3_jump/J-38.png",
+    "img/2_character_pepe/3_jump/J-37.png",
+    "img/2_character_pepe/3_jump/J-38.png",
   ];
 
   //Animation frames for hurt state
@@ -95,13 +95,13 @@ class Character extends MovableObject {
     setStoppableInterval(() => this.checkIsFalling(), 1000 / 60);
     setStoppableInterval(() => this.returnToLevelEndX(), 1000 / 60);
     setStoppableInterval(() => this.charactersleepIntervall(), 50);
-    setStoppableInterval(() => this.jumpAnimation(), 300);
+    //setStoppableInterval(() => this.jumpAnimation(), 1000 / 60);
   }
 
   //Updates camera and checks for left/right movement
   animate() {
     if (this.canMoveRight()) this.characterMoveRight();
-    if (this.canMoveLeft()) this.characterMoveLeft(); 
+    if (this.canMoveLeft()) this.characterMoveLeft();
     this.world.camera_x = +100 - this.x;
   }
 
@@ -157,9 +157,8 @@ class Character extends MovableObject {
 
   //Plays jumping animation when character is airborne
   jumpAnimation() {
-    if (this.isAboveGround()) {
-      this.playAnimation(this.IMAGES_JUMPING);
-    }
+    let path = this.IMAGES_JUMPING[this.jumpAnimationFrame()];
+    this.img = this.imageCache[path];
   }
 
   //Checks if the character is performing any movement or actions
@@ -174,7 +173,8 @@ class Character extends MovableObject {
 
   //Plays standing animation if not asleep
   characterStandartPosition() {
-    if (!this.sleepPepe && !this.isAboveGround()) this.playAnimation(this.IMAGES_STANDING);
+    if (!this.sleepPepe && !this.isAboveGround())
+      this.playAnimation(this.IMAGES_STANDING);
   }
 
   //Manages sleep logic based on inactivity
@@ -218,7 +218,7 @@ class Character extends MovableObject {
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)
           this.playAnimation(this.IMAGES_WALKING);
       }
-    }
+    } else {this.jumpAnimation()}
   }
 
   //Updates `isFalling` flag based on character's vertical position
@@ -230,5 +230,17 @@ class Character extends MovableObject {
   //Sets upward velocity to perform a jump
   jump() {
     this.speedY = 30;
+  }
+
+  jumpAnimationFrame() {
+    const sy = this.speedY; 
+    if (sy >= 28) return 0;
+    else if (sy >= 25) return 1;
+    else if (sy >= 22) return 2;
+    else if (sy >= 10) return 3;
+    else if (sy >= -10) return 4;
+    else if (sy >= -20) return 5;
+    else if (sy >= -30) return 6;
+    else return 7;
   }
 }

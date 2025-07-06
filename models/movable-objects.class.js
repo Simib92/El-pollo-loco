@@ -3,7 +3,7 @@
 class MovableObject extends DrawableObject {
   speed = 0.2;
   otherDirection = false;
-  speedY = 0;
+  speedY = null;
   acceleration = 2.5;
   energy = 100;
   CoinBag = 0;
@@ -15,6 +15,8 @@ class MovableObject extends DrawableObject {
     if (this.isAboveGround() || this.speedY > 0) {
       this.y -= this.speedY;
       this.speedY -= this.acceleration;
+      console.log(this.speedY);
+         
     }
   }
 
@@ -22,7 +24,9 @@ class MovableObject extends DrawableObject {
   isAboveGround() {
     if (this instanceof ThrowableObject) {
       return true;
-    } else {
+    } else { if (this.y > 160) {
+      return this.y = 160;
+    }
       return this.y < 160;
     }
   }

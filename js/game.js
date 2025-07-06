@@ -20,8 +20,9 @@ function startGame() {
   document.getElementById("intro-img").classList.add("display_none");
   document.getElementById("canvas").classList.remove("display_none");
   document.getElementById("start-button").classList.add("display_none");
-  document.getElementById("button-bar").classList.remove("display_none");
-  document.getElementById("button-bar").classList.add("button-bar");
+  if (isTouch()) {
+    activateTouchbar();
+  }
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
 }
@@ -33,8 +34,9 @@ function stopGame() {
   document.getElementById("intro-img").classList.remove("display_none");
   document.getElementById("canvas").classList.add("display_none");
   document.getElementById("start-button").classList.remove("display_none");
-  document.getElementById("button-bar").classList.remove("button-bar");
-  document.getElementById("button-bar").classList.add("display_none");
+  if (isTouch()) {
+    activateTouchbar();
+  }
   let canvas = document.getElementById("canvas");
   let ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -42,6 +44,17 @@ function stopGame() {
     world.gameEnd = false;
     world = null;
   }
+}
+
+function isTouch() {
+  const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const width = window.innerWidth;
+  return isTouch && width >= 600 && width <= 1024;
+}
+
+function activateTouchbar() {
+  document.getElementById("button-bar").classList.toggle("button-bar");
+  document.getElementById("button-bar").classList.toggle("display_none");
 }
 
 //Executes a function repeatedly at given intervals and stores the interval ID
@@ -168,7 +181,7 @@ function exitFullscreen() {
 }
 
 //Keydown event listener: sets keyboard flags on key press
-window.addEventListener('keydown', (e) => {
+window.addEventListener("keydown", (e) => {
   if (e.keyCode == 39) {
     keyboard.RIGHT = true;
   }
@@ -195,7 +208,7 @@ window.addEventListener('keydown', (e) => {
 });
 
 //Keyup event listener: resets keyboard flags on key release
-window.addEventListener('keyup', (e) => {
+window.addEventListener("keyup", (e) => {
   if (e.keyCode == 39) {
     keyboard.RIGHT = false;
   }
@@ -254,4 +267,3 @@ document.getElementById("shoot").addEventListener("touchend", (e) => {
   e.preventDefault();
   keyboard.D = false;
 });
-

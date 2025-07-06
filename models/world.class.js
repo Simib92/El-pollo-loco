@@ -47,7 +47,7 @@ class World {
     this.run();
     this.gameEnd = false;
   }
-  
+
   //Links the world to the character so it has access to the global game state.
   setworld() {
     this.character.world = this;
@@ -64,10 +64,10 @@ class World {
   }
 
   //Manages background music. Switches to boss music if needed.
-  backgroundMusic() {
+  async backgroundMusic() {
     if (soundOn) {
       if (this.endboss.startAnimation) {
-        this.setEndbossMusic();
+        await this.setEndbossMusic();
       }
       this.playBackgroundSound();
     }
@@ -79,20 +79,23 @@ class World {
       this.stopBackgroundMusic();
       this.backgroundsound = this.EndbossMusic;
     } catch (error) {
-      console.log("this dont work");
+      console.warn("setEndbossMusic() failed:", error);
     }
   }
 
   //Stops the currently playing background music.
   stopBackgroundMusic() {
-    this.backgroundsound.pause();
+    if (this.backgroundsound) this.backgroundsound.pause();
+    this.backgroundsound.currentTime = 0;
   }
 
   //Plays the background sound from the beginning
-  async playBackgroundSound() {
+  playBackgroundSound() {
     this.backgroundsound.currentTime = 0;
     this.backgroundsound.volume = 0.2;
-    this.backgroundsound.play();
+    this.backgroundsound.play().catch((e) => {
+      console.warn("Autoplay failed:", e);
+    });
   }
 
   //Checks if the player wants to throw a bottle
@@ -211,31 +214,33 @@ class World {
     }
   }
 
-
   //Checks if the player is collecting any items (bottles or coins)
   checkColectables() {
     this.level.colectables.forEach((colectables) => {
       if (this.character.isColliding(colectables)) {
-        this.spliceColectable(colectables);
-        if (colectables.type === "bottle") this.collectThisBottle();
-        if (colectables.type === "coin") this.collectThisCoin();
+        if (colectables.type === "bottle") this.collectThisBottle(colectables);
+        if (colectables.type === "coin") this.collectThisCoin(colectables);
         if (!this.checkRemainingBottles()) this.setNewBottles();
       }
     });
   }
 
   //Handles bottle collection logic and updates UI
-  collectThisBottle() {
-    this.character.colectedBottles += 10;
-    this.statusBarBottle.setPercentage(this.character.colectedBottles);
-    this.playSoundEffect(this.colectBottle);
+  collectThisBottle(colectables) {
+    if (this.character.colectedBottles <= 100) {
+      this.character.colectedBottles += 10;
+      this.statusBarBottle.setPercentage(this.character.colectedBottles);
+      this.playSoundEffect(this.colectBottle);
+      this.spliceColectable(colectables);
+    }
   }
 
   //Handles coin collection logic and updates UI
-  collectThisCoin() {
+  collectThisCoin(colectables) {
     this.character.CoinBag += 4;
     this.statusBarCoin.setPercentage(this.character.CoinBag);
     this.playSoundEffect(this.colectCoin);
+    this.spliceColectable(colectables);
   }
 
   //Removes a collectable object from the level
