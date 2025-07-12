@@ -11,6 +11,7 @@ let intervalIDs = [];
 
 //Restarts the game by initializing the level and starting the game
 function restartGame() {
+  resetWorld();
   initLevel();
   startGame();
 }
@@ -19,7 +20,7 @@ function restartGame() {
 function startGame() {
   document.getElementById("intro-img").classList.add("display_none");
   document.getElementById("canvas").classList.remove("display_none");
-  document.getElementById("start-button").classList.add("display_none");
+  document.getElementById("main-buttons").classList.add("display_none");
   if (isTouch()) {
     activateTouchbar();
   }
@@ -33,10 +34,14 @@ function startGame() {
 function stopGame() {
   document.getElementById("intro-img").classList.remove("display_none");
   document.getElementById("canvas").classList.add("display_none");
-  document.getElementById("start-button").classList.remove("display_none");
+  document.getElementById("main-buttons").classList.remove("display_none");
   if (isTouch()) {
     activateTouchbar();
   }
+  resetWorld();
+}
+
+function resetWorld() {
   let canvas = document.getElementById("canvas");
   let ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -44,6 +49,22 @@ function stopGame() {
     world.gameEnd = false;
     world = null;
   }
+}
+
+function setMainButtonsAfterGameEnd() {
+  let buttonContainer = document.getElementById('main-buttons');
+  buttonContainer.innerHTML = '';
+  buttonContainer.innerHTML = /*html*/`
+    <img onclick="stopGame()" class="start-button" src="img/playicons/back.png" alt="">
+    <img onclick="restartGame()" class="start-button" src="img/playicons/retry.png" alt="">
+  `
+}
+
+function setStartButton() {
+  let buttonContainer = document.getElementById('main-buttons');
+  buttonContainer.innerHTML = /*html*/`
+    <img id="start-button" onclick="restartGame()" class="start-button" src="img/playicons/play.png" alt="">
+  `
 }
 
 function isTouch() {
@@ -92,7 +113,7 @@ function toggleSound() {
     soundIsOn(button);
   }
   if (world) {
-    world.stopBackgroundMusic();
+    //world.stopBackgroundMusic();
     world.backgroundMusic();
   }
 }

@@ -95,7 +95,6 @@ class Character extends MovableObject {
     setStoppableInterval(() => this.checkIsFalling(), 1000 / 60);
     setStoppableInterval(() => this.returnToLevelEndX(), 1000 / 60);
     setStoppableInterval(() => this.charactersleepIntervall(), 50);
-    //setStoppableInterval(() => this.jumpAnimation(), 1000 / 60);
   }
 
   //Updates camera and checks for left/right movement

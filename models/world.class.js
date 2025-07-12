@@ -24,6 +24,7 @@ class World {
   drawIntervalID = [];
   throwTimeOut = true;
   sound;
+  currentBackGroundSound;
 
   backGroundMexico = new Audio("audio/soft-mexican-guitar-343137.mp3");
   EndbossMusic = new Audio("audio/endboss.mp3");
@@ -36,7 +37,6 @@ class World {
   bossAttack = new Audio("audio/boss-attack.mp3");
   jumpOnEnemySound = new Audio("audio/jump-on-enemy.mp3");
   sleepSound = new Audio("audio/sleep.mp3");
-  backgroundsound = this.backGroundMexico;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -64,38 +64,42 @@ class World {
   }
 
   //Manages background music. Switches to boss music if needed.
-  async backgroundMusic() {
+  backgroundMusic() {
     if (soundOn) {
       if (this.endboss.startAnimation) {
-        await this.setEndbossMusic();
+        this.playBackgroundSound(this.EndbossMusic);
+      } else {
+        this.playBackgroundSound(this.backGroundMexico);
       }
-      this.playBackgroundSound();
+    } else {
+      if (this.currentBackGroundSound) {
+        this.stopBackgroundMusic()
+      }
     }
   }
 
   //Switches to Endboss music and stops regular background music.
-  async setEndbossMusic() {
-    try {
-      this.stopBackgroundMusic();
-      this.backgroundsound = this.EndbossMusic;
-    } catch (error) {
-      console.warn("setEndbossMusic() failed:", error);
-    }
+  setEndbossMusic() {
+      //this.stopBackgroundMusic();
+      this.playBackgroundSound(this.EndbossMusic)
   }
 
   //Stops the currently playing background music.
   stopBackgroundMusic() {
-    if (this.backgroundsound) this.backgroundsound.pause();
-    this.backgroundsound.currentTime = 0;
+    if (this.currentBackGroundSound?.pause) {
+        this.currentBackGroundSound.pause();
+    }
   }
 
   //Plays the background sound from the beginning
-  playBackgroundSound() {
-    this.backgroundsound.currentTime = 0;
-    this.backgroundsound.volume = 0.2;
-    this.backgroundsound.play().catch((e) => {
-      console.warn("Autoplay failed:", e);
-    });
+  playBackgroundSound(backgroundsound) {
+    if (this.currentBackGroundSound) {
+      this.stopBackgroundMusic();
+    }
+    backgroundsound.currentTime = 0;
+    backgroundsound.volume = 0.2;
+    backgroundsound.play();
+    this.currentBackGroundSound = backgroundsound;
   }
 
   //Checks if the player wants to throw a bottle
@@ -293,7 +297,7 @@ class World {
     this.stopBackgroundMusic();
     this.level.enemies = [];
     this.level.colectables = [];
-    setTimeout(() => stopGame(), 3000);
+    setMainButtonsAfterGameEnd();
   }
 
   //Plays the win animation and ends the game
