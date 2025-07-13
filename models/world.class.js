@@ -73,7 +73,7 @@ class World {
       }
     } else {
       if (this.currentBackGroundSound) {
-        this.stopBackgroundMusic()
+        this.stopBackgroundMusic();
       }
     }
   }
@@ -92,15 +92,29 @@ class World {
   }
 
   //Plays the background sound from the beginning
-  playBackgroundSound(backgroundsound) {
-    if (this.currentBackGroundSound) {
+  async playBackgroundSound(backgroundsound) {
+  try {
+    // Stop previous music
+    if (this.currentBackGroundSound && this.currentBackGroundSound !== backgroundsound) {
       this.stopBackgroundMusic();
     }
+
+    // Reset and set volume
     backgroundsound.currentTime = 0;
     backgroundsound.volume = 0.2;
-    backgroundsound.play();
+
+    // Try to play and wait for promise
+    const playPromise = backgroundsound.play();
+
+    if (playPromise !== undefined) {
+      await playPromise;
+    }
+
     this.currentBackGroundSound = backgroundsound;
+  } catch (err) {
+    console.warn('Fehler beim Abspielen des Hintergrundsounds:', err);
   }
+}
 
   //Checks if the player wants to throw a bottle
   checkThrowObjects() {

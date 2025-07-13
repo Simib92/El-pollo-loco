@@ -18,12 +18,10 @@ function restartGame() {
 
 //Starts the game, hides the intro image and start button
 function startGame() {
-  document.getElementById("intro-img").classList.add("display_none");  
+  document.getElementById("intro-img").classList.add("display_none");
   document.getElementById("main-button-container").classList.add("display_none");
   document.getElementById("canvas").classList.remove("display_none");
-  if (isTouch()) {
-    activateTouchbar();
-  }
+  activateTouchbar();
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
 }
@@ -35,9 +33,7 @@ function stopGame() {
   document.getElementById("intro-img").classList.remove("display_none");
   document.getElementById("canvas").classList.add("display_none");
   setStartButton();
-  if (isTouch()) {
-    activateTouchbar();
-  }
+  activateTouchbar();
   resetWorld();
 }
 
@@ -52,19 +48,20 @@ function resetWorld() {
 }
 
 function setMainButtonsAfterGameEnd() {
-  let buttonContainer = document.getElementById('main-button-container');
+  activateTouchbar();
+  let buttonContainer = document.getElementById("main-button-container");
   buttonContainer.classList.remove("display_none");
-  buttonContainer.innerHTML = /*html*/`
+  buttonContainer.innerHTML = /*html*/ `
     <img onclick="stopGame()" class="start-button" src="img/playicons/back.png" alt="">
     <img onclick="restartGame()" class="start-button" src="img/playicons/retry.png" alt="">
-  `
+  `;
 }
 
 function setStartButton() {
-  let buttonContainer = document.getElementById('main-button-container');
-  buttonContainer.innerHTML = /*html*/`
+  let buttonContainer = document.getElementById("main-button-container");
+  buttonContainer.innerHTML = /*html*/ `
     <img id="start-button" onclick="restartGame()" class="start-button" src="img/playicons/play.png" alt="">
-  `
+  `;
 }
 
 function isTouch() {
@@ -74,8 +71,10 @@ function isTouch() {
 }
 
 function activateTouchbar() {
-  document.getElementById("button-bar").classList.toggle("button-bar");
-  document.getElementById("button-bar").classList.toggle("display_none");
+  if (isTouch()) {
+    document.getElementById("button-bar").classList.toggle("button-bar");
+    document.getElementById("button-bar").classList.toggle("display_none");
+  }
 }
 
 //Executes a function repeatedly at given intervals and stores the interval ID
