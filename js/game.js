@@ -18,9 +18,9 @@ function restartGame() {
 
 //Starts the game, hides the intro image and start button
 function startGame() {
-  document.getElementById("intro-img").classList.add("display_none");
+  document.getElementById("intro-img").classList.add("display_none");  
+  document.getElementById("main-button-container").classList.add("display_none");
   document.getElementById("canvas").classList.remove("display_none");
-  document.getElementById("main-buttons").classList.add("display_none");
   if (isTouch()) {
     activateTouchbar();
   }
@@ -34,7 +34,7 @@ function startGame() {
 function stopGame() {
   document.getElementById("intro-img").classList.remove("display_none");
   document.getElementById("canvas").classList.add("display_none");
-  document.getElementById("main-buttons").classList.remove("display_none");
+  setStartButton();
   if (isTouch()) {
     activateTouchbar();
   }
@@ -52,8 +52,8 @@ function resetWorld() {
 }
 
 function setMainButtonsAfterGameEnd() {
-  let buttonContainer = document.getElementById('main-buttons');
-  buttonContainer.innerHTML = '';
+  let buttonContainer = document.getElementById('main-button-container');
+  buttonContainer.classList.remove("display_none");
   buttonContainer.innerHTML = /*html*/`
     <img onclick="stopGame()" class="start-button" src="img/playicons/back.png" alt="">
     <img onclick="restartGame()" class="start-button" src="img/playicons/retry.png" alt="">
@@ -61,7 +61,7 @@ function setMainButtonsAfterGameEnd() {
 }
 
 function setStartButton() {
-  let buttonContainer = document.getElementById('main-buttons');
+  let buttonContainer = document.getElementById('main-button-container');
   buttonContainer.innerHTML = /*html*/`
     <img id="start-button" onclick="restartGame()" class="start-button" src="img/playicons/play.png" alt="">
   `
