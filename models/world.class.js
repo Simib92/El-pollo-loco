@@ -98,18 +98,14 @@ class World {
     if (this.currentBackGroundSound && this.currentBackGroundSound !== backgroundsound) {
       this.stopBackgroundMusic();
     }
-
     // Reset and set volume
     backgroundsound.currentTime = 0;
     backgroundsound.volume = 0.2;
-
     // Try to play and wait for promise
     const playPromise = backgroundsound.play();
-
     if (playPromise !== undefined) {
       await playPromise;
     }
-
     this.currentBackGroundSound = backgroundsound;
   } catch (err) {
     console.warn('Fehler beim Abspielen des Hintergrundsounds:', err);
@@ -146,9 +142,9 @@ class World {
     this.throwableObjects.push(bottle);
     this.playSoundEffect(this.throwSound);
     setStoppableInterval(() => this.checkDemage(bottle), 10);
-    this.statusBarBottle.setPercentage(this.character.colectedBottles);
     setTimeout(() => this.spliceThrowableObjects(bottle), 1500);
     this.character.colectedBottles -= 10;
+    this.statusBarBottle.setPercentage(this.character.colectedBottles);
   }
 
   //splice the bottle it it is outside the map

@@ -15,16 +15,17 @@ class MovableObject extends DrawableObject {
     if (this.isAboveGround() || this.speedY > 0) {
       this.y -= this.speedY;
       this.speedY -= this.acceleration;
+      if (this.y > 160 && !this instanceof ThrowableObject) {
+      return this.y = 160;
     }
   }
+}
 
   //Checks whether the object is above ground level
   isAboveGround() {
     if (this instanceof ThrowableObject) {
       return true;
-    } else { if (this.y > 160) {
-      return this.y = 160;
-    }
+    } else { 
       return this.y < 160;
     }
   }

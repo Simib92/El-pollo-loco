@@ -58,14 +58,14 @@ class DrawableObject {
     const types = [
       {
         classRef: [Chicken, ThrowableObject],
-        offset: { x: 10, y: 5, w: 20, h: 20 },
+        offset: { x: 10, y: 0, w: 20, h: 20 },
       },
       { classRef: [SmallChicken], 
-        offset: { x: 5, y: -5, w: 10, h: 0 } },
+        offset: { x: 5, y: -8, w: 10, h: 0 } },
       {
         classRef: [Endboss],
         offset: { x: 50, y: 80, w: 60, h: 90 },
-        frameFix: { x: 15, w: 30 },
+        frameFix: { x: 45, w: 40 },
       },
       {
         classRef: [Character],
