@@ -1,8 +1,10 @@
-//Represents a throwable bottle object in the game
-
+/**
+ * Represents a throwable bottle object in the game.
+ * Handles bottle flight, rotation animation while in the air,
+ * and splash animation upon breaking.
+ * Extends MovableObject to include movement and gravity effects.
+ */
 class ThrowableObject extends MovableObject {
-  
-  //Images used for bottle rotation animation
   IMAGES_ROTATION = [
     "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
     "img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
@@ -10,7 +12,6 @@ class ThrowableObject extends MovableObject {
     "img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
   ];
 
-  //Images used for bottle splash animation after it breaks
   IMAGES_SPLASH = [
     "img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
     "img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
@@ -23,7 +24,12 @@ class ThrowableObject extends MovableObject {
   isBroke = false;
   throwInterval;
 
-  //Creates a new throwable bottle at the given position
+  /**
+   * Creates a throwable bottle instance at a specified position.
+   * Loads rotation and splash images, sets size, and starts throw animation.
+   * @param {number} x - Initial horizontal position of the bottle.
+   * @param {number} y - Initial vertical position of the bottle.
+   */
   constructor(x, y) {
     super().loadImage("img/6_salsa_bottle/salsa_bottle.png");
     this.loadImages(this.IMAGES_ROTATION);
@@ -36,7 +42,10 @@ class ThrowableObject extends MovableObject {
     setStoppableInterval(() => this.animate(), 40);
   }
 
-  //Starts the throw animation and flight movement based on keyboard direction
+  /**
+   * Initiates the throw by setting vertical speed and gravity.
+   * Determines horizontal movement direction based on keyboard input.
+   */
   trow() {
     this.speedY = 30;
     setStoppableInterval(() => this.applyGravity(), 1000 / 25);
@@ -45,17 +54,20 @@ class ThrowableObject extends MovableObject {
     else this.throwInterval = setInterval(() => this.bottleFlyRight(), 40);
   }
 
-  //Moves the bottle to the left during flight
+  /** Moves the bottle left during flight */
   bottleFlyleft() {
     this.x -= 10;
   }
 
-  //Moves the bottle to the right during flight
+  /** Moves the bottle right during flight */
   bottleFlyRight() {
     this.x += 10;
   }
 
-  //Plays rotation animation in flight and splash animation when broken
+  /**
+   * Animates the bottle.
+   * Plays rotation animation while flying; switches to splash animation once broken.
+   */
   animate() {
     if (!this.isBroke) this.playAnimation(this.IMAGES_ROTATION);
     else {
@@ -64,7 +76,9 @@ class ThrowableObject extends MovableObject {
     }
   }
 
-  //Triggers the splash state: stops movement and switches to splash animation
+  /**
+   * Triggers the bottle splash state, stopping all movement and switching animation.
+   */
   splashBottle() {
     this.isBroke = true;
     this.speedY = 0;

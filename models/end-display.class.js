@@ -1,18 +1,23 @@
-//Represents the end screen display for the game
-
+/**
+ * Represents the end screen display for the game.
+ * Handles rendering of "Game Over" or "You Won" images.
+ */
 class EndDisplay extends DrawableObject {
-
-  //Image shown when the player wins
   ENDIMAGE_WON = ["img/You won, you lost/You Won B.png"];
 
-  //Image shown when the player loses
   ENDIMAGE_LOSE = ["img/You won, you lost/Game Over.png"];
 
+  /**
+   * Creates a new EndDisplay instance.
+   */
   constructor() {
     super();
   }
 
-  //Displays the "Game Over" image. Sets the image size and position
+  /**
+   * Displays the "Game Over" image by setting the correct
+   * position and size, and loading the image.
+   */
   loseAnimation() {
     this.x = 50;
     this.y = 50;
@@ -21,7 +26,10 @@ class EndDisplay extends DrawableObject {
     this.loadImage(this.ENDIMAGE_LOSE);
   }
 
-  //Displays the "You Won" image. Sets the image size and position
+  /**
+   * Displays the "You Won" image by setting the correct
+   * position and size, and loading the image.
+   */
   winAnimation() {
     this.x = 50;
     this.y = 150;

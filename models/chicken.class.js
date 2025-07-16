@@ -1,5 +1,8 @@
-//Represents a standard enemy chicken in the game
-
+/**
+ * Represents a standard enemy chicken in the game.
+ *
+ * Chickens either walk on the ground or fall from above (e.g., spawned by the Endboss).
+ */
 class Chicken extends MovableObject {
   energy = 100;
   type = "normal";
@@ -15,7 +18,15 @@ class Chicken extends MovableObject {
   //Image path for the dead chicken
   IMAGES_DEAD = ["img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
 
-  //Creates a new Chicken enemy
+  /**
+   * Creates a new Chicken enemy.
+   *
+   * @param {number} height - The height of the chicken.
+   * @param {number} width - The width of the chicken.
+   * @param {number} y - The initial y-position of the chicken.
+   * @param {number} x - The initial x-position of the chicken.
+   * @param {boolean} falling - If true, the chicken will fall from the sky.
+   */
   constructor(height, width, y, x, falling) {
     super().loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.loadImages(this.IMAGES_WALKING);
@@ -36,19 +47,25 @@ class Chicken extends MovableObject {
     }
   }
 
-  //Moves the chicken leftward if it is alive
+  /**
+   * Moves the chicken to the left if it is alive.
+   */
   animateWalk() {
     if (this.energy > 1) this.moveLeft();
   }
 
-  //Plays the walking or dead animation depending on chicken's energy
+  /**
+   * Plays walking or death animation depending on the chicken's health.
+   */
   animateImg() {
     if (this.energy > 1) this.playAnimation(this.IMAGES_WALKING);
     else this.playAnimation(this.IMAGES_DEAD);
   }
 
-  //Handles falling behavior of chicken (used when spawned by Endboss)
-  //Applies a downward trajectory with horizontal drift
+  /**
+   * Applies falling behavior for chickens spawned by the Endboss.
+   * Includes both downward and horizontal movement.
+   */
   chickenFalling() {
     if (this.isChickenOnTheGround() || this.speedY > 0)
       this.y -= this.speedY * 0.75;
@@ -56,7 +73,11 @@ class Chicken extends MovableObject {
     this.x -= 2;
   }
 
-  //Checks whether the chicken has reached the ground
+  /**
+   * Checks whether the chicken has landed on the ground.
+   *
+   * @returns {boolean} True if the chicken is on the ground.
+   */
   isChickenOnTheGround() {
     return this.y <= 330;
   }

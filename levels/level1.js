@@ -1,6 +1,21 @@
 let level1;
 
-//delete level and set new level with all (background, enemies and collectables)
+/**
+ * Initializes the game level with all required game elements: enemies, collectibles, clouds, and background layers.
+ * Clears any existing level and creates a new `Level` object that includes:
+ * - Chickens (normal, small, and boss)
+ * - Coins and bottles
+ * - Clouds
+ * - Parallax background objects
+ *
+ * Random positioning is used for some enemies to increase variation in level layout.
+ *
+ * @function initLevel
+ * @global
+ *
+ * @example
+ * initLevel(); // Sets up a new game level with default content
+ */
 function initLevel() {
 level1 = null;
 level1 = new Level(

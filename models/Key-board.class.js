@@ -1,5 +1,6 @@
-//Tracks the current state of keyboard keys for user input
-
+/**
+ * Tracks the current pressed state of keyboard keys for user input.
+ */
 class Keyboard {
   LEFT = false;
   RIGHT = false;

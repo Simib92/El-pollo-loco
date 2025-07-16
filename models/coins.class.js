@@ -1,18 +1,20 @@
-//Represents a collectible coin object in the game
-
+/**
+ * Represents a collectible coin object in the game.
+ *
+ * Coins can be collected by the player and are animated with rotating images.
+ */
 class Coin extends Colectables {
   height = 120;
   width = 120;
   y = 330;
   type = "coin";
 
-  //Array of image paths for coin animation
-  IMAGES_COIN = [
-    "img/8_coin/coin_1.png", 
-    "img/8_coin/coin_2.png"
-  ];
+  IMAGES_COIN = ["img/8_coin/coin_1.png", "img/8_coin/coin_2.png"];
 
-  //Creates a new Coin instance at a randomized position. Loads coin images and starts animation.
+  /**
+   * Creates a new Coin instance at a randomized position.
+   * Loads the coin images and starts the animation loop.
+   */
   constructor() {
     super().loadImage("img/8_coin/coin_1.png");
     this.loadImages(this.IMAGES_COIN);
@@ -21,7 +23,9 @@ class Coin extends Colectables {
     setStoppableInterval(() => this.animate(), 500);
   }
 
-  //Handles animation by looping through coin image frames
+  /**
+   * Handles animation by cycling through the coin image frames.
+   */
   animate() {
     this.playAnimation(this.IMAGES_COIN);
   }

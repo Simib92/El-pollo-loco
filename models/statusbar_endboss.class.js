@@ -1,8 +1,9 @@
-//Represents the health status bar for the endboss
-
+/**
+ * Represents the health status bar for the endboss enemy.
+ * Displays the endboss's health using different images corresponding to health percentage.
+ * Extends the generic StatusBar class.
+ */
 class StatusbarHealtEndboss extends StatusBar {
-
-  //Array of image paths representing different health levels (0% to 100%) in blue style for the endboss
   IMAGES = [
     "img/7_statusbars/2_statusbar_endboss/blue/blue0.png",
     "img/7_statusbars/2_statusbar_endboss/blue/blue20.png",
@@ -14,7 +15,10 @@ class StatusbarHealtEndboss extends StatusBar {
 
   percentage = 100;
 
-  //Initializes position, size, loads images, and sets default percentage
+  /**
+   * Creates a new StatusbarHealtEndboss instance.
+   * Sets the position and size, loads images, and initializes with full health (100%).
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES);
@@ -25,7 +29,10 @@ class StatusbarHealtEndboss extends StatusBar {
     this.setPercentage(100);
   }
 
-  //Resets and displays the endboss health status bar with full health
+  /**
+   * Resets the health bar images and sets the health percentage to full (100%).
+   * Useful for restarting or showing the full health bar.
+   */
   showStatusbarEndboss() {
     this.loadImages(this.IMAGES);
     this.setPercentage(100);

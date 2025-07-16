@@ -1,8 +1,11 @@
-//Represents the health status bar of the character
+/**
+ * Represents the health status bar of the main character.
+ * Displays the character's current health visually using a set of images that correspond to different health percentages.
+ * Extends the generic StatusBar class.
+ */
 class StatusbarHealt extends StatusBar {
   healt;
 
-  //Array of image paths representing different health levels from 0% to 100%
   IMAGES = [
     "img/7_statusbars/1_statusbar/2_statusbar_health/orange/0.png",
     "img/7_statusbars/1_statusbar/2_statusbar_health/orange/20.png",
@@ -14,7 +17,10 @@ class StatusbarHealt extends StatusBar {
 
   percentage = 100;
 
-  //Creates a new health status bar and initializes its position, size, images, and default percentage
+  /**
+   * Creates a new health status bar instance.
+   * Sets position, size, loads health images, and initializes at full health.
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES);

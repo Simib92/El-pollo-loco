@@ -1,5 +1,7 @@
-//Represents the Endboss enemy with different animations and behaviors
-
+/**
+ * Represents the Endboss enemy with various animations and behaviors.
+ * Handles walking, attacking, special attacks, being hurt, and dying.
+ */
 class Endboss extends MovableObject {
   height = 400;
   width = 400;
@@ -10,7 +12,6 @@ class Endboss extends MovableObject {
   type = "boss";
   isHit = false;
 
-  //Image paths for walking animation
   IMAGES_WALKING = [
     "img/4_enemie_boss_chicken/1_walk/G1.png",
     "img/4_enemie_boss_chicken/1_walk/G2.png",
@@ -18,7 +19,6 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/1_walk/G4.png",
   ];
 
-  //Image paths for attack animation
   IMAGES_ATTACK = [
     "img/4_enemie_boss_chicken/3_attack/G13.png",
     "img/4_enemie_boss_chicken/3_attack/G14.png",
@@ -30,7 +30,6 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/3_attack/G20.png",
   ];
 
-  //Image paths for alert animation
   IMAGES_ALERT = [
     "img/4_enemie_boss_chicken/2_alert/G5.png",
     "img/4_enemie_boss_chicken/2_alert/G6.png",
@@ -42,22 +41,22 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/2_alert/G12.png",
   ];
 
-  //Image paths for hurt animation
   IMAGES_HURT = [
     "img/4_enemie_boss_chicken/4_hurt/G21.png",
     "img/4_enemie_boss_chicken/4_hurt/G22.png",
     "img/4_enemie_boss_chicken/4_hurt/G23.png",
   ];
 
-  //Image paths for dead animation
   IMAGES_DEAD = [
     "img/4_enemie_boss_chicken/5_dead/G24.png",
     "img/4_enemie_boss_chicken/5_dead/G25.png",
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
-  //Creates an instance of the Endboss, loads all animations, sets initial position,
-  //and starts the animation loop
+  /**
+   * Creates an Endboss instance, loads all animation images,
+   * sets initial position, and starts the animation loop.
+   */
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
@@ -69,7 +68,10 @@ class Endboss extends MovableObject {
     setStoppableInterval(() => this.animate(), 200);
   }
 
-  //Controls the Endboss animation and behavior based on energy and player position
+  /**
+   * Controls the Endboss's animation and behavior depending on
+   * energy, attack state, and player position.
+   */
   animate() {
     if (this.energy > 1) {
       if (!this.startAnimation && world.character.x <= 14500)
@@ -85,13 +87,17 @@ class Endboss extends MovableObject {
     } else this.endbossIsDead();
   }
 
-  //Starts the endboss running animation and triggers background music
+  /**
+   * Starts the endboss running animation and triggers background music.
+   */
   endbossStartRun() {
     this.startAnimation = true;
     world.backgroundMusic();
   }
 
-  //Endboss walking attack behavior, moves left with increasing attack charge
+  /**
+   * Performs the walking attack: moves left and increases attack charge.
+   */
   endbossAttackYou() {
     this.playAnimation(this.IMAGES_WALKING);
     this.speed = 15;
@@ -99,7 +105,10 @@ class Endboss extends MovableObject {
     this.endbossAttack += 4 + Math.random() * 7;
   }
 
-  //Executes the special attack animation, moves faster left and plays sound effect
+  /**
+   * Executes the special attack animation, moves faster left,
+   * plays a sound effect, and resets the attack counter after 3 seconds.
+   */
   endbossSpecialAttack() {
     this.playAnimation(this.IMAGES_ATTACK);
     this.speed = 20 + Math.random() * 12;
@@ -108,19 +117,25 @@ class Endboss extends MovableObject {
     setTimeout(() => this.resetAttck(), 3000);
   }
 
-  //Plays dead animation and triggers level end animation after a delay
+  /**
+   * Plays the dead animation and triggers the level end animation after 1 second.
+   */
   endbossIsDead() {
     this.playAnimation(this.IMAGES_DEAD);
     this.endbossAttack = 0;
     setTimeout(() => world.levelEndAnimation(), 1000);
   }
 
-  //Resets the attack counter to zero
+  /**
+   * Resets the attack counter to zero.
+   */
   resetAttck() {
     this.endbossAttack = 0;
   }
 
-  //Spawns a new Chicken enemy near the Endboss position
+  /**
+   * Spawns a new Chicken enemy near the Endboss position.
+   */
   setNewChicken() {
     let chicken = new Chicken(120, 120, 330, this.x - 80, true);
     world.level.enemies.push(chicken);

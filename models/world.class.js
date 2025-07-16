@@ -1,6 +1,6 @@
 /**
- * Represents the entire game world, including the player character, enemies, level,
- * sounds, UI elements, and all game logic such as collisions, throwing, and animations.
+ * The entire game world: manages player, enemies, levels, sounds,
+ * UI elements, collisions, throwable objects, animations, and game logic.
  */
 class World {
   character = new Character();
@@ -38,6 +38,11 @@ class World {
   jumpOnEnemySound = new Audio("audio/jump-on-enemy.mp3");
   sleepSound = new Audio("audio/sleep.mp3");
 
+  /**
+   * Constructor: initializes canvas, keyboard, starts game loops, and sets the world.
+   * @param {HTMLCanvasElement} canvas
+   * @param {Keyboard} keyboard
+   */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -48,14 +53,18 @@ class World {
     this.gameEnd = false;
   }
 
-  //Links the world to the character so it has access to the global game state.
+  /**
+   * Links character with the world (for accessing global variables)
+   */
   setworld() {
     this.character.world = this;
   }
 
-  //Starts key game processes using intervals (collisions, checks, collects)
+  /**
+   * Starts all important game processes (collisions, collecting, throwing, music)
+   */
   run() {
-    setStoppableInterval(() => this.checkJumpOnEnemie(), 1000 / 60);
+    setStoppableInterval(() => this.checkJumpOnEnemie(), 10);
     setStoppableInterval(() => this.checkColectables(), 1000 / 60);
     setStoppableInterval(() => this.checkCollisions(), 1000 / 60);
     setStoppableInterval(() => this.checkThrowObjects(), 1000 / 60);
@@ -63,7 +72,9 @@ class World {
     this.backgroundMusic();
   }
 
-  //Manages background music. Switches to boss music if needed.
+  /**
+   * Plays background music depending on game state
+   */
   backgroundMusic() {
     if (soundOn) {
       if (this.endboss.startAnimation) {
@@ -78,41 +89,47 @@ class World {
     }
   }
 
-  //Switches to Endboss music and stops regular background music.
+  /**Switches to Endboss music and stops regular background music.*/
   setEndbossMusic() {
-      //this.stopBackgroundMusic();
-      this.playBackgroundSound(this.EndbossMusic)
+    this.playBackgroundSound(this.EndbossMusic);
   }
 
-  //Stops the currently playing background music.
+  /**
+   * Stops currently playing background music
+   */
   stopBackgroundMusic() {
     if (this.currentBackGroundSound?.pause) {
-        this.currentBackGroundSound.pause();
+      this.currentBackGroundSound.pause();
     }
   }
 
-  //Plays the background sound from the beginning
+  /**
+   * Plays the given background sound, stops previous one if necessary
+   * @param {HTMLAudioElement} backgroundSound
+   */
   async playBackgroundSound(backgroundsound) {
-  try {
-    // Stop previous music
-    if (this.currentBackGroundSound && this.currentBackGroundSound !== backgroundsound) {
-      this.stopBackgroundMusic();
+    try {
+      if (
+        this.currentBackGroundSound &&
+        this.currentBackGroundSound !== backgroundsound
+      ) {
+        this.stopBackgroundMusic();
+      }
+      backgroundsound.currentTime = 0;
+      backgroundsound.volume = 0.2;
+      const playPromise = backgroundsound.play();
+      if (playPromise !== undefined) {
+        await playPromise;
+      }
+      this.currentBackGroundSound = backgroundsound;
+    } catch (err) {
+      console.warn("Fehler beim Abspielen des Hintergrundsounds:", err);
     }
-    // Reset and set volume
-    backgroundsound.currentTime = 0;
-    backgroundsound.volume = 0.2;
-    // Try to play and wait for promise
-    const playPromise = backgroundsound.play();
-    if (playPromise !== undefined) {
-      await playPromise;
-    }
-    this.currentBackGroundSound = backgroundsound;
-  } catch (err) {
-    console.warn('Fehler beim Abspielen des Hintergrundsounds:', err);
   }
-}
 
-  //Checks if the player wants to throw a bottle
+  /**
+   * Checks if the player wants to throw a bottle and if allowed
+   */
   checkThrowObjects() {
     if (this.keyboard.D) {
       if (this.characterHoldsomeBottles() && this.throwTimeOut) {
@@ -127,17 +144,25 @@ class World {
     }
   }
 
-  //Checks if the player hold some bottles
+  /**
+   * Returns whether the player currently has bottles to throw
+   * @returns {boolean}
+   */
   characterHoldsomeBottles() {
     return this.character.colectedBottles > 0;
   }
 
-  // set timout, that player not can shoot for 0.8s
+  /**
+   * Resets the throw timeout to allow next throw
+   */
   timeOutThrow() {
     this.throwTimeOut = true;
   }
 
-  //Initializes a thrown bottle, plays sound, and handles collision logic
+  /**
+   * Initializes the throwable bottle, plays sound, starts collision checks
+   * @param {ThrowableObject} bottle
+   */
   drawThrowBottle(bottle) {
     this.throwableObjects.push(bottle);
     this.playSoundEffect(this.throwSound);
@@ -147,13 +172,18 @@ class World {
     this.statusBarBottle.setPercentage(this.character.colectedBottles);
   }
 
-  //splice the bottle it it is outside the map
+  /**
+   * Removes a throwable bottle from the list if broken or out of range
+   * @param {ThrowableObject} bottle
+   */
   spliceThrowableObjects(bottle) {
     const index = this.throwableObjects.indexOf(bottle);
     if (index > -1) this.throwableObjects.splice(index, 1);
   }
 
-  //Check if player is jumping on some enemies
+  /**
+   * Checks if the player jumped on an enemy and applies damage accordingly
+   */
   checkJumpOnEnemie() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isJumpOnEnemy(enemy) && this.character.isFalling) {
@@ -166,14 +196,18 @@ class World {
     });
   }
 
-  //Handles the character bounce after jumping on an enemy
+  /**
+   * Makes the player bounce after jumping on an enemy
+   */
   bounceOnEnemy() {
     this.playSoundEffect(this.jumpOnEnemySound);
     this.character.speedY = 30;
     this.character.isAboveGround();
   }
 
-  //Checks if the character is colliding with any enemy
+  /**
+   * Checks collision between player and enemies, applies damage
+   */
   checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && !this.character.isFalling) {
@@ -184,7 +218,10 @@ class World {
     });
   }
 
-  //Checks if ah throw bottle is hit a enemie
+  /**
+   * Checks if a thrown bottle hits an enemy and applies damage
+   * @param {ThrowableObject} bottle
+   */
   checkDemage(bottle) {
     this.level.enemies.forEach((enemy) => {
       if (this.isBottleHitEnemy(bottle, enemy)) {
@@ -196,17 +233,29 @@ class World {
     });
   }
 
-  //Checks if the enemy is the final boss
+  /**
+   * Returns true if enemy is the endboss
+   * @param {Enemy} enemy
+   * @returns {boolean}
+   */
   isTheEndboss(enemy) {
     return enemy.type === "boss";
   }
 
-  //Determines if a bottle hits an enemy and is not yet broken
+  /**
+   * Returns true if bottle hits enemy and bottle is not broken
+   * @param {ThrowableObject} bottle
+   * @param {Enemy} enemy
+   * @returns {boolean}
+   */
   isBottleHitEnemy(bottle, enemy) {
     return bottle.isColliding(enemy) && !bottle.isBroke;
   }
 
-  //Check if damage to the final boss
+  /**
+   * Applies damage to the endboss
+   * @param {Enemy} enemy
+   */
   hitTheBoss(enemy) {
     this.playSoundEffect(this.demageSound);
     enemy.energy -= 15;
@@ -214,13 +263,19 @@ class World {
     enemy.isDemage();
   }
 
-  //Instantly kills a regular enemy
+  /**
+   * Kills a regular enemy immediately and removes it later
+   * @param {Enemy} enemy
+   */
   killEnemy(enemy) {
     enemy.energy -= 100;
     setTimeout(() => this.spliceEnemy(enemy), 500);
   }
 
-  //Removes an enemy from the level once its energy is depleted
+  /**
+   * Removes an enemy from the level when energy is depleted
+   * @param {Enemy} enemy
+   */
   spliceEnemy(enemy) {
     if (enemy.energy < 1) {
       const index = this.level.enemies.indexOf(enemy);
@@ -228,7 +283,9 @@ class World {
     }
   }
 
-  //Checks if the player is collecting any items (bottles or coins)
+  /**
+   * Checks if player collects any collectibles (bottles or coins)
+   */
   checkColectables() {
     this.level.colectables.forEach((colectables) => {
       if (this.character.isColliding(colectables)) {
@@ -239,7 +296,10 @@ class World {
     });
   }
 
-  //Handles bottle collection logic and updates UI
+  /**
+   * Collects a bottle, updates UI and plays sound
+   * @param {Collectable} collectable
+   */
   collectThisBottle(colectables) {
     if (this.character.colectedBottles <= 100) {
       this.character.colectedBottles += 10;
@@ -249,7 +309,10 @@ class World {
     }
   }
 
-  //Handles coin collection logic and updates UI
+  /**
+   * Collects a coin, updates UI and plays sound
+   * @param {Collectable} collectable
+   */
   collectThisCoin(colectables) {
     this.character.CoinBag += 4;
     this.statusBarCoin.setPercentage(this.character.CoinBag);
@@ -257,7 +320,10 @@ class World {
     this.spliceColectable(colectables);
   }
 
-  //Removes a collectable object from the level
+  /**
+   * Removes a collected item from the level
+   * @param {Collectable} collectable
+   */
   spliceColectable(colectables) {
     const index = this.level.colectables.indexOf(colectables);
     if (index > -1) {
@@ -265,7 +331,9 @@ class World {
     }
   }
 
-  //Removes bottles that have moved beyond the boss and spawns new ones
+  /**
+   * Removes bottles that are past the endboss and adds new ones
+   */
   CheckIfBottleIsOutsideMap() {
     this.level.colectables.forEach((obj) => {
       if (obj.type === "bottle") {
@@ -277,22 +345,27 @@ class World {
     });
   }
 
-  //Checks if there are any remaining bottles in the level
+  /**
+   * Checks if there are still bottles left on the map
+   * @returns {boolean}
+   */
   checkRemainingBottles() {
     return this.level.colectables.some((obj) => obj.type === "bottle");
   }
 
-  //Adds new bottles to the level
-  setNewBottles() {
-    this.level.colectables.push(new Bottle());
-    this.level.colectables.push(new Bottle());
-    this.level.colectables.push(new Bottle());
-    this.level.colectables.push(new Bottle());
-    this.level.colectables.push(new Bottle());
-    this.level.colectables.push(new Bottle());
+  /**
+   * Adds new bottles to the level
+   */
+  addNewBottles() {
+    for (let i = 0; i < 6; i++) {
+      this.level.collectables.push(new Bottle());
+    }
   }
 
-  //Plays a sound effect, if sound is enabled
+  /**
+   * Plays a given sound effect (utility method)
+   * @param {HTMLAudioElement} sound
+   */
   playSoundEffect(sound) {
     if (soundOn) {
       sound.currentTime = 0;
@@ -301,7 +374,9 @@ class World {
     }
   }
 
-  //Ends the game: stops intervals, music, and clears objects
+  /**
+   * Ends the game and displays end screen
+   */
   endAll() {
     stopIntervals();
     this.stopBackgroundMusic();
@@ -310,21 +385,27 @@ class World {
     setMainButtonsAfterGameEnd();
   }
 
-  //Plays the win animation and ends the game
+  /**
+   * Ends the game and displays end screen
+   */
   levelEndAnimation() {
     this.gameEnd = true;
     this.endDisplay.winAnimation();
     setTimeout(() => this.endAll(), 3000);
   }
 
-  //Plays the lose animation and ends the game
+  /**
+   * Ends the game and displays end screen
+   */
   loseGame() {
     this.gameEnd = true;
     this.endDisplay.loseAnimation();
     setTimeout(() => this.endAll(), 3000);
   }
 
-  //Main rendering function. Draws the character, UI, enemies, and objects
+  /**
+   * Draw loop: renders all game elements to the canvas
+   */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -360,12 +441,16 @@ class World {
     });
   }
 
-  //Adds multiple game objects to the canvas
+  /**
+   * Adds multiple game objects to the canvas
+   */
   addObjectToMap(objects) {
     objects.forEach((o) => this.addToMap(o));
   }
 
-  //Adds a single game object to the canvas, flipped if needed
+  /**
+   * Adds a single game object to the canvas, flipped if needed
+   */
   addToMap(mo) {
     if (mo.otherDirection) {
       mo.draw(this.ctx, true);
@@ -375,14 +460,18 @@ class World {
     mo.drawFrame(this.ctx);
   }
 
-  //Flips the given object's image horizontally before drawing
+  /**
+   * Flips the given object's image horizontally before drawing
+   */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.x + mo.width, mo.y);
     this.ctx.scale(-1, 1);
   }
 
-  //Resets canvas transformations to normal orientation
+  /**
+   * Resets canvas transformations to normal orientation
+   */
   flipImageBack() {
     this.ctx.restore();
   }

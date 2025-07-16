@@ -1,5 +1,7 @@
-//Base class for all drawable objects in the game. Handles image loading, drawing, animation, and bounding frame detection
-
+/**
+ * Base class for all drawable objects in the game.
+ * Handles image loading, rendering, animation, and collision frame setup.
+ */
 class DrawableObject {
   height = 160;
   width = 120;
@@ -14,31 +16,21 @@ class DrawableObject {
   frameHeight;
   drawIntervalID = [];
 
-  //Starts a new interval and stores its ID so it can be stopped later
-  setStoppableInterval(fn, time) {
-    const id = setInterval(fn, time);
-    this.drawIntervalID.push(id);
-    console.log("Neuer Intervall:", id);
-  }
-
-  //Clears all currently stored intervals
-  stopIntervals() {
-    this.drawIntervalID.forEach(clearInterval);
-    this.drawIntervalID = [];
-  }
-
-  //Clears all drawing-related intervals
-  stopAllIntervals() {
-    this.stopIntervals();
-  }
-
-  //Loads a single image from the given path
+  /**
+   * Loads a single image from a given path and sets it as the object's image.
+   * @param {string} path - Path to the image file.
+   */
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
   }
 
-  //Draws the object on the canvas context
+  /**
+   * Draws the object on the canvas.
+   * Supports horizontal flipping for mirrored rendering.
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   * @param {boolean} [flipped=false] - Whether to draw the image flipped horizontally.
+   */
   draw(ctx, flipped = false) {
     ctx.save();
     if (flipped) {
@@ -52,16 +44,18 @@ class DrawableObject {
     ctx.restore();
   }
 
-  //Draws a transparent rectangle around the object for debugging hit frames.
-  //Also updates internal frameX/frameY/frameWidth/frameHeight properties
+  /**
+   * Draws a transparent collision frame around the object for debugging purposes.
+   * Sets internal frame properties used for hit detection.
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   */
   drawFrame(ctx) {
     const types = [
       {
         classRef: [Chicken, ThrowableObject],
         offset: { x: 10, y: 0, w: 20, h: 20 },
       },
-      { classRef: [SmallChicken], 
-        offset: { x: 5, y: -8, w: 10, h: 0 } },
+      { classRef: [SmallChicken], offset: { x: 5, y: -8, w: 10, h: 0 } },
       {
         classRef: [Endboss],
         offset: { x: 50, y: 80, w: 60, h: 90 },
@@ -69,7 +63,7 @@ class DrawableObject {
       },
       {
         classRef: [Character],
-        offset: { x: 20, y: 110, w: 50, h: 120 },
+        offset: { x: 20, y: 110, w: 50, h: 110 },
         frameFix: { w: 40 },
       },
       { classRef: [Coin], offset: { x: 40, y: 40, w: 80, h: 80 } },
@@ -101,7 +95,10 @@ class DrawableObject {
     }
   }
 
-  //Preloads multiple images into the image cache
+  /**
+   * Preloads a list of images and stores them in the image cache.
+   * @param {string[]} arr - Array of image path strings.
+   */
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();
@@ -110,7 +107,10 @@ class DrawableObject {
     });
   }
 
-  //Plays an animation by cycling through the given image paths
+  /**
+   * Cycles through a list of images to play an animation.
+   * @param {string[]} images - Array of image path strings for animation frames.
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
