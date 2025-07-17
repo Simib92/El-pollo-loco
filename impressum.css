@@ -1,0 +1,79 @@
+@font-face {
+  font-family: "FAMILY_NAME";
+  src: url("fonts/Lobster-Regular.ttf") format("truetype");
+}
+
+body {
+  font-family: "FAMILY_NAME" !important;
+  height: 100vh;
+  width: 100vw;
+  text-shadow: 3px 3px rgba(0, 0, 0, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: white;
+  background-image: url("img/5_background/desert-5112222_1280.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  background-color: black;
+}
+
+.impressum {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 32px;
+  border-radius: 32px;
+  position: absolute;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  gap: 24px;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+a {
+  font-size: 18px;
+  color: white;
+  text-decoration: underline;
+  margin: 0;
+}
+
+p {
+  font-size: 16px;
+  margin: 0;
+}
+
+@media (max-height: 450px) {
+  h1 {
+    font-size: 18px;
+  }
+
+  h2,
+  a {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  .impressum {
+    padding: 16px;
+    gap: 16px;
+  }
+}

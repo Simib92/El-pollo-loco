@@ -356,11 +356,10 @@ class World {
   /**
    * Adds new bottles to the level
    */
-  addNewBottles() {
+  setNewBottles() {  
     for (let i = 0; i < 6; i++) {
-      this.level.collectables.push(new Bottle());
-    }
-  }
+      this.level.colectables.push(new Bottle());
+  }}
 
   /**
    * Plays a given sound effect (utility method)
@@ -375,7 +374,7 @@ class World {
   }
 
   /**
-   * Ends the game and displays end screen
+   * Ends all loops and clear all gameobjects
    */
   endAll() {
     stopIntervals();
