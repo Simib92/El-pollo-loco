@@ -3,7 +3,7 @@
  *
  * Coins can be collected by the player and are animated with rotating images.
  */
-class Coin extends Colectables {
+class Coin extends DrawableObject {
   height = 120;
   width = 120;
   y = 330;

@@ -18,7 +18,7 @@ class MovableObject extends DrawableObject {
   applyGravity() {
     if (this.isAboveGround() || this.speedY > 0) {
       this.y -= this.speedY;
-      if (this.y > 160 && !this instanceof ThrowableObject) {
+      if (this.y > 160 && this instanceof Character) {
         this.y = 160;
       }
       this.speedY -= this.acceleration;
@@ -71,7 +71,7 @@ class MovableObject extends DrawableObject {
    */
   hit() {
     if (!this.isHurt()) {
-      this.energy -= 10;
+      this.energy -= 20;
       if (this.energy < 0) {
         this.energy = 0;
       }

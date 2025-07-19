@@ -168,7 +168,7 @@ class World {
     this.playSoundEffect(this.throwSound);
     setStoppableInterval(() => this.checkDemage(bottle), 10);
     setTimeout(() => this.spliceThrowableObjects(bottle), 1500);
-    this.character.colectedBottles -= 10;
+    this.character.colectedBottles -= 20;
     this.statusBarBottle.setPercentage(this.character.colectedBottles);
   }
 
@@ -258,7 +258,7 @@ class World {
    */
   hitTheBoss(enemy) {
     this.playSoundEffect(this.demageSound);
-    enemy.energy -= 15;
+    enemy.energy -= 20;
     this.statusBarBoss.setPercentage(enemy.energy);
     enemy.isDemage();
   }
@@ -301,11 +301,13 @@ class World {
    * @param {Collectable} collectable
    */
   collectThisBottle(colectables) {
-    if (this.character.colectedBottles <= 100) {
-      this.character.colectedBottles += 10;
+    if (this.character.colectedBottles < 100) {
+      this.character.colectedBottles += 20;
       this.statusBarBottle.setPercentage(this.character.colectedBottles);
       this.playSoundEffect(this.colectBottle);
       this.spliceColectable(colectables);
+      console.log(this.character.colectedBottles);
+      
     }
   }
 
@@ -316,6 +318,7 @@ class World {
   collectThisCoin(colectables) {
     this.character.CoinBag += 4;
     this.statusBarCoin.setPercentage(this.character.CoinBag);
+    this.statusBarCoin.coinCount ++;
     this.playSoundEffect(this.colectCoin);
     this.spliceColectable(colectables);
   }
@@ -356,10 +359,11 @@ class World {
   /**
    * Adds new bottles to the level
    */
-  setNewBottles() {  
+  setNewBottles() {
     for (let i = 0; i < 6; i++) {
       this.level.colectables.push(new Bottle());
-  }}
+    }
+  }
 
   /**
    * Plays a given sound effect (utility method)
@@ -377,7 +381,6 @@ class World {
    * Ends all loops and clear all gameobjects
    */
   endAll() {
-    stopIntervals();
     this.stopBackgroundMusic();
     this.level.enemies = [];
     this.level.colectables = [];
@@ -390,7 +393,8 @@ class World {
   levelEndAnimation() {
     this.gameEnd = true;
     this.endDisplay.winAnimation();
-    setTimeout(() => this.endAll(), 3000);
+    stopIntervals();
+    this.endAll();
   }
 
   /**
@@ -399,7 +403,8 @@ class World {
   loseGame() {
     this.gameEnd = true;
     this.endDisplay.loseAnimation();
-    setTimeout(() => this.endAll(), 3000);
+    stopIntervals();
+    this.endAll();
   }
 
   /**
@@ -412,7 +417,12 @@ class World {
 
     this.addObjectToMap(this.level.backgroundObjects);
     this.addObjectToMap(this.level.clouds);
+    this.addToMap(this.character);
+
     this.addObjectToMap(this.level.enemies);
+
+    this.addObjectToMap(this.throwableObjects);
+    this.addObjectToMap(this.level.colectables);
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -425,15 +435,6 @@ class World {
     if (this.gameEnd) {
       this.addToMap(this.endDisplay);
     }
-
-    this.ctx.translate(this.camera_x, 0);
-
-    this.addToMap(this.character);
-    this.addObjectToMap(this.throwableObjects);
-    this.addObjectToMap(this.level.colectables);
-
-    this.ctx.translate(-this.camera_x, 0);
-
     let self = this;
     requestAnimationFrame(function () {
       self.draw();

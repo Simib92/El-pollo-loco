@@ -14,6 +14,7 @@ class StatusbarCoin extends StatusBar {
   ];
 
   percentage = 0;
+  coinCount = 0;
 
   /**
    * Creates a new StatusbarCoin instance.
@@ -27,5 +28,28 @@ class StatusbarCoin extends StatusBar {
     this.width = 200;
     this.height = 60;
     this.setPercentage(0);
+  }
+
+
+/**
+   * Sets the number of collected coins and updates percentage.
+   * @param {number} count - Number of coins collected.
+   */
+  setCoinCount(count) {
+    this.coinCount = count;
+    this.setPercentage(count); // Falls du prozentuale Anzeige mit denselben Bildern nutzen willst
+  }
+
+  /**
+   * Draws the status bar and coin count as text.
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   */
+  draw(ctx) {
+    super.draw(ctx); // Zeichnet den Balken
+
+    ctx.font = "24px Arial";
+    ctx.fillStyle = "#000000ff"; // goldgelb
+    ctx.textAlign = "left";
+    ctx.fillText(`${this.coinCount}`, this.x + 100, this.y + 48); // Position rechts vom Balken
   }
 }

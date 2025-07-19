@@ -4,9 +4,9 @@
  * Inherits from `Colectables`.
  *
  * @class Bottle
- * @extends Colectables
+ * @extends DrawableObject
  */
-class Bottle extends Colectables {
+class Bottle extends DrawableObject {
   type = "bottle";
   width = 70;
   height = 110;

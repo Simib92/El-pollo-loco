@@ -247,7 +247,8 @@ class Character extends MovableObject {
     if (!this.isAboveGround()) {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
-        this.world.loseGame();
+        this.world.endDisplay.gameLose = true;
+        world.loseGame();
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
         this.resetSleepTimer();

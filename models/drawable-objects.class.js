@@ -45,12 +45,28 @@ class DrawableObject {
   }
 
   /**
-   * Draws a transparent collision frame around the object for debugging purposes.
-   * Sets internal frame properties used for hit detection.
-   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+   * Draws a debug frame around the current game object, depending on its type.
+   * The frame dimensions are calculated with specific offsets and corrections.
+   * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
    */
   drawFrame(ctx) {
-    const types = [
+    const types = this.getFrameTypes();
+
+    for (const type of types) {
+      if (this.isInstanceOf(type.classRef)) {
+        this.applyFrame(ctx, type.offset, type.frameFix || {});
+        break;
+      }
+    }
+  }
+
+  /**
+   * Returns a list of game object types with corresponding frame offsets and corrections.
+   * These are used to calculate the bounding boxes for the debug frames.
+   * @returns {Array<Object>} List of frame configuration objects.
+   */
+  getFrameTypes() {
+    return [
       {
         classRef: [Chicken, ThrowableObject],
         offset: { x: 10, y: 0, w: 20, h: 20 },
@@ -69,30 +85,38 @@ class DrawableObject {
       { classRef: [Coin], offset: { x: 40, y: 40, w: 80, h: 80 } },
       { classRef: [Bottle], offset: { x: 20, y: 20, w: 40, h: 40 } },
     ];
+  }
 
-    for (const type of types) {
-      if (type.classRef.some((cls) => this instanceof cls)) {
-        const o = type.offset;
-        const fix = type.frameFix || {};
+  /**
+   * Checks whether the current object is an instance of any class in the provided list.
+   * @param {Array<Function>} classList - List of class constructors to check against.
+   * @returns {boolean} True if the object is an instance of one of the classes.
+   */
+  isInstanceOf(classList) {
+    return classList.some((cls) => this instanceof cls);
+  }
 
-        const frameX = this.x + (fix.x ?? o.x);
-        const frameY = this.y + o.y;
-        const frameWidth = this.width - (fix.w ?? o.w);
-        const frameHeight = this.height - o.h;
-
-        ctx.lineWidth = "10";
-        ctx.strokeStyle = "transparent";
-        ctx.beginPath();
-        ctx.rect(frameX, frameY, frameWidth, frameHeight);
-        ctx.stroke();
-
-        this.frameX = frameX;
-        this.frameY = frameY;
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-        break;
-      }
-    }
+  /**
+   * Calculates and draws the debug frame rectangle for the object on the canvas.
+   * Also stores the resulting frame dimensions in instance properties.
+   * @param {CanvasRenderingContext2D} ctx - The canvas context to draw on.
+   * @param {{x: number, y: number, w: number, h: number}} offset - Default frame offset and size.
+   * @param {{x?: number, w?: number}} frameFix - Optional overrides for offset values.
+   */
+  applyFrame(ctx, offset, frameFix) {
+    const x = this.x + (frameFix.x ?? offset.x);
+    const y = this.y + offset.y;
+    const w = this.width - (frameFix.w ?? offset.w);
+    const h = this.height - offset.h;
+    ctx.lineWidth = "10";
+    ctx.strokeStyle = "transparent";
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.stroke();
+    this.frameX = x;
+    this.frameY = y;
+    this.frameWidth = w;
+    this.frameHeight = h;
   }
 
   /**

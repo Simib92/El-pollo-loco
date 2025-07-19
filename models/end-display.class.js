@@ -3,6 +3,9 @@
  * Handles rendering of "Game Over" or "You Won" images.
  */
 class EndDisplay extends DrawableObject {
+  gameWin = false;
+  gameLose = false;
+
   ENDIMAGE_WON = ["img/You won, you lost/You Won B.png"];
 
   ENDIMAGE_LOSE = ["img/You won, you lost/Game Over.png"];

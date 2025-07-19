@@ -23,9 +23,7 @@ function restartGame() {
  */
 function startGame() {
   document.getElementById("intro-img").classList.add("display_none");
-  document
-    .getElementById("main-button-container")
-    .classList.add("display_none");
+  document.getElementById("main-button-container").classList.add("display_none");
   document.getElementById("canvas").classList.remove("display_none");
   activateTouchbar();
   canvas = document.getElementById("canvas");
@@ -39,7 +37,6 @@ function stopGame() {
   document.getElementById("intro-img").classList.remove("display_none");
   document.getElementById("canvas").classList.add("display_none");
   setStartButton();
-  activateTouchbar();
   resetWorld();
 }
 
@@ -60,7 +57,7 @@ function resetWorld() {
  * Displays the back and retry buttons after the game ends.
  */
 function setMainButtonsAfterGameEnd() {
-  activateTouchbar();
+  deactivateTouchbar();
   let buttonContainer = document.getElementById("main-button-container");
   buttonContainer.classList.remove("display_none");
   buttonContainer.innerHTML = /*html*/ `
@@ -85,8 +82,8 @@ function setStartButton() {
  */
 function isTouch() {
   const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  const width = window.innerWidth;
-  return isTouch && width >= 600 && width <= 1024;
+  //const width = window.innerWidth;
+  return isTouch //&& width >= 600 && width <= 1024;
 }
 
 /**
@@ -94,8 +91,15 @@ function isTouch() {
  */
 function activateTouchbar() {
   if (isTouch()) {
-    document.getElementById("button-bar").classList.toggle("button-bar");
-    document.getElementById("button-bar").classList.toggle("display_none");
+    document.getElementById("button-bar").classList.add("button-bar");
+    document.getElementById("button-bar").classList.remove("display_none");
+  }
+}
+
+function deactivateTouchbar() {
+  if (isTouch()) {
+    document.getElementById("button-bar").classList.remove("button-bar");
+    document.getElementById("button-bar").classList.add("display_none");
   }
 }
 
