@@ -37,7 +37,7 @@ class StatusbarCoin extends StatusBar {
    */
   setCoinCount(count) {
     this.coinCount = count;
-    this.setPercentage(count); // Falls du prozentuale Anzeige mit denselben Bildern nutzen willst
+    this.setPercentage(count);
   }
 
   /**
@@ -45,11 +45,11 @@ class StatusbarCoin extends StatusBar {
    * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
    */
   draw(ctx) {
-    super.draw(ctx); // Zeichnet den Balken
+    super.draw(ctx);
 
     ctx.font = "24px Arial";
-    ctx.fillStyle = "#000000ff"; // goldgelb
+    ctx.fillStyle = "#000000ff";
     ctx.textAlign = "left";
-    ctx.fillText(`${this.coinCount}`, this.x + 100, this.y + 48); // Position rechts vom Balken
+    ctx.fillText(`${this.coinCount}`, this.x + 100, this.y + 48);
   }
 }
