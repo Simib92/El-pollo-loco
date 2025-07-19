@@ -82,8 +82,7 @@ function setStartButton() {
  */
 function isTouch() {
   const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  //const width = window.innerWidth;
-  return isTouch //&& width >= 600 && width <= 1024;
+  return isTouch;
 }
 
 /**

@@ -305,9 +305,7 @@ class World {
       this.character.colectedBottles += 20;
       this.statusBarBottle.setPercentage(this.character.colectedBottles);
       this.playSoundEffect(this.colectBottle);
-      this.spliceColectable(colectables);
-      console.log(this.character.colectedBottles);
-      
+      this.spliceColectable(colectables);      
     }
   }
 
